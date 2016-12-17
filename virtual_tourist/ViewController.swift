@@ -82,6 +82,9 @@ class ViewController: UIViewController, MKMapViewDelegate, UIApplicationDelegate
 
         let annotation = MKPointAnnotation()
         annotation.coordinate = touchMapCoordinate
+        print(annotation.coordinate.latitude)
+        print(annotation.coordinate.longitude)
+
 
         mapView.addAnnotation(annotation)
         print("wheres the pin")
