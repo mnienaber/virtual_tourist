@@ -23,5 +23,10 @@ extension Client {
       static let NO_JSON_CALLBACK = "1"
       static let PER_PAGE = "20"
     }
+
+    struct ParseResponseKeys {
+
+      static let ImageUrl = "imageurl"
+    }
   }
 }

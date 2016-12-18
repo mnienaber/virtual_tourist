@@ -26,6 +26,9 @@
 		2E8809D81E04D44F00898A34 /* PinSingleton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E8809D71E04D44F00898A34 /* PinSingleton.swift */; };
 		2E8809DA1E04D65900898A34 /* Reachability.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E8809D91E04D65900898A34 /* Reachability.swift */; };
 		2E8809DC1E04D7FA00898A34 /* Convenience.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E8809DB1E04D7FA00898A34 /* Convenience.swift */; };
+		2E8809DF1E05061400898A34 /* BlackBox.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E8809DE1E05061400898A34 /* BlackBox.swift */; };
+		2E8809E11E05086A00898A34 /* ImageObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E8809E01E05086A00898A34 /* ImageObject.swift */; };
+		2E8809E31E050A1900898A34 /* ImageSingleton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E8809E21E050A1900898A34 /* ImageSingleton.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -71,6 +74,9 @@
 		2E8809D71E04D44F00898A34 /* PinSingleton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PinSingleton.swift; sourceTree = "<group>"; };
 		2E8809D91E04D65900898A34 /* Reachability.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Reachability.swift; sourceTree = "<group>"; };
 		2E8809DB1E04D7FA00898A34 /* Convenience.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Convenience.swift; sourceTree = "<group>"; };
+		2E8809DE1E05061400898A34 /* BlackBox.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BlackBox.swift; sourceTree = "<group>"; };
+		2E8809E01E05086A00898A34 /* ImageObject.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageObject.swift; sourceTree = "<group>"; };
+		2E8809E21E050A1900898A34 /* ImageSingleton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageSingleton.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -163,6 +169,9 @@
 				2E8809D51E04D1C800898A34 /* Client.swift */,
 				2E8809D71E04D44F00898A34 /* PinSingleton.swift */,
 				2E8809D91E04D65900898A34 /* Reachability.swift */,
+				2E8809DE1E05061400898A34 /* BlackBox.swift */,
+				2E8809E01E05086A00898A34 /* ImageObject.swift */,
+				2E8809E21E050A1900898A34 /* ImageSingleton.swift */,
 			);
 			name = Model;
 			sourceTree = "<group>";
@@ -330,9 +339,12 @@
 				2E4A96AF1DEC194B000CC944 /* Pin+CoreDataProperties.swift in Sources */,
 				2E8809DC1E04D7FA00898A34 /* Convenience.swift in Sources */,
 				2E4C63EB1DC1E8D3002B59E0 /* AppDelegate.swift in Sources */,
+				2E8809E31E050A1900898A34 /* ImageSingleton.swift in Sources */,
 				2E4A96AD1DEC194B000CC944 /* Photos+CoreDataProperties.swift in Sources */,
+				2E8809E11E05086A00898A34 /* ImageObject.swift in Sources */,
 				2E8809D61E04D1C800898A34 /* Client.swift in Sources */,
 				2E4C641A1DC1E8ED002B59E0 /* Model.xcdatamodeld in Sources */,
+				2E8809DF1E05061400898A34 /* BlackBox.swift in Sources */,
 				2E8809D41E04D1B300898A34 /* Constants.swift in Sources */,
 				2E4C641F1DC1F5BE002B59E0 /* CoreDataStack.swift in Sources */,
 				2E4A96AE1DEC194B000CC944 /* Pin+CoreDataClass.swift in Sources */,

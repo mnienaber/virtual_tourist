@@ -43,6 +43,7 @@ class Client : NSObject {
         sendError("No data was returned by the request!")
         return
       }
+      print("data")
 
       self.convertDataWithCompletionHandler(data, completionHandlerForConvertData: completionHandlerForGET)
     }
@@ -61,7 +62,9 @@ class Client : NSObject {
       let userInfo = [NSLocalizedDescriptionKey : "Could not parse the data as JSON: '\(data)'"]
       completionHandlerForConvertData(nil, NSError(domain: "convertDataWithCompletionHandler", code: 1, userInfo: userInfo))
     }
+
     completionHandlerForConvertData(parsedResult as AnyObject?, nil)
+    
   }
 }
 

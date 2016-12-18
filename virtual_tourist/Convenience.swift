@@ -11,7 +11,7 @@ import UIKit
 
 extension Client {
 
-  func getImages(latitude: Double, longitude: Double, completionHanderForGetImages: @escaping (_ results: [String: AnyObject]?, _ error: NSError) -> Void) {
+  func getImages(latitude: Double, longitude: Double, completionHanderForGetImages: @escaping (_ results: [ImageObject]?, _ error: NSError) -> Void) {
 
     let lat:String = String(format:"%f", latitude)
     let lon:String = String(format:"%f", longitude)
@@ -41,9 +41,12 @@ extension Client {
 
         if let results = results?["results"] as? [[String:AnyObject]] {
 
-          for result in results {
-            print(result)
-          }
+          ImageSingleton.sharedInstance().image = []
+          let images = ImageObject.SLOFromResults(results: results)
+          ImageSingleton.sharedInstance().image = images
+          completionHanderForGetImages(images, error!)
+
+
         } else {
 
           completionHanderForGetImages(nil, error!)

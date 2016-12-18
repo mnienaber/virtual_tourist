@@ -30,7 +30,7 @@ class ViewController: UIViewController, MKMapViewDelegate, UIApplicationDelegate
 
     appDelegate = UIApplication.shared.delegate as! AppDelegate
 
-    let longTap: UILongPressGestureRecognizer = UILongPressGestureRecognizer(target: self, action: #selector(mapView.addAnnotation(_:)))
+    let longTap: UILongPressGestureRecognizer = UILongPressGestureRecognizer(target: self, action: #selector(ViewController.action(gestureRecognizer:)))
 
     longTap.delegate = self
     longTap.numberOfTapsRequired = 0
@@ -64,37 +64,77 @@ class ViewController: UIViewController, MKMapViewDelegate, UIApplicationDelegate
     print("error:: \(error)")
   }
 
-  func didLongTapMap(gestureRecognizer: UIGestureRecognizer) {
-    print("long tap detected")
-    // Get the spot that was tapped.
-    let tapPoint: CGPoint = gestureRecognizer.location(in: mapView)
-    let touchMapCoordinate: CLLocationCoordinate2D = mapView.convert(tapPoint, toCoordinateFrom: mapView)
+//  func didLongTapMap(gestureRecognizer: UIGestureRecognizer) {
+//    print("long tap detected")
+//    // Get the spot that was tapped.
+//    let tapPoint: CGPoint = gestureRecognizer.location(in: mapView)
+//    let touchMapCoordinate: CLLocationCoordinate2D = mapView.convert(tapPoint, toCoordinateFrom: mapView)
+//
+//    let viewAtBottomOfHierarchy: UIView = mapView.hitTest(tapPoint, with: nil)!
+//    if viewAtBottomOfHierarchy is MKPinAnnotationView {
+//      return
+//    } else {
+//      if .began == gestureRecognizer.state {
+//        // Delete any existing annotations.
+//        if mapView.annotations.count != 0 {
+//          mapView.removeAnnotations(mapView.annotations)
+//        }
+//
+//        let annotation = MKPointAnnotation()
+//        annotation.coordinate = touchMapCoordinate
+//        print(annotation.coordinate.latitude)
+//        print(annotation.coordinate.longitude)
+//
+//
+//        mapView.addAnnotation(annotation)
+//        print("wheres the pin")
+//        //_isPinOnMap = true
+//
+//        //findAddressFromCoordinate(annotation.coordinate)
+//        //updateLabels()
+//      }
+//    }
+//  }
 
-    let viewAtBottomOfHierarchy: UIView = mapView.hitTest(tapPoint, with: nil)!
-    if viewAtBottomOfHierarchy is MKPinAnnotationView {
-      return
-    } else {
-      if .began == gestureRecognizer.state {
-        // Delete any existing annotations.
-        if mapView.annotations.count != 0 {
-          mapView.removeAnnotations(mapView.annotations)
+  func action(gestureRecognizer:UIGestureRecognizer) {
+    let touchPoint = gestureRecognizer.location(in: self.mapView)
+    var newCoord:CLLocationCoordinate2D = mapView.convert(touchPoint, toCoordinateFrom: self.mapView)
+
+    var pm = [CLPlacemark]()
+
+    let newAnnotation = MKPointAnnotation()
+    newAnnotation.coordinate = newCoord
+    newAnnotation.title = "New Location"
+    newAnnotation.subtitle = "New Subtitle"
+    newCoord.latitude = newAnnotation.coordinate.latitude
+    newCoord.longitude = newAnnotation.coordinate.longitude
+    //pm.append(["name":"\(newAnnotation.title)","latitude":"\(newCoord.latitude)","longitude":"\(newCoord.longitude)"])
+    if gestureRecognizer.state == .began {
+      mapView.addAnnotation(newAnnotation)
+      print(newCoord.latitude)
+      print(newCoord.longitude)
+      Client.sharedInstance().getImages(latitude: newCoord.latitude, longitude: newCoord.longitude) { results, error in
+
+        if error != nil {
+
+          performUIUpdatesOnMain {
+            print(error)
+          }
+        } else {
+
+          if let results = results {
+
+            performUIUpdatesOnMain {
+              for result in results {
+
+                let newImageUrl = result.imageUrl
+
+              }
+            }
+          }
         }
-
-        let annotation = MKPointAnnotation()
-        annotation.coordinate = touchMapCoordinate
-        print(annotation.coordinate.latitude)
-        print(annotation.coordinate.longitude)
-
-
-        mapView.addAnnotation(annotation)
-        print("wheres the pin")
-        //_isPinOnMap = true
-
-        //findAddressFromCoordinate(annotation.coordinate)
-        //updateLabels()
       }
     }
   }
-
 }
 
