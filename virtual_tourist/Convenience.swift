@@ -27,29 +27,33 @@ extension Client {
       "per_page": Client.Constants.Scheme.PER_PAGE
     ]
 
-    let session = URLSession.shared
+    _ = URLSession.shared
     let urlString = Client.Constants.Scheme.BASE_URL + escapedParameters(parameters: methodArguments as [String : AnyObject])
     let url = NSURL(string: urlString)!
     let request = NSURLRequest(url: url as URL)
 
     taskForGETMethod(request: request) { results, error in
 
+      print("are there results?????")
+
       if let error = error {
 
         completionHanderForGetImages(nil, error)
       } else {
 
-        if let results = results?["results"] as? [[String:AnyObject]] {
+        if let results = results?[Client.Constants.JSONResponseKeys.FlickrResults] as? [String:AnyObject] {
 
-          ImageSingleton.sharedInstance().image = []
-          let images = ImageObject.SLOFromResults(results: results)
-          ImageSingleton.sharedInstance().image = images
-          completionHanderForGetImages(images, error!)
+          let test = results["photo"]
+          let url = test?["url_m"]
+          print("test: \(test)")
+          print("test: \(url)")
 
+          let images = ImageObject.SLOFromResults(results: test as! [[String : AnyObject]])
+          print("images:  \(images)")
+          //ImageSingleton.sharedInstance().image = images
+          print(images)
+          //completionHanderForGetImages(images, nil)
 
-        } else {
-
-          completionHanderForGetImages(nil, error!)
         }
       }
     }
@@ -68,3 +72,4 @@ extension Client {
     return (!urlVars.isEmpty ? "?" : "") + urlVars.joined(separator: "&")
   }
 }
+

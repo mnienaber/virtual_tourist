@@ -21,12 +21,28 @@ extension Client {
       static let EXTRAS = "url_m"
       static let DATA_FORMAT = "json"
       static let NO_JSON_CALLBACK = "1"
-      static let PER_PAGE = "20"
+      static let PER_PAGE = "5"
     }
 
     struct ParseResponseKeys {
 
+      static let Farm = "farm"
+      static let Height = "height"
+      static let Id = "id"
+      static let IsFamily = "isFamiliy"
+      static let IsFriend = "isFriend"
+      static let IsPubic = "isPublic"
+      static let Owner = "owner"
+      static let Secret = "secret"
+      static let Server = "server"
+      static let Title = "title"
       static let ImageUrl = "imageurl"
+      static let Width = "width"
+    }
+
+    struct JSONResponseKeys {
+
+      static let FlickrResults = "photos"
     }
   }
 }

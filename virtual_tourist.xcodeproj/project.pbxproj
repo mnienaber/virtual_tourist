@@ -29,6 +29,7 @@
 		2E8809DF1E05061400898A34 /* BlackBox.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E8809DE1E05061400898A34 /* BlackBox.swift */; };
 		2E8809E11E05086A00898A34 /* ImageObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E8809E01E05086A00898A34 /* ImageObject.swift */; };
 		2E8809E31E050A1900898A34 /* ImageSingleton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E8809E21E050A1900898A34 /* ImageSingleton.swift */; };
+		2EE8ABE91E0636D900A8A8C1 /* CoreDataCollectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2EE8ABE81E0636D900A8A8C1 /* CoreDataCollectionViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -77,6 +78,7 @@
 		2E8809DE1E05061400898A34 /* BlackBox.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BlackBox.swift; sourceTree = "<group>"; };
 		2E8809E01E05086A00898A34 /* ImageObject.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageObject.swift; sourceTree = "<group>"; };
 		2E8809E21E050A1900898A34 /* ImageSingleton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageSingleton.swift; sourceTree = "<group>"; };
+		2EE8ABE81E0636D900A8A8C1 /* CoreDataCollectionViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CoreDataCollectionViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -160,11 +162,11 @@
 		2E4C641B1DC1F05B002B59E0 /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				2E4C641E1DC1F5BE002B59E0 /* CoreDataStack.swift */,
 				2E4A96A81DEC194B000CC944 /* Photos+CoreDataClass.swift */,
 				2E4A96A91DEC194B000CC944 /* Photos+CoreDataProperties.swift */,
 				2E4A96AA1DEC194B000CC944 /* Pin+CoreDataClass.swift */,
 				2E4A96AB1DEC194B000CC944 /* Pin+CoreDataProperties.swift */,
-				2E4C641E1DC1F5BE002B59E0 /* CoreDataStack.swift */,
 				2E8809D31E04D1B300898A34 /* Constants.swift */,
 				2E8809D51E04D1C800898A34 /* Client.swift */,
 				2E8809D71E04D44F00898A34 /* PinSingleton.swift */,
@@ -182,6 +184,7 @@
 				2E4C63EC1DC1E8D3002B59E0 /* ViewController.swift */,
 				2E4C645B1DC9C851002B59E0 /* CollectionViewController.swift */,
 				2E4C63EE1DC1E8D3002B59E0 /* Main.storyboard */,
+				2EE8ABE81E0636D900A8A8C1 /* CoreDataCollectionViewController.swift */,
 			);
 			name = View;
 			sourceTree = "<group>";
@@ -347,6 +350,7 @@
 				2E8809DF1E05061400898A34 /* BlackBox.swift in Sources */,
 				2E8809D41E04D1B300898A34 /* Constants.swift in Sources */,
 				2E4C641F1DC1F5BE002B59E0 /* CoreDataStack.swift in Sources */,
+				2EE8ABE91E0636D900A8A8C1 /* CoreDataCollectionViewController.swift in Sources */,
 				2E4A96AE1DEC194B000CC944 /* Pin+CoreDataClass.swift in Sources */,
 				2E4A96AC1DEC194B000CC944 /* Photos+CoreDataClass.swift in Sources */,
 				2E4C645C1DC9C851002B59E0 /* CollectionViewController.swift in Sources */,

@@ -8,7 +8,7 @@
 
 import Foundation
 
-class ImageSingleton : NSObject {
+class ImageSingleton: NSObject {
 
   var image = [ImageObject]()
 

@@ -5,13 +5,13 @@
 ////  Created by Michael Nienaber on 11/2/16.
 ////  Copyright © 2016 Michael Nienaber. All rights reserved.
 ////
-//
-//import Foundation
-//import UIKit
-//import MapKit
-//
-//class CollectionViewController: UICollectionViewController, MKMapViewDelegate, CLLocationManagerDelegate {
-//
+
+import Foundation
+import UIKit
+import MapKit
+
+class CollectionViewController: UICollectionViewController, MKMapViewDelegate, CLLocationManagerDelegate {
+
 //  @IBOutlet weak var miniMapView: MKMapView!
 //  @IBOutlet weak var bottomToolBar: UIToolbar!
 //  @IBOutlet weak var photoCollectionView: UICollectionView!
@@ -53,9 +53,9 @@
 //
 //// MARK: - CoreDataTableViewController (Subclass Must Implement)
 //
-//extension CoreDataTableViewController {
-//
-//  override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-//    fatalError("This method MUST be implemented by a subclass of CoreDataTableViewController")
-//  }
-//}
+////extension CoreDataTableViewController {
+////
+////  override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+////    fatalError("This method MUST be implemented by a subclass of CoreDataTableViewController")
+////  }
+}
