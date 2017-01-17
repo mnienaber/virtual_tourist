@@ -8,9 +8,9 @@
 
 import Foundation
 import UIKit
+import CoreData
 
 struct ImageObject {
-
 
   let farm: AnyObject
   let height: AnyObject
@@ -56,19 +56,23 @@ struct ImageObject {
 
   static func SLOFromResults(results: [[String:AnyObject]]) -> [ImageObject] {
 
+    var photosArray = [ImageObject]()
+
     for result in results {
 
 //      print("slo result: \(result)")
       let url = result["url_m"]
-      print(url)
+      print(url!)
+
       let title = result["title"]
-      print(title)
-      if let object = ImageObject(dictionary: result) {
-
-        print("img: \(object)")
-
-        ImageSingleton.sharedInstance().image.append(object)
-        print("imgob result: \(ImageSingleton.sharedInstance().image)")
+      print(title!)
+      photosArray.append(result)
+//      if let object = ImageObject(dictionary: result) {
+//
+//        print("img: \(object)")
+//
+//        ImageSingleton.sharedInstance().image.append(object)
+//        print("imgob result: \(ImageSingleton.sharedInstance().image)")
       }
     }
     //print(ImageSingleton.sharedInstance().image)
