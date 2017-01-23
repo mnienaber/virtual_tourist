@@ -18,69 +18,53 @@ struct ImageObject {
   let isFamiliy: AnyObject
   let isFriend: AnyObject
   let isPublic: AnyObject
-  let owner: String
-  let secret: String
+  let owner: AnyObject
+  let secret: AnyObject
   let server: AnyObject
-  let title: String
-  let imageUrl: String
+  let title: AnyObject
+  let imageUrl: AnyObject
   let width: AnyObject
 
 
   init?(dictionary: [String:AnyObject]) {
 
-    guard let f = dictionary[Client.Constants.ParseResponseKeys.Farm] as AnyObject? else { return nil }
+    guard let f = (dictionary[Client.Constants.ParseResponseKeys.Farm] as AnyObject!) else { return nil }
     farm = f
-    guard let h = dictionary[Client.Constants.ParseResponseKeys.Height] as AnyObject? else { return nil }
+    guard let h = (dictionary[Client.Constants.ParseResponseKeys.Height] as AnyObject!) else { return nil }
     height = h
-    guard let i = dictionary[Client.Constants.ParseResponseKeys.Id] as AnyObject? else { return nil }
+    guard let i = (dictionary[Client.Constants.ParseResponseKeys.Id] as AnyObject!) else { return nil }
     id = i
-    guard let ifa = dictionary[Client.Constants.ParseResponseKeys.IsFamily] as AnyObject? else { return nil }
+    guard let ifa = (dictionary[Client.Constants.ParseResponseKeys.IsFamily] as AnyObject!) else { return nil }
     isFamiliy = ifa
-    guard let ifr = dictionary[Client.Constants.ParseResponseKeys.IsFriend] as AnyObject? else { return nil }
+    guard let ifr = (dictionary[Client.Constants.ParseResponseKeys.IsFriend] as AnyObject!) else { return nil }
     isFriend = ifr
-    guard let ip = dictionary[Client.Constants.ParseResponseKeys.IsPubic] as AnyObject? else { return nil }
+    guard let ip = (dictionary[Client.Constants.ParseResponseKeys.IsPubic] as AnyObject!) else { return nil }
     isPublic = ip
-    guard let o = dictionary[Client.Constants.ParseResponseKeys.Owner] as? String else { return nil }
+    guard let o = (dictionary[Client.Constants.ParseResponseKeys.Owner] as AnyObject!) else { return nil }
     owner = o
-    guard let s = dictionary[Client.Constants.ParseResponseKeys.Secret] as? String else { return nil }
+    guard let s = (dictionary[Client.Constants.ParseResponseKeys.Secret] as AnyObject!) else { return nil }
     secret = s
-    guard let ser = dictionary[Client.Constants.ParseResponseKeys.Server] as AnyObject? else { return nil }
+    guard let ser = (dictionary[Client.Constants.ParseResponseKeys.Server] as AnyObject!) else { return nil }
     server = ser
-    guard let t = dictionary[Client.Constants.ParseResponseKeys.Title] as? String else { return nil }
+    guard let t = (dictionary[Client.Constants.ParseResponseKeys.Title] as AnyObject!) else { return nil }
     title = t
-    guard let iurl = dictionary[Client.Constants.ParseResponseKeys.ImageUrl] as? String else { return nil }
+    guard let iurl = (dictionary[Client.Constants.ParseResponseKeys.ImageUrl] as AnyObject!) else { return nil }
     imageUrl = iurl
-    guard let w = dictionary[Client.Constants.ParseResponseKeys.Width] as AnyObject? else { return nil }
+    guard let w = (dictionary[Client.Constants.ParseResponseKeys.Width] as AnyObject!) else { return nil }
     width = w
   }
 
   static func SLOFromResults(results: [[String:AnyObject]]) -> [ImageObject] {
 
-    var photosArray = [ImageObject]()
-
     for result in results {
 
-      let url = result["url_m"]
-      print(url!)
+      if let example = ImageObject(dictionary: result) {
 
-      let title = result["title"]
-      print(title!)
-
-      print(result)
-      do {
-
-      }
-
-      if let object = ImageObject(dictionary: result) {
-
-        print("img: \(object)")
-
-        ImageSingleton.sharedInstance().image.append(object)
-        photosArray.append(object)
+        print("img: \(example)")
+        ImageSingleton.sharedInstance().image.append(example)
         print("imgob result: \(ImageSingleton.sharedInstance().image)")
       }
     }
-    //print(ImageSingleton.sharedInstance().image)
     return ImageSingleton.sharedInstance().image
   }
 }

@@ -112,7 +112,7 @@ class ViewController: UIViewController, MKMapViewDelegate, UIApplicationDelegate
     //pm.append(["name":"\(newAnnotation.title)","latitude":"\(newCoord.latitude)","longitude":"\(newCoord.longitude)"])
     if gestureRecognizer.state == .began {
       mapView.addAnnotation(newAnnotation)
-      savePin(lat: Float(newCoord.latitude), long: Float(newCoord.longitude), locationName: newAnnotation.title!)
+      //savePin(lat: Float(newCoord.latitude), long: Float(newCoord.longitude), locationName: newAnnotation.title!)
       print(newCoord.latitude)
       print(newCoord.longitude)
       Client.sharedInstance().getImages(latitude: newCoord.latitude, longitude: newCoord.longitude) { results, error in
@@ -129,8 +129,9 @@ class ViewController: UIViewController, MKMapViewDelegate, UIApplicationDelegate
             performUIUpdatesOnMain {
               for result in results {
 
-                let newImageUrl = result.imageUrl
+                let first = result
 
+                print("these are: \(first)")
               }
             }
           }

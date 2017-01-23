@@ -47,6 +47,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
   // MARK: - Core Data stack
 
+  lazy var managedObjectContext: NSManagedObjectContext = {
+    // Returns the managed object context for the application (which is already bound to the persistent store coordinator for the application.) This property is optional since there are legitimate error conditions that could cause the creation of the context to fail.
+    let coordinator = NSPersistentStoreCoordinator.self()
+    var managedObjectContext = NSManagedObjectContext(concurrencyType: .mainQueueConcurrencyType)
+    managedObjectContext.persistentStoreCoordinator = coordinator
+    return managedObjectContext
+  }()
+
   lazy var persistentContainer: NSPersistentContainer = {
     /*
      The persistent container for the application. This implementation
@@ -73,6 +81,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     })
     return container
   }()
+
+
 
   // MARK: - Core Data Saving support
 

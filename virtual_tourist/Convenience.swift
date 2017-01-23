@@ -11,7 +11,7 @@ import UIKit
 
 extension Client {
 
-  func getImages(latitude: Double, longitude: Double, completionHanderForGetImages: @escaping (_ results: [ImageObject]?, _ error: NSError) -> Void) {
+  func getImages(latitude: Double, longitude: Double, completionHanderForGetImages: @escaping (_ results: [String: AnyObject]?, _ error: NSError?) -> Void) {
 
     let lat:String = String(format:"%f", latitude)
     let lon:String = String(format:"%f", longitude)
@@ -41,9 +41,13 @@ extension Client {
 
         if let results = results?[Client.Constants.JSONResponseKeys.FlickrResults] as? [String:AnyObject] {
 
-          let arrayOfPhotos = results["photo"]
+          let realResults = results["photo"]
+          //let nextResults = realResults?["farm"]
+          print(realResults)
 
-          let images = ImageObject.SLOFromResults(results: arrayOfPhotos as! [[String : AnyObject]])
+          //completionHanderForGetImages(realResults as! [String : AnyObject]?, nil)
+
+          let images = ImageObject.SLOFromResults(results: realResults as! [[String : AnyObject]])
           print("images:  \(images)")
           //ImageSingleton.sharedInstance().image = images
           print(images)

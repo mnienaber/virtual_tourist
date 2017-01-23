@@ -5,10 +5,10 @@
 //  Created by Michael Nienaber on 12/17/16.
 //  Copyright © 2016 Michael Nienaber. All rights reserved.
 //
-
+import UIKit
 import Foundation
 
-class ImageSingleton: NSObject {
+class ImageSingleton: UIViewController {
 
   var image = [ImageObject]()
 

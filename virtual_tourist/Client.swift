@@ -46,8 +46,18 @@ class Client : NSObject {
         return
       }
       print(data)
+      var parsedResult: Any!
+      do {
+        parsedResult = try JSONSerialization.jsonObject(with: data, options: .allowFragments)
+        print("this is the parsed result: \(parsedResult)")
+      } catch {
+        let userInfo = [NSLocalizedDescriptionKey : "Could not parse the data as JSON: '\(data)'"]
+        completionHandlerForGET(nil, NSError(domain: "convertDataWithCompletionHandler", code: 1, userInfo: userInfo))
+      }
 
-      self.convertDataWithCompletionHandler(data, completionHandlerForConvertData: completionHandlerForGET)
+      completionHandlerForGET(parsedResult as AnyObject?, nil)
+
+      //self.convertDataWithCompletionHandler(data, completionHandlerForConvertData: completionHandlerForGET)
     }
     task.resume()
     return task
