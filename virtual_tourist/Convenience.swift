@@ -34,8 +34,6 @@ extension Client {
 
     taskForGETMethod(request: request) { results, error in
 
-      print("are there results?????")
-
       if let error = error {
 
         completionHanderForGetImages(nil, error)
@@ -43,12 +41,9 @@ extension Client {
 
         if let results = results?[Client.Constants.JSONResponseKeys.FlickrResults] as? [String:AnyObject] {
 
-          let test = results["photo"]
-          let url = test?["url_m"]
-          print("test: \(test)")
-          print("test: \(url)")
+          let arrayOfPhotos = results["photo"]
 
-          let images = ImageObject.SLOFromResults(results: test as! [[String : AnyObject]])
+          let images = ImageObject.SLOFromResults(results: arrayOfPhotos as! [[String : AnyObject]])
           print("images:  \(images)")
           //ImageSingleton.sharedInstance().image = images
           print(images)

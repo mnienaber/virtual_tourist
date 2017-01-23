@@ -8,6 +8,7 @@
 
 import UIKit
 import MapKit
+import CoreData
 
 class ViewController: UIViewController, MKMapViewDelegate, UIApplicationDelegate, CLLocationManagerDelegate, UIGestureRecognizerDelegate {
 
@@ -111,6 +112,7 @@ class ViewController: UIViewController, MKMapViewDelegate, UIApplicationDelegate
     //pm.append(["name":"\(newAnnotation.title)","latitude":"\(newCoord.latitude)","longitude":"\(newCoord.longitude)"])
     if gestureRecognizer.state == .began {
       mapView.addAnnotation(newAnnotation)
+      savePin(lat: Float(newCoord.latitude), long: Float(newCoord.longitude), locationName: newAnnotation.title!)
       print(newCoord.latitude)
       print(newCoord.longitude)
       Client.sharedInstance().getImages(latitude: newCoord.latitude, longitude: newCoord.longitude) { results, error in
@@ -134,6 +136,27 @@ class ViewController: UIViewController, MKMapViewDelegate, UIApplicationDelegate
           }
         }
       }
+    }
+  }
+
+  func savePin(lat: Float, long: Float, locationName: String) {
+
+    // create an instance of our managedObjectContext
+    let moc = CoreDataStack(modelName: "Pin")?.context
+
+    // we set up our entity by selecting the entity and context that we're targeting
+    let entity = NSEntityDescription.insertNewObject(forEntityName: "Pin", into: moc!) as! Pin
+
+    // add our data
+    entity.setValue(lat, forKey: "latitude")
+    entity.setValue(long, forKey: "longitude")
+    entity.setValue(locationName, forKey: "locationName")
+
+    // we save our entity
+    do {
+      try moc?.save()
+    } catch {
+      fatalError("Failure to save context: \(error)")
     }
   }
 }

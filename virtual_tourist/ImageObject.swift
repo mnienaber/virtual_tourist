@@ -60,19 +60,24 @@ struct ImageObject {
 
     for result in results {
 
-//      print("slo result: \(result)")
       let url = result["url_m"]
       print(url!)
 
       let title = result["title"]
       print(title!)
-      photosArray.append(result)
-//      if let object = ImageObject(dictionary: result) {
-//
-//        print("img: \(object)")
-//
-//        ImageSingleton.sharedInstance().image.append(object)
-//        print("imgob result: \(ImageSingleton.sharedInstance().image)")
+
+      print(result)
+      do {
+
+      }
+
+      if let object = ImageObject(dictionary: result) {
+
+        print("img: \(object)")
+
+        ImageSingleton.sharedInstance().image.append(object)
+        photosArray.append(object)
+        print("imgob result: \(ImageSingleton.sharedInstance().image)")
       }
     }
     //print(ImageSingleton.sharedInstance().image)

@@ -8,11 +8,13 @@
 
 import Foundation
 import UIKit
+import CoreData
 
 class Client : NSObject {
 
   let session = URLSession.shared
   var appDelegate: AppDelegate!
+  var photoManagedObject = [NSManagedObject]()
 
 
   override init() {
@@ -66,6 +68,33 @@ class Client : NSObject {
     completionHandlerForConvertData(parsedResult as AnyObject?, nil)
     
   }
+
+//  func saveToCoreData(title: String, url: String) {
+//    //1
+//    let appDelegate =
+//      UIApplication.shared.delegate as! AppDelegate
+//
+//    let managedContext = appDelegate.managedObjectContext
+//
+//    //2
+//    let entity =  NSEntityDescription.entity(forEntityName: "Person",
+//                                             in:managedContext)
+//
+//    let person = NSManagedObject(entity: entity!,
+//                                 insertInto: managedContext)
+//
+//    //3
+//    person.setValue(title, forKey: "title")
+//
+//    //4
+//    do {
+//      try managedContext.save()
+//      //5
+//      photoManagedObject.append(person)
+//    } catch let error as NSError  {
+//      print("Could not save \(error), \(error.userInfo)")
+//    }
+//  }
 }
 
 extension Client {
@@ -79,16 +108,4 @@ extension Client {
 
 
 }
-//
-//extension UIImageView {
-//
-//    func downloadImageFrom(link:String, contentMode: UIViewContentMode) {
-//        URLSession.shared.dataTask( with: URL(string:link)!, completionHandler: {
-//            (data, response, error) -> Void in
-//            DispatchQueue.main.async {
-//                self.contentMode =  contentMode
-//                if let data = data { self.image = UIImage(data: data) }
-//            }
-//        }).resume()
-//    }
-//}
+
