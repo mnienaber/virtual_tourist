@@ -11,7 +11,7 @@ import UIKit
 
 extension Client {
 
-  func getImages(latitude: Double, longitude: Double, completionHanderForGetImages: @escaping (_ results: [String: AnyObject]?, _ error: NSError?) -> Void) {
+  func getImages(latitude: Double, longitude: Double, completionHanderForGetImages: @escaping (_ results: [ImageObject]?, _ error: NSError?) -> Void) {
 
     let lat:String = String(format:"%f", latitude)
     let lon:String = String(format:"%f", longitude)
@@ -41,17 +41,11 @@ extension Client {
 
         if let results = results?[Client.Constants.JSONResponseKeys.FlickrResults] as? [String:AnyObject] {
 
-          let realResults = results["photo"]
-          //let nextResults = realResults?["farm"]
-          print(realResults)
-
-          //completionHanderForGetImages(realResults as! [String : AnyObject]?, nil)
-
-          let images = ImageObject.SLOFromResults(results: realResults as! [[String : AnyObject]])
+          let images = ImageObject.SLOFromResults(results: results)
           print("images:  \(images)")
-          //ImageSingleton.sharedInstance().image = images
+          ImageSingleton.sharedInstance().image = images
           print(images)
-          //completionHanderForGetImages(images, nil)
+          completionHanderForGetImages(images, nil)
 
         }
       }
@@ -69,6 +63,31 @@ extension Client {
       urlVars += [key + "=" + "\(escapedValue!)"]
     }
     return (!urlVars.isEmpty ? "?" : "") + urlVars.joined(separator: "&")
+  }
+
+  func getDataFromUrl(url: URL, completion: @escaping (_ data: Data?, _  response: URLResponse?, _ error: Error?) -> Void) {
+
+    URLSession.shared.dataTask(with: url) {
+      (data, response, error) in
+      completion(data, response, error)
+      }.resume()
+  }
+
+  func downloadImage(url: URL) {
+    print("Download Started")
+    let urlRequest = NSURLRequest(url: url)
+    let urlConnection: NSURLConnection = NSURLConnection(request: urlRequest as URLRequest, delegate: self)!
+    getDataFromUrl(url: url) { (data, response, error)  in
+
+      DispatchQueue.main.sync() { () -> Void in
+        print("starting")
+        guard let data = data, error == nil else { return }
+        print("ongoing")
+        print(response?.suggestedFilename ?? url.lastPathComponent)
+        print("Download Finished")
+        //self.imageView.image = UIImage(data: data)
+      }
+    }
   }
 }
 

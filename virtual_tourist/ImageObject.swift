@@ -54,12 +54,15 @@ struct ImageObject {
     width = w
   }
 
-  static func SLOFromResults(results: [[String:AnyObject]]) -> [ImageObject] {
+  static func SLOFromResults(results: [String:AnyObject]) -> [ImageObject] {
 
-    for result in results {
+    print(results)
+    let photosDictionary = results[Client.Constants.FlickrResponseKeys.Photos] as? [String:AnyObject]
+    let photoArray = photosDictionary?[Client.Constants.FlickrResponseKeys.Photo] as? [[String:AnyObject]]
+
+    for result in photoArray! {
 
       if let example = ImageObject(dictionary: result) {
-
         print("img: \(example)")
         ImageSingleton.sharedInstance().image.append(example)
         print("imgob result: \(ImageSingleton.sharedInstance().image)")
@@ -68,3 +71,4 @@ struct ImageObject {
     return ImageSingleton.sharedInstance().image
   }
 }
+

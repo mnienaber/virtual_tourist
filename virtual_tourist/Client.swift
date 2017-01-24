@@ -45,39 +45,54 @@ class Client : NSObject {
         sendError("No data was returned by the request!")
         return
       }
-      print(data)
-      var parsedResult: Any!
-      do {
-        parsedResult = try JSONSerialization.jsonObject(with: data, options: .allowFragments)
-        print("this is the parsed result: \(parsedResult)")
-      } catch {
-        let userInfo = [NSLocalizedDescriptionKey : "Could not parse the data as JSON: '\(data)'"]
-        completionHandlerForGET(nil, NSError(domain: "convertDataWithCompletionHandler", code: 1, userInfo: userInfo))
-      }
-
-      completionHandlerForGET(parsedResult as AnyObject?, nil)
-
-      //self.convertDataWithCompletionHandler(data, completionHandlerForConvertData: completionHandlerForGET)
+      self.convertDataWithCompletionHandler(data, completionHandlerForConvertData: completionHandlerForGET)
     }
     task.resume()
     return task
+//  }
+//
+//      self.convertDataWithCompletionHandler(data, completionHandlerForConvertData: completionHandlerForGET)
+//    }
+//    task.resume()
+//    return task
 
   }
 
-  func convertDataWithCompletionHandler(_ data: Data, completionHandlerForConvertData: (_ result: AnyObject?, _ error: NSError?) -> Void) {
+  func convertDataWithCompletionHandler(_ data: Data, completionHandlerForConvertData: @escaping (_ result: AnyObject?, _ error: NSError?) -> Void) {
 
-    var parsedResult: Any!
-    do {
-      parsedResult = try JSONSerialization.jsonObject(with: data, options: .allowFragments)
-      print("this is the parsed result: \(parsedResult)")
-    } catch {
-      let userInfo = [NSLocalizedDescriptionKey : "Could not parse the data as JSON: '\(data)'"]
-      completionHandlerForConvertData(nil, NSError(domain: "convertDataWithCompletionHandler", code: 1, userInfo: userInfo))
+    func sendError(_ error: String) {
+      print(error)
+      let userInfo = [NSLocalizedDescriptionKey : error]
+      completionHandlerForConvertData(nil, NSError(domain: "taskForGETMethod", code: 1, userInfo: userInfo))
     }
 
-    completionHandlerForConvertData(parsedResult as AnyObject?, nil)
-    
+    let parsedResult: Any!
+    do {
+      parsedResult = try JSONSerialization.jsonObject(with: data, options: .allowFragments) as! [String: AnyObject]
+    } catch {
+      sendError("Could not parse the data as JSON: '\(data)'")
+      return
+    }
+
+    if let parsedResult = parsedResult {
+
+      print(parsedResult)
+    }
+
+
+    /* GUARD: Did Flickr return an error (stat != ok)? */
+
+
+    /* GUARD: Are the "photos" and "photo" keys in our result? */
+//    guard let photosDictionary = parsedResult[Constants.FlickrResponseKeys.Photos] as? [String:AnyObject],
+//      let photoArray = photosDictionary[Constants.FlickrResponseKeys.Photo] as? [[String:AnyObject]] else {
+//        sendError("Cannot find keys '\(Constants.FlickrResponseKeys.Photos)' and '\(Constants.FlickrResponseKeys.Photo)' in \(parsedResult)")
+//        return
+//    }
+
   }
+  
+}
 
 //  func saveToCoreData(title: String, url: String) {
 //    //1
@@ -105,7 +120,7 @@ class Client : NSObject {
 //      print("Could not save \(error), \(error.userInfo)")
 //    }
 //  }
-}
+
 
 extension Client {
 
