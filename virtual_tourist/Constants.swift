@@ -57,5 +57,9 @@ extension Client {
 
       static let FlickrResults = "photos"
     }
+
+    struct bottomToolBarStatus {
+      static var status = true
+    }
   }
 }

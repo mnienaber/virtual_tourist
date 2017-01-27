@@ -1,7 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="11521.1" systemVersion="16B2555" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="11762" systemVersion="16C67" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11517.1"/>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11757"/>
+        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -18,22 +23,34 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" mapType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="mGA-hL-kk6">
+                                <rect key="frame" x="0.0" y="64" width="375" height="603"/>
                                 <gestureRecognizers/>
                                 <connections>
                                     <outletCollection property="gestureRecognizers" destination="xKR-t4-Cm9" appends="YES" id="CvW-Be-iuw"/>
                                 </connections>
                             </mapView>
+                            <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="GVh-pP-axS">
+                                <rect key="frame" x="0.0" y="623" width="375" height="44"/>
+                                <items>
+                                    <barButtonItem title="Go To Album" id="htY-EV-Cod"/>
+                                </items>
+                            </toolbar>
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
+                            <constraint firstItem="wfy-db-euE" firstAttribute="top" secondItem="GVh-pP-axS" secondAttribute="bottom" id="88g-XN-sFF"/>
                             <constraint firstItem="mGA-hL-kk6" firstAttribute="bottom" secondItem="wfy-db-euE" secondAttribute="top" id="9rG-VK-yWb"/>
+                            <constraint firstItem="GVh-pP-axS" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leadingMargin" constant="-16" id="BKu-lt-33R"/>
                             <constraint firstItem="mGA-hL-kk6" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" id="J4N-TJ-ZEP"/>
+                            <constraint firstItem="GVh-pP-axS" firstAttribute="top" secondItem="y3c-jy-aDJ" secondAttribute="bottom" constant="559" id="NHi-CX-vZM"/>
                             <constraint firstAttribute="trailing" secondItem="mGA-hL-kk6" secondAttribute="trailing" id="RP6-Tm-obF"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="GVh-pP-axS" secondAttribute="trailing" constant="-16" id="UXJ-hf-b4n"/>
                             <constraint firstItem="mGA-hL-kk6" firstAttribute="top" secondItem="y3c-jy-aDJ" secondAttribute="bottom" id="oEo-53-o1J"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" title="Virtual Tourist" id="Ti7-qO-rZg"/>
                     <connections>
+                        <outlet property="bottomToolBar" destination="GVh-pP-axS" id="wNl-bu-FRH"/>
                         <outlet property="mapView" destination="mGA-hL-kk6" id="Lsa-vP-e4s"/>
                     </connections>
                 </viewController>
@@ -41,6 +58,42 @@
                 <pongPressGestureRecognizer allowableMovement="10" minimumPressDuration="0.5" id="xKR-t4-Cm9"/>
             </objects>
             <point key="canvasLocation" x="1056.8" y="123.68815592203899"/>
+        </scene>
+        <!--Table View Controller-->
+        <scene sceneID="XND-ik-PU9">
+            <objects>
+                <viewController id="yRf-JY-s6L" customClass="TableViewController" customModule="virtual_tourist" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="iom-Kb-ugG"/>
+                        <viewControllerLayoutGuide type="bottom" id="ndj-rk-76j"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="Vav-uu-ne3">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="NXc-WY-VcO">
+                                <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <connections>
+                                    <outlet property="dataSource" destination="yRf-JY-s6L" id="fI6-J9-UR1"/>
+                                </connections>
+                            </tableView>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="ndj-rk-76j" firstAttribute="top" secondItem="NXc-WY-VcO" secondAttribute="bottom" id="5HC-9T-GA4"/>
+                            <constraint firstItem="NXc-WY-VcO" firstAttribute="leading" secondItem="Vav-uu-ne3" secondAttribute="leadingMargin" constant="-16" id="AkB-ml-Ozr"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="NXc-WY-VcO" secondAttribute="trailing" constant="-16" id="O6S-3q-tkQ"/>
+                            <constraint firstItem="NXc-WY-VcO" firstAttribute="top" secondItem="iom-Kb-ugG" secondAttribute="bottom" constant="-20" id="Ppz-C2-Yoz"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outlet property="tableView" destination="NXc-WY-VcO" id="nLt-K2-IMU"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="pzB-yg-JHz" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1951.2" y="392.65367316341832"/>
         </scene>
         <!--Collection View Controller-->
         <scene sceneID="on7-Qr-AVv">
@@ -54,8 +107,8 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" ambiguous="YES" misplaced="YES" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="M9E-80-NGu">
-                                <frame key="frameInset" minY="289" width="375" height="378"/>
+                            <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" misplaced="YES" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="M9E-80-NGu">
+                                <rect key="frame" x="0.0" y="289" width="375" height="378"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="400" id="0HF-av-Xjm"/>
@@ -77,8 +130,8 @@
                                     </collectionViewCell>
                                 </cells>
                             </collectionView>
-                            <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" ambiguous="YES" misplaced="YES" mapType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="6ao-sN-YrD">
-                                <frame key="frameInset" width="375" height="290"/>
+                            <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" misplaced="YES" mapType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="6ao-sN-YrD">
+                                <rect key="frame" x="0.0" y="0.0" width="375" height="290"/>
                             </mapView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -99,7 +152,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="hFw-JA-g4p" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1911.2" y="123.68815592203899"/>
+            <point key="canvasLocation" x="1956" y="-344"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="kxW-h5-yjB">

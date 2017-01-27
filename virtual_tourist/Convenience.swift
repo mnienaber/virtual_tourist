@@ -11,7 +11,7 @@ import UIKit
 
 extension Client {
 
-  func getImages(latitude: Double, longitude: Double, completionHanderForGetImages: @escaping (_ results: [ImageObject]?, _ error: NSError?) -> Void) {
+  func getImages(latitude: Double, longitude: Double, completionHanderForGetImages: @escaping (_ results: Bool, _ error: NSError?) -> Void) {
 
     let lat:String = String(format:"%f", latitude)
     let lon:String = String(format:"%f", longitude)
@@ -36,16 +36,35 @@ extension Client {
 
       if let error = error {
 
-        completionHanderForGetImages(nil, error)
+        completionHanderForGetImages(false, error)
       } else {
 
         if let results = results?[Client.Constants.JSONResponseKeys.FlickrResults] as? [String:AnyObject] {
 
-          let images = ImageObject.SLOFromResults(results: results)
-          print("images:  \(images)")
-          ImageSingleton.sharedInstance().image = images
-          print(images)
-          completionHanderForGetImages(images, nil)
+          let images = results[Client.Constants.FlickrResponseKeys.Photo] as? [[String:AnyObject]]
+
+          print("photoArray: \(images)")
+          for result in images! {
+
+            print("this is a result: \(result["title"]))")
+            print("photoTitle: \(result["url_m"])")
+          }
+
+
+          print("task for get images:  \(images)")
+
+          //
+          //    let firstPhoto = photoArray.first
+          //
+          //    let photoTitle = firstPhoto?[Client.Constants.FlickrResponseKeys.Title] as? String
+
+          //    guard let imageUrlString = photoArray[Client.Constants.FlickrResponseKeys.MediumURL] as? String else {
+          //      displayError("Cannot find key '\(Client.Constants.FlickrResponseKeys.MediumURL)' in \(photoArray)")
+          //      return false
+          //    }
+          }
+
+          completionHanderForGetImages(true, nil)
 
         }
       }
@@ -73,21 +92,20 @@ extension Client {
       }.resume()
   }
 
-  func downloadImage(url: URL) {
-    print("Download Started")
-    let urlRequest = NSURLRequest(url: url)
-    let urlConnection: NSURLConnection = NSURLConnection(request: urlRequest as URLRequest, delegate: self)!
-    getDataFromUrl(url: url) { (data, response, error)  in
+//  func downloadImage(url: URL) {
+//    print("Download Started")
+//    let urlRequest = NSURLRequest(url: url)
+//    let urlConnection: NSURLConnection = NSURLConnection(request: urlRequest as URLRequest, delegate: self)!
+//    getDataFromUrl(url: url) { (data, response, error)  in
+//
+//      DispatchQueue.main.sync() { () -> Void in
+//        print("starting")
+//        guard let data = data, error == nil else { return }
+//        print("ongoing")
+//        print(response?.suggestedFilename ?? url.lastPathComponent)
+//        print("Download Finished")
+//        //self.imageView.image = UIImage(data: data)
+//      }
+//    }
 
-      DispatchQueue.main.sync() { () -> Void in
-        print("starting")
-        guard let data = data, error == nil else { return }
-        print("ongoing")
-        print(response?.suggestedFilename ?? url.lastPathComponent)
-        print("Download Finished")
-        //self.imageView.image = UIImage(data: data)
-      }
-    }
-  }
-}
 

@@ -54,21 +54,36 @@ struct ImageObject {
     width = w
   }
 
-  static func SLOFromResults(results: [String:AnyObject]) -> [ImageObject] {
+  static func SLOFromResults(results: [String:AnyObject]) -> Bool {
 
-    print(results)
-    let photosDictionary = results[Client.Constants.FlickrResponseKeys.Photos] as? [String:AnyObject]
-    let photoArray = photosDictionary?[Client.Constants.FlickrResponseKeys.Photo] as? [[String:AnyObject]]
-
-    for result in photoArray! {
-
-      if let example = ImageObject(dictionary: result) {
-        print("img: \(example)")
-        ImageSingleton.sharedInstance().image.append(example)
-        print("imgob result: \(ImageSingleton.sharedInstance().image)")
-      }
+    func displayError(_ error: String) {
+      print(error)
     }
-    return ImageSingleton.sharedInstance().image
+
+    guard let photoArray = results[Client.Constants.FlickrResponseKeys.Photo] as? [[String:AnyObject]] else {
+        displayError("Cannot find keys '\(Client.Constants.FlickrResponseKeys.Photos)' and '\(Client.Constants.FlickrResponseKeys.Photo)' in \(results)")
+        return false
+    }
+//
+//    let firstPhoto = photoArray.first
+//
+//    let photoTitle = firstPhoto?[Client.Constants.FlickrResponseKeys.Title] as? String
+
+//    guard let imageUrlString = photoArray[Client.Constants.FlickrResponseKeys.MediumURL] as? String else {
+//      displayError("Cannot find key '\(Client.Constants.FlickrResponseKeys.MediumURL)' in \(photoArray)")
+//      return false
+//    }
+
+
+
+    print("photoArray: \(photoArray)")
+    for result in photoArray {
+
+      print("this is a result: \(result["title"]))")
+      print("photoTitle: \(result["url_m"])")
+
+    }
+    return true
   }
 }
 
