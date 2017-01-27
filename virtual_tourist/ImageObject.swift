@@ -64,19 +64,7 @@ struct ImageObject {
         displayError("Cannot find keys '\(Client.Constants.FlickrResponseKeys.Photos)' and '\(Client.Constants.FlickrResponseKeys.Photo)' in \(results)")
         return false
     }
-//
-//    let firstPhoto = photoArray.first
-//
-//    let photoTitle = firstPhoto?[Client.Constants.FlickrResponseKeys.Title] as? String
 
-//    guard let imageUrlString = photoArray[Client.Constants.FlickrResponseKeys.MediumURL] as? String else {
-//      displayError("Cannot find key '\(Client.Constants.FlickrResponseKeys.MediumURL)' in \(photoArray)")
-//      return false
-//    }
-
-
-
-    print("photoArray: \(photoArray)")
     for result in photoArray {
 
       print("this is a result: \(result["title"]))")

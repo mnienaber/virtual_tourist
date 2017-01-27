@@ -44,35 +44,25 @@ extension Client {
 
           let images = results[Client.Constants.FlickrResponseKeys.Photo] as? [[String:AnyObject]]
 
-          print("photoArray: \(images)")
           for result in images! {
             let title = result["title"]
+            let url = result["url_m"]
             print("this is a result: \(result["title"]))")
-            saveImageToCoreData(title: title as! String)
+
+            saveImageToCoreData(title: title as! String, url: url as! String)
+            
             print("photoTitle: \(result["url_m"])")
           
           }
-
-
           print("task for get images:  \(images)")
-
-          //
-          //    let firstPhoto = photoArray.first
-          //
-          //    let photoTitle = firstPhoto?[Client.Constants.FlickrResponseKeys.Title] as? String
-
-          //    guard let imageUrlString = photoArray[Client.Constants.FlickrResponseKeys.MediumURL] as? String else {
-          //      displayError("Cannot find key '\(Client.Constants.FlickrResponseKeys.MediumURL)' in \(photoArray)")
-          //      return false
-          //    }
-          }
+        }
 
           completionHanderForGetImages(true, nil)
 
-        }
       }
     }
   }
+}
 
   func escapedParameters(parameters: [String : AnyObject]) -> String {
 
@@ -95,7 +85,7 @@ extension Client {
       }.resume()
   }
 
-func saveImageToCoreData(title: String) {
+func saveImageToCoreData(title: String, url: String) {
   //1
   let appDelegate =
     UIApplication.shared.delegate as! AppDelegate
@@ -103,7 +93,7 @@ func saveImageToCoreData(title: String) {
   let managedContext = appDelegate.persistentContainer.viewContext
 
   //2
-  let entity =  NSEntityDescription.entity(forEntityName: "Person",
+  let entity =  NSEntityDescription.entity(forEntityName: "Photos",
                                            in:managedContext)
 
   let image = NSManagedObject(entity: entity!,
@@ -111,32 +101,17 @@ func saveImageToCoreData(title: String) {
 
   //3
   image.setValue(title, forKey: "title")
+  image.setValue(url, forKey: "url")
 
   //4
   do {
     try managedContext.save()
     //5
+    
     Client.sharedInstance().photoManagedObject.append(image)
-    print(Client.sharedInstance().photoManagedObject)
+    print("managedobject: \(Client.sharedInstance().photoManagedObject)")
   } catch let error as NSError  {
     print("Could not save \(error), \(error.userInfo)")
   }
 }
-
-//  func downloadImage(url: URL) {
-//    print("Download Started")
-//    let urlRequest = NSURLRequest(url: url)
-//    let urlConnection: NSURLConnection = NSURLConnection(request: urlRequest as URLRequest, delegate: self)!
-//    getDataFromUrl(url: url) { (data, response, error)  in
-//
-//      DispatchQueue.main.sync() { () -> Void in
-//        print("starting")
-//        guard let data = data, error == nil else { return }
-//        print("ongoing")
-//        print(response?.suggestedFilename ?? url.lastPathComponent)
-//        print("Download Finished")
-//        //self.imageView.image = UIImage(data: data)
-//      }
-//    }
-
 
