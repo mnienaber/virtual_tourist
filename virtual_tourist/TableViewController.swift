@@ -17,7 +17,7 @@ var images = [NSManagedObject]()
 
   override func viewDidLoad() {
     super.viewDidLoad()
-    title = "\"The List\""
+    title = "\"The Location List\""
     tableView.register(UITableViewCell.self,
                        forCellReuseIdentifier: "Cell")
   }
@@ -60,7 +60,7 @@ var images = [NSManagedObject]()
     let person = images[indexPath.row]
 
     cell!.textLabel!.text =
-      person.value(forKey: "name") as? String
+      person.value(forKey: "title") as? String
 
     return cell!
   }

@@ -8,6 +8,7 @@
 
 import Foundation
 import UIKit
+import CoreData
 
 extension Client {
 
@@ -45,9 +46,11 @@ extension Client {
 
           print("photoArray: \(images)")
           for result in images! {
-
+            let title = result["title"]
             print("this is a result: \(result["title"]))")
+            saveImageToCoreData(title: title as! String)
             print("photoTitle: \(result["url_m"])")
+          
           }
 
 
@@ -91,6 +94,34 @@ extension Client {
       completion(data, response, error)
       }.resume()
   }
+
+func saveImageToCoreData(title: String) {
+  //1
+  let appDelegate =
+    UIApplication.shared.delegate as! AppDelegate
+
+  let managedContext = appDelegate.persistentContainer.viewContext
+
+  //2
+  let entity =  NSEntityDescription.entity(forEntityName: "Person",
+                                           in:managedContext)
+
+  let image = NSManagedObject(entity: entity!,
+                               insertInto: managedContext)
+
+  //3
+  image.setValue(title, forKey: "title")
+
+  //4
+  do {
+    try managedContext.save()
+    //5
+    Client.sharedInstance().photoManagedObject.append(image)
+    print(Client.sharedInstance().photoManagedObject)
+  } catch let error as NSError  {
+    print("Could not save \(error), \(error.userInfo)")
+  }
+}
 
 //  func downloadImage(url: URL) {
 //    print("Download Started")
