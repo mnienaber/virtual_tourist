@@ -18,6 +18,9 @@ var images = [NSManagedObject]()
   override func viewDidLoad() {
     super.viewDidLoad()
     title = "\"The Location List\""
+    let delegate = UIApplication.shared.delegate as! AppDelegate
+    let stack = delegate.stack
+    
     tableView.register(UITableViewCell.self,
                        forCellReuseIdentifier: "Cell")
   }

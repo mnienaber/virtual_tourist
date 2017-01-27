@@ -47,7 +47,8 @@ extension Client {
           for result in images! {
             let title = result["title"]
             let url = result["url_m"]
-            print("this is a result: \(result["title"]))")
+            print("this is a title: \(title!)")
+            print("this is a url: \(url!)")
 
             saveImageToCoreData(title: title as! String, url: url as! String)
             
@@ -100,16 +101,17 @@ func saveImageToCoreData(title: String, url: String) {
                                insertInto: managedContext)
 
   //3
-  image.setValue(title, forKey: "title")
-  image.setValue(url, forKey: "url")
+  let photo = Photos(title: title, url: url, context: managedContext)
+//Photosto.setValue(title, forKey: "title")
+//  photo.setValue(url, forKey: "url")
 
   //4
   do {
     try managedContext.save()
     //5
-    
-    Client.sharedInstance().photoManagedObject.append(image)
-    print("managedobject: \(Client.sharedInstance().photoManagedObject)")
+//    
+//    Client.sharedInstance().photoManagedObject.append(photo)
+//    print("managedobject: \(Client.sharedInstance().photoManagedObject)")
   } catch let error as NSError  {
     print("Could not save \(error), \(error.userInfo)")
   }
