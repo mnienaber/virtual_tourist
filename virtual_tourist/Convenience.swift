@@ -11,7 +11,7 @@ import UIKit
 
 extension Client {
 
-  func getImages(latitude: Double, longitude: Double, completionHanderForGetImages: @escaping (_ results: [String: AnyObject]?, _ error: NSError?) -> Void) {
+  func getImages(latitude: Double, longitude: Double, completionHanderForGetImages: @escaping (_ results: Bool, _ error: NSError?) -> Void) {
 
     let lat:String = String(format:"%f", latitude)
     let lon:String = String(format:"%f", longitude)
@@ -36,22 +36,35 @@ extension Client {
 
       if let error = error {
 
-        completionHanderForGetImages(nil, error)
+        completionHanderForGetImages(false, error)
       } else {
 
         if let results = results?[Client.Constants.JSONResponseKeys.FlickrResults] as? [String:AnyObject] {
 
-          let realResults = results["photo"]
-          //let nextResults = realResults?["farm"]
-          print(realResults)
+          let images = results[Client.Constants.FlickrResponseKeys.Photo] as? [[String:AnyObject]]
 
-          //completionHanderForGetImages(realResults as! [String : AnyObject]?, nil)
+          print("photoArray: \(images)")
+          for result in images! {
 
-          let images = ImageObject.SLOFromResults(results: realResults as! [[String : AnyObject]])
-          print("images:  \(images)")
-          //ImageSingleton.sharedInstance().image = images
-          print(images)
-          //completionHanderForGetImages(images, nil)
+            print("this is a result: \(result["title"]))")
+            print("photoTitle: \(result["url_m"])")
+          }
+
+
+          print("task for get images:  \(images)")
+
+          //
+          //    let firstPhoto = photoArray.first
+          //
+          //    let photoTitle = firstPhoto?[Client.Constants.FlickrResponseKeys.Title] as? String
+
+          //    guard let imageUrlString = photoArray[Client.Constants.FlickrResponseKeys.MediumURL] as? String else {
+          //      displayError("Cannot find key '\(Client.Constants.FlickrResponseKeys.MediumURL)' in \(photoArray)")
+          //      return false
+          //    }
+          }
+
+          completionHanderForGetImages(true, nil)
 
         }
       }
@@ -70,5 +83,29 @@ extension Client {
     }
     return (!urlVars.isEmpty ? "?" : "") + urlVars.joined(separator: "&")
   }
-}
+
+  func getDataFromUrl(url: URL, completion: @escaping (_ data: Data?, _  response: URLResponse?, _ error: Error?) -> Void) {
+
+    URLSession.shared.dataTask(with: url) {
+      (data, response, error) in
+      completion(data, response, error)
+      }.resume()
+  }
+
+//  func downloadImage(url: URL) {
+//    print("Download Started")
+//    let urlRequest = NSURLRequest(url: url)
+//    let urlConnection: NSURLConnection = NSURLConnection(request: urlRequest as URLRequest, delegate: self)!
+//    getDataFromUrl(url: url) { (data, response, error)  in
+//
+//      DispatchQueue.main.sync() { () -> Void in
+//        print("starting")
+//        guard let data = data, error == nil else { return }
+//        print("ongoing")
+//        print(response?.suggestedFilename ?? url.lastPathComponent)
+//        print("Download Finished")
+//        //self.imageView.image = UIImage(data: data)
+//      }
+//    }
+
 

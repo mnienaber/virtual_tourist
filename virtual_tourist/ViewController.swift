@@ -17,6 +17,7 @@ class ViewController: UIViewController, MKMapViewDelegate, UIApplicationDelegate
   let regionRadius: CLLocationDistance = 2000
 
   @IBOutlet weak var mapView: MKMapView!
+  @IBOutlet weak var bottomToolBar: UIToolbar!
   
   override func viewDidLoad() {
     super.viewDidLoad()
@@ -28,6 +29,7 @@ class ViewController: UIViewController, MKMapViewDelegate, UIApplicationDelegate
 
     mapView.delegate = self
     mapView.showsUserLocation = true
+    bottomToolBar.isHidden = true
 
     appDelegate = UIApplication.shared.delegate as! AppDelegate
 
@@ -65,39 +67,9 @@ class ViewController: UIViewController, MKMapViewDelegate, UIApplicationDelegate
     print("error:: \(error)")
   }
 
-//  func didLongTapMap(gestureRecognizer: UIGestureRecognizer) {
-//    print("long tap detected")
-//    // Get the spot that was tapped.
-//    let tapPoint: CGPoint = gestureRecognizer.location(in: mapView)
-//    let touchMapCoordinate: CLLocationCoordinate2D = mapView.convert(tapPoint, toCoordinateFrom: mapView)
-//
-//    let viewAtBottomOfHierarchy: UIView = mapView.hitTest(tapPoint, with: nil)!
-//    if viewAtBottomOfHierarchy is MKPinAnnotationView {
-//      return
-//    } else {
-//      if .began == gestureRecognizer.state {
-//        // Delete any existing annotations.
-//        if mapView.annotations.count != 0 {
-//          mapView.removeAnnotations(mapView.annotations)
-//        }
-//
-//        let annotation = MKPointAnnotation()
-//        annotation.coordinate = touchMapCoordinate
-//        print(annotation.coordinate.latitude)
-//        print(annotation.coordinate.longitude)
-//
-//
-//        mapView.addAnnotation(annotation)
-//        print("wheres the pin")
-//        //_isPinOnMap = true
-//
-//        //findAddressFromCoordinate(annotation.coordinate)
-//        //updateLabels()
-//      }
-//    }
-//  }
-
   func action(gestureRecognizer:UIGestureRecognizer) {
+
+    bottomToolBar.isHidden = true
     let touchPoint = gestureRecognizer.location(in: self.mapView)
     var newCoord:CLLocationCoordinate2D = mapView.convert(touchPoint, toCoordinateFrom: self.mapView)
 
@@ -124,16 +96,8 @@ class ViewController: UIViewController, MKMapViewDelegate, UIApplicationDelegate
           }
         } else {
 
-          if let results = results {
-
-            performUIUpdatesOnMain {
-              for result in results {
-
-                let first = result
-
-                print("these are: \(first)")
-              }
-            }
+          performUIUpdatesOnMain {
+            self.bottomToolBar.isHidden = false
           }
         }
       }
@@ -158,6 +122,16 @@ class ViewController: UIViewController, MKMapViewDelegate, UIApplicationDelegate
       try moc?.save()
     } catch {
       fatalError("Failure to save context: \(error)")
+    }
+  }
+
+  public func bottomToolBarStatus(hidden: Bool) {
+    bottomToolBar.isHidden = hidden
+
+    if hidden {
+      bottomToolBar.isHidden = true
+    } else {
+      bottomToolBar.isHidden = false
     }
   }
 }

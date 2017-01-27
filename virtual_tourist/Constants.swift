@@ -40,9 +40,26 @@ extension Client {
       static let Width = "width"
     }
 
+    struct FlickrResponseKeys {
+      
+      static let Status = "stat"
+      static let Photos = "photos"
+      static let Photo = "photo"
+      static let Title = "title"
+      static let MediumURL = "url_m"
+    }
+
+    struct FlickrResponseValues {
+      static let OKStatus = "ok"
+    }
+
     struct JSONResponseKeys {
 
       static let FlickrResults = "photos"
+    }
+
+    struct bottomToolBarStatus {
+      static var status = true
     }
   }
 }

@@ -45,66 +45,24 @@ class Client : NSObject {
         sendError("No data was returned by the request!")
         return
       }
-      print(data)
-      var parsedResult: Any!
-      do {
-        parsedResult = try JSONSerialization.jsonObject(with: data, options: .allowFragments)
-        print("this is the parsed result: \(parsedResult)")
-      } catch {
-        let userInfo = [NSLocalizedDescriptionKey : "Could not parse the data as JSON: '\(data)'"]
-        completionHandlerForGET(nil, NSError(domain: "convertDataWithCompletionHandler", code: 1, userInfo: userInfo))
-      }
-
-      completionHandlerForGET(parsedResult as AnyObject?, nil)
-
-      //self.convertDataWithCompletionHandler(data, completionHandlerForConvertData: completionHandlerForGET)
+      self.convertDataWithCompletionHandler(data, completionHandlerForConvertData: completionHandlerForGET)
     }
     task.resume()
     return task
-
   }
 
-  func convertDataWithCompletionHandler(_ data: Data, completionHandlerForConvertData: (_ result: AnyObject?, _ error: NSError?) -> Void) {
+  func convertDataWithCompletionHandler(_ data: Data, completionHandlerForConvertData: @escaping (_ result: AnyObject?, _ error: NSError?) -> Void) {
 
     var parsedResult: Any!
     do {
       parsedResult = try JSONSerialization.jsonObject(with: data, options: .allowFragments)
-      print("this is the parsed result: \(parsedResult)")
     } catch {
       let userInfo = [NSLocalizedDescriptionKey : "Could not parse the data as JSON: '\(data)'"]
       completionHandlerForConvertData(nil, NSError(domain: "convertDataWithCompletionHandler", code: 1, userInfo: userInfo))
     }
 
     completionHandlerForConvertData(parsedResult as AnyObject?, nil)
-    
   }
-
-//  func saveToCoreData(title: String, url: String) {
-//    //1
-//    let appDelegate =
-//      UIApplication.shared.delegate as! AppDelegate
-//
-//    let managedContext = appDelegate.managedObjectContext
-//
-//    //2
-//    let entity =  NSEntityDescription.entity(forEntityName: "Person",
-//                                             in:managedContext)
-//
-//    let person = NSManagedObject(entity: entity!,
-//                                 insertInto: managedContext)
-//
-//    //3
-//    person.setValue(title, forKey: "title")
-//
-//    //4
-//    do {
-//      try managedContext.save()
-//      //5
-//      photoManagedObject.append(person)
-//    } catch let error as NSError  {
-//      print("Could not save \(error), \(error.userInfo)")
-//    }
-//  }
 }
 
 extension Client {
@@ -115,7 +73,5 @@ extension Client {
     }
     return Singleton.sharedInstance
   }
-
-
 }
 
