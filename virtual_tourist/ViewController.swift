@@ -14,7 +14,7 @@ class ViewController: UIViewController, MKMapViewDelegate, UIApplicationDelegate
 
   var appDelegate: AppDelegate!
   let locationManager = CLLocationManager()
-  let regionRadius: CLLocationDistance = 2000
+  let regionRadius: CLLocationDistance = 100
 
   @IBOutlet weak var mapView: MKMapView!
   @IBOutlet weak var bottomToolBar: UIToolbar!
@@ -73,21 +73,15 @@ class ViewController: UIViewController, MKMapViewDelegate, UIApplicationDelegate
     let touchPoint = gestureRecognizer.location(in: self.mapView)
     var newCoord:CLLocationCoordinate2D = mapView.convert(touchPoint, toCoordinateFrom: self.mapView)
 
-    var pm = [CLPlacemark]()
-
     let newAnnotation = MKPointAnnotation()
     newAnnotation.coordinate = newCoord
-    newAnnotation.title = "New Location"
-    newAnnotation.subtitle = "New Subtitle"
     newCoord.latitude = newAnnotation.coordinate.latitude
     newCoord.longitude = newAnnotation.coordinate.longitude
-    //pm.append(["name":"\(newAnnotation.title)","latitude":"\(newCoord.latitude)","longitude":"\(newCoord.longitude)"])
     if gestureRecognizer.state == .began {
       mapView.addAnnotation(newAnnotation)
-      //savePin(lat: Float(newCoord.latitude), long: Float(newCoord.longitude), locationName: newAnnotation.title!)
-      print(newCoord.latitude)
-      print(newCoord.longitude)
-      Client.sharedInstance().getImages(latitude: newCoord.latitude, longitude: newCoord.longitude) { results, error in
+      Client.sharedInstance().latitude = Float(newCoord.latitude)
+      Client.sharedInstance().longitude = Float(newCoord.longitude)
+      Client.sharedInstance().getImages(latitude: Client.sharedInstance().latitude, longitude: Client.sharedInstance().longitude) { results, error in
 
         if error != nil {
 
@@ -101,27 +95,6 @@ class ViewController: UIViewController, MKMapViewDelegate, UIApplicationDelegate
           }
         }
       }
-    }
-  }
-
-  func savePin(lat: Float, long: Float, locationName: String) {
-
-    // create an instance of our managedObjectContext
-    let moc = CoreDataStack(modelName: "Pin")?.context
-
-    // we set up our entity by selecting the entity and context that we're targeting
-    let entity = NSEntityDescription.insertNewObject(forEntityName: "Pin", into: moc!) as! Pin
-
-    // add our data
-    entity.setValue(lat, forKey: "latitude")
-    entity.setValue(long, forKey: "longitude")
-    entity.setValue(locationName, forKey: "locationName")
-
-    // we save our entity
-    do {
-      try moc?.save()
-    } catch {
-      fatalError("Failure to save context: \(error)")
     }
   }
 

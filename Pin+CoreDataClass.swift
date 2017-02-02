@@ -11,7 +11,7 @@ import CoreData
 
 class Pin: NSManagedObject {
 
-  convenience init(latitude: Float, longitude: Float, locationName: String, context: NSManagedObjectContext) {
+  convenience init(latitude: Float, longitude: Float, context: NSManagedObjectContext) {
 
     // An EntityDescription is an object that has access to all
     // the information you provided in the Entity part of the model
@@ -20,7 +20,6 @@ class Pin: NSManagedObject {
       self.init(entity: ent, insertInto: context)
       self.latitude = latitude
       self.longitude = longitude
-      self.locationName = locationName
     } else {
       fatalError("Unable to find Entity name!")
     }

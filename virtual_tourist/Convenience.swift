@@ -12,7 +12,7 @@ import CoreData
 
 extension Client {
 
-  func getImages(latitude: Double, longitude: Double, completionHanderForGetImages: @escaping (_ results: Bool, _ error: NSError?) -> Void) {
+  func getImages(latitude: Float, longitude: Float, completionHanderForGetImages: @escaping (_ results: Bool, _ error: NSError?) -> Void) {
 
     let lat:String = String(format:"%f", latitude)
     let lon:String = String(format:"%f", longitude)
@@ -47,23 +47,14 @@ extension Client {
           for result in images! {
             let title = result["title"]
             let url = result["url_m"]
-            print("this is a title: \(title!)")
-            print("this is a url: \(url!)")
 
-            saveImageToCoreData(title: title as! String, url: url as! String)
-            
-            print("photoTitle: \(result["url_m"])")
-          
+            self.saveImageToCoreData(title: title as! String, url: url as! String)
           }
-          print("task for get images:  \(images)")
         }
-
-          completionHanderForGetImages(true, nil)
-
+        completionHanderForGetImages(true, nil)
       }
     }
   }
-}
 
   func escapedParameters(parameters: [String : AnyObject]) -> String {
 
@@ -86,34 +77,61 @@ extension Client {
       }.resume()
   }
 
-func saveImageToCoreData(title: String, url: String) {
-  //1
-  let appDelegate =
-    UIApplication.shared.delegate as! AppDelegate
+  func saveImageToCoreData(title: String, url: String) {
+    //1
+    let appDelegate =
+      UIApplication.shared.delegate as! AppDelegate
 
-  let managedContext = appDelegate.persistentContainer.viewContext
+    let managedContext = appDelegate.persistentContainer.viewContext
 
-  //2
-  let entity =  NSEntityDescription.entity(forEntityName: "Photos",
-                                           in:managedContext)
+    //2
+    let entity =  NSEntityDescription.entity(forEntityName: "Photos",
+                                             in:managedContext)
 
-  let image = NSManagedObject(entity: entity!,
-                               insertInto: managedContext)
+    let image = NSManagedObject(entity: entity!,
+                                insertInto: managedContext)
+    //3
+    image.setValue(title, forKey: "title")
+    image.setValue(url, forKey: "url")
+//    image.setValue(Client.sharedInstance().latitude, forKey: "latitude")
+//    image.setValue(Client.sharedInstance().longitude, forKey: "longitude")
 
-  //3
-  let photo = Photos(title: title, url: url, context: managedContext)
-//Photosto.setValue(title, forKey: "title")
-//  photo.setValue(url, forKey: "url")
 
-  //4
-  do {
-    try managedContext.save()
-    //5
-//    
-//    Client.sharedInstance().photoManagedObject.append(photo)
-//    print("managedobject: \(Client.sharedInstance().photoManagedObject)")
-  } catch let error as NSError  {
-    print("Could not save \(error), \(error.userInfo)")
+    //4
+    do {
+      try managedContext.save()
+      //5
+      Client.sharedInstance().photoManagedObject.append(image)
+      print("managedobject: \(Client.sharedInstance().photoManagedObject)")
+    } catch let error as NSError  {
+      print("Could not save \(error), \(error.userInfo)")
+    }
+  }
+
+  func savePin(lat: Float, long: Float) {
+
+    let appDelegate =
+      UIApplication.shared.delegate as! AppDelegate
+
+    let managedContext = appDelegate.persistentContainer.viewContext
+
+    //2
+    let entity =  NSEntityDescription.entity(forEntityName: "Photos",
+                                             in:managedContext)
+
+    let image = NSManagedObject(entity: entity!,
+                                insertInto: managedContext)
+    //3
+    image.setValue(lat, forKey: "latitude")
+    image.setValue(long, forKey: "longitude")
+
+    // we save our entity
+    do {
+      try managedContext.save()
+    } catch {
+      fatalError("Failure to save context: \(error)")
+    }
   }
 }
+
 

@@ -14,7 +14,9 @@ class Client : NSObject {
 
   let session = URLSession.shared
   var appDelegate: AppDelegate!
-//  var photoManagedObject = [NSManagedObject]()
+  var photoManagedObject = [NSManagedObject]()
+  var latitude = Float()
+  var longitude = Float()
 
 
   override init() {

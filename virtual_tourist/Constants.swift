@@ -49,6 +49,12 @@ extension Client {
       static let MediumURL = "url_m"
     }
 
+    struct mapCoordinates {
+
+      static let latitude = "latitude"
+      static let longitude = "longitude"
+    }
+
     struct FlickrResponseValues {
       static let OKStatus = "ok"
     }
