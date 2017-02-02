@@ -93,8 +93,8 @@ extension Client {
     //3
     image.setValue(title, forKey: "title")
     image.setValue(url, forKey: "url")
-//    image.setValue(Client.sharedInstance().latitude, forKey: "latitude")
-//    image.setValue(Client.sharedInstance().longitude, forKey: "longitude")
+    image.setValue(Client.sharedInstance().latitude, forKey: "latitude")
+    image.setValue(Client.sharedInstance().longitude, forKey: "longitude")
 
 
     //4
