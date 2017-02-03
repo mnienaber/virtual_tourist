@@ -77,6 +77,28 @@ extension Client {
       }.resume()
   }
 
+  func downloadImage(url: String) -> Data {
+    let fileUrl = URL(string: url)
+    var data = Data()
+    print("Download Started")
+    let urlRequest = NSURLRequest(url: fileUrl!)
+    let urlConnection: NSURLConnection = NSURLConnection(request: urlRequest as URLRequest, delegate: self)!
+    getDataFromUrl(url: fileUrl!) { (data, response, error)  in
+
+      if let error = error {
+
+        print(error)
+      } else {
+        if (data) != nil {
+        print("we got data")
+        }
+      }
+    }
+    print("data: \(data)")
+    return data
+  }
+
+
   func saveImageToCoreData(title: String, url: String) {
     //1
     let appDelegate =
@@ -95,6 +117,8 @@ extension Client {
     image.setValue(url, forKey: "url")
     image.setValue(Client.sharedInstance().latitude, forKey: "latitude")
     image.setValue(Client.sharedInstance().longitude, forKey: "longitude")
+    image.setValue(downloadImage(url: url), forKey: "image")
+
 
     //4
     do {

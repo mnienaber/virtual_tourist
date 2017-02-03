@@ -98,12 +98,12 @@ class ViewController: UIViewController, MKMapViewDelegate, UIApplicationDelegate
     }
   }
 
-  func mapView(_ mapView: MKMapView, didSelect view: MKAnnotationView) {
-    print("Pin Tapped")
-    let pin = view.annotation as! CoreDataTableViewController
-        performSegue(withIdentifier: "pinTapped", sender: pin)
-        print("tapped pin 1")
-  }
+//  func mapView(_ mapView: MKMapView, didSelect view: MKAnnotationView) {
+//    print("Pin Tapped")
+//    let pin = view.annotation as! CoreDataTableViewController
+//        performSegue(withIdentifier: "pinTapped", sender: pin)
+//        print("tapped pin 1")
+//  }
 
   func prepare(for segue: UIStoryboardSegue, sender: AnyObject?) {
     if segue.identifier == "pinTapped" {
