@@ -107,5 +107,6 @@ class ViewController: UIViewController, MKMapViewDelegate, UIApplicationDelegate
       bottomToolBar.isHidden = false
     }
   }
+
 }
 

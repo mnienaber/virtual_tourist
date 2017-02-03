@@ -63,7 +63,7 @@ var images = [NSManagedObject]()
 
     cell!.textLabel!.text =
       images.value(forKey: "title") as? String
-    cell!.detailTextLabel!.text = images.value(forKey: "url") as? String
+    //cell!.detailTextLabel!.text = images.value(forKey: "title") as? String
 
     return cell!
   }
