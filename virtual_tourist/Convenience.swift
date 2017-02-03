@@ -106,31 +106,6 @@ extension Client {
       print("Could not save \(error), \(error.userInfo)")
     }
   }
-
-  func savePin(lat: Float, long: Float) {
-
-    let appDelegate =
-      UIApplication.shared.delegate as! AppDelegate
-
-    let managedContext = appDelegate.persistentContainer.viewContext
-
-    //2
-    let entity =  NSEntityDescription.entity(forEntityName: "Photos",
-                                             in:managedContext)
-
-    let image = NSManagedObject(entity: entity!,
-                                insertInto: managedContext)
-    //3
-    image.setValue(lat, forKey: "latitude")
-    image.setValue(long, forKey: "longitude")
-
-    // we save our entity
-    do {
-      try managedContext.save()
-    } catch {
-      fatalError("Failure to save context: \(error)")
-    }
-  }
 }
 
 

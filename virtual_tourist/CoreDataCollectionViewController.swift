@@ -8,10 +8,11 @@
 
 import Foundation
 import UIKit
+import CoreData
 
-class CoreDataCollectionViewController: UICollectionView {
+class CoreDataCollectionViewController: UICollectionViewController {
 
-//  // MARK:  - Properties
+// // MARK:  - Properties
 //  var fetchedResultsController : NSFetchedResultsController<NSFetchRequestResult>?{
 //    didSet{
 //      // Whenever the frc changes, we execute the search and
@@ -36,25 +37,21 @@ class CoreDataCollectionViewController: UICollectionView {
 //  required init?(coder aDecoder: NSCoder) {
 //    super.init(coder: aDecoder)
 //  }
-//
-//
 //}
 //
-//
-//
-//// MARK:  - Subclass responsability
+////// MARK:  - Subclass responsability
 //extension CoreDataCollectionViewController{
 //
-//  override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+//   func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
 //
 //    fatalError("This method MUST be implemented by a subclass of CoreDataTableViewController")
 //  }
 //}
 //
-//// MARK:  - Table Data Source
+////// MARK:  - Table Data Source
 //extension CoreDataCollectionViewController{
 //
-//  override func numberOfSections(in tableView: UITableView) -> Int {
+//   func numberOfSections(in tableView: UITableView) -> Int {
 //    if let fc = fetchedResultsController{
 //      return (fc.sections?.count)!;
 //    }else{
@@ -62,7 +59,7 @@ class CoreDataCollectionViewController: UICollectionView {
 //    }
 //  }
 //
-//  override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+//   func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
 //    if let fc = fetchedResultsController{
 //      return fc.sections![section].numberOfObjects;
 //    }else{
@@ -70,7 +67,7 @@ class CoreDataCollectionViewController: UICollectionView {
 //    }
 //  }
 //
-//  override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+//   func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
 //    if let fc = fetchedResultsController{
 //      return fc.sections![section].name;
 //    }else{
@@ -78,7 +75,7 @@ class CoreDataCollectionViewController: UICollectionView {
 //    }
 //  }
 //
-//  override func tableView(_ tableView: UITableView, sectionForSectionIndexTitle title: String, at index: Int) -> Int {
+//   func tableView(_ tableView: UITableView, sectionForSectionIndexTitle title: String, at index: Int) -> Int {
 //    if let fc = fetchedResultsController{
 //      return fc.section(forSectionIndexTitle: title, at: index)
 //    }else{
@@ -86,7 +83,7 @@ class CoreDataCollectionViewController: UICollectionView {
 //    }
 //  }
 //
-//  override func sectionIndexTitles(for tableView: UITableView) -> [String]? {
+//   func sectionIndexTitles(for tableView: UITableView) -> [String]? {
 //    if let fc = fetchedResultsController{
 //      return  fc.sectionIndexTitles
 //    }else{
@@ -97,7 +94,7 @@ class CoreDataCollectionViewController: UICollectionView {
 //
 //}
 //
-//// MARK:  - Fetches
+////// MARK:  - Fetches
 //extension CoreDataTableViewController{
 //
 //  func executeSearch(){
@@ -112,7 +109,7 @@ class CoreDataCollectionViewController: UICollectionView {
 //}
 //
 //
-//// MARK:  - Delegate
+////// MARK:  - Delegate
 //extension CoreDataTableViewController: NSFetchedResultsControllerDelegate{
 //
 //

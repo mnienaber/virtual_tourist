@@ -98,6 +98,40 @@ class ViewController: UIViewController, MKMapViewDelegate, UIApplicationDelegate
     }
   }
 
+  func mapView(_ mapView: MKMapView, didSelect view: MKAnnotationView) {
+    print("Pin Tapped")
+    let pin = view.annotation as! CoreDataTableViewController
+        performSegue(withIdentifier: "pinTapped", sender: pin)
+        print("tapped pin 1")
+  }
+
+  func prepare(for segue: UIStoryboardSegue, sender: AnyObject?) {
+    if segue.identifier == "pinTapped" {
+      let viewController = segue.destination as! CoreDataTableViewController
+      viewController.images = sender as! [NSManagedObject]
+      print("pin tapped 2")
+    }
+  }
+//
+//
+//  func mapView(_ mapView: MKMapView, annotationView view: MKAnnotationView, calloutAccessoryControlTapped control: UIControl) {
+//
+//    //When pin is tapped, segue to Collection View Controller
+//    let pin = view.annotation as! CoreDataTableViewController
+//    performSegue(withIdentifier: "pinTapped", sender: pin)
+//    print("tapped pin 1")
+//  }
+//
+//  func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+//
+//    if segue.identifier == "pinTapped" {
+//
+//      let collectionVC = segue.destination as! CoreDataTableViewController
+//      collectionVC.images = sender as! [NSManagedObject]
+//      print("tapped pin 2")
+//    }
+//  }
+
   public func bottomToolBarStatus(hidden: Bool) {
     bottomToolBar.isHidden = hidden
 
