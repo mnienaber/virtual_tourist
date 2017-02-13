@@ -12,10 +12,13 @@ import CoreData
 
 extension Client {
 
-  func getImages(latitude: Float, longitude: Float, completionHanderForGetImages: @escaping (_ results: Bool, _ error: NSError?) -> Void) {
+  typealias CompletionHandler = (_ data: Data?, _  response: URLResponse?, _ error: Error?) -> Void
+
+  func getImages(latitude: Float, longitude: Float, completionHanderForGetImages: @escaping (_ results: Bool, _ error: Error?) -> Void) {
 
     let lat:String = String(format:"%f", latitude)
     let lon:String = String(format:"%f", longitude)
+
 
     let methodArguments: [String: String?] = [
       "method": Client.Constants.Scheme.METHOD_NAME,
@@ -48,7 +51,40 @@ extension Client {
             let title = result["title"]
             let url = result["url_m"]
 
-            self.saveImageToCoreData(title: title as! String, url: url as! String)
+            self.saveImageToCoreData(title: title as! String, url: url as! String) { data, response, error in
+
+              if error != nil {
+
+                print(error!)
+                completionHanderForGetImages(false, error)
+              } else {
+
+                if let data = data {
+
+                  let appDelegate =
+                    UIApplication.shared.delegate as! AppDelegate
+                  let managedContext = appDelegate.persistentContainer.viewContext
+                  let entity =  NSEntityDescription.entity(forEntityName: "Photos",
+                                                           in:managedContext)
+                  let image = NSManagedObject(entity: entity!,
+                                              insertInto: managedContext)
+
+                  image.setValue(data, forKey: "image")
+                  image.setValue(title, forKey: "title")
+                  image.setValue(url, forKey: "url")
+                  image.setValue(Client.sharedInstance().latitude, forKey: "latitude")
+                  image.setValue(Client.sharedInstance().longitude, forKey: "longitude")
+
+                  do {
+                    try managedContext.save()
+                    Client.sharedInstance().photoManagedObject.append(image)
+                    print("managedobject: \(Client.sharedInstance().photoManagedObject)")
+                  } catch let error as NSError  {
+                    print("Could not save \(error), \(error.userInfo)")
+                  }
+                }
+              }
+            }
           }
         }
         completionHanderForGetImages(true, nil)
@@ -69,17 +105,19 @@ extension Client {
     return (!urlVars.isEmpty ? "?" : "") + urlVars.joined(separator: "&")
   }
 
-  func getDataFromUrl(url: URL, completion: @escaping (_ data: Data?, _  response: URLResponse?, _ error: Error?) -> Void) {
+  func getDataFromUrl(url: URL, completion: @escaping CompletionHandler) {
 
     URLSession.shared.dataTask(with: url) {
       (data, response, error) in
+      print("Download completed: \(data)")
       completion(data, response, error)
       }.resume()
   }
 
-  func downloadImage(url: String) -> Data {
+  func downloadImage(title: String, url: String, completion: @escaping CompletionHandler) {
+
     let fileUrl = URL(string: url)
-    var data = Data()
+    var imageData = Data()
     print("Download Started")
     let urlRequest = NSURLRequest(url: fileUrl!)
     let urlConnection: NSURLConnection = NSURLConnection(request: urlRequest as URLRequest, delegate: self)!
@@ -89,45 +127,26 @@ extension Client {
 
         print(error)
       } else {
-        if (data) != nil {
-        print("we got data")
+        if let data = data {
+
+          imageData = data
         }
       }
+      completion(data, response, error)
     }
-    print("data: \(data)")
-    return data
   }
 
+  func saveImageToCoreData(title: String, url: String, completion: @escaping CompletionHandler) {
 
-  func saveImageToCoreData(title: String, url: String) {
-    //1
-    let appDelegate =
-      UIApplication.shared.delegate as! AppDelegate
+    downloadImage(title: title, url: url) { data, response, error in
 
-    let managedContext = appDelegate.persistentContainer.viewContext
+      if error != nil {
+        print(error!)
+        completion(nil, response, error)
+      } else {
 
-    //2
-    let entity =  NSEntityDescription.entity(forEntityName: "Photos",
-                                             in:managedContext)
-
-    let image = NSManagedObject(entity: entity!,
-                                insertInto: managedContext)
-    //3
-    image.setValue(title, forKey: "title")
-    image.setValue(url, forKey: "url")
-    image.setValue(Client.sharedInstance().latitude, forKey: "latitude")
-    image.setValue(Client.sharedInstance().longitude, forKey: "longitude")
-    image.setValue(downloadImage(url: url), forKey: "image")
-
-
-    //4
-    do {
-      try managedContext.save()
-      //5
-      Client.sharedInstance().photoManagedObject.append(image)
-      print("managedobject: \(Client.sharedInstance().photoManagedObject)")
-    } catch let error as NSError  {
-      print("Could not save \(error), \(error.userInfo)")
+        completion(data, response, nil)
+      }
     }
   }
 }

@@ -18,9 +18,23 @@ class ViewController: UIViewController, MKMapViewDelegate, UIApplicationDelegate
 
   @IBOutlet weak var mapView: MKMapView!
   @IBOutlet weak var bottomToolBar: UIToolbar!
-  
+
+//  lazy var frcPin: NSFetchedResultsController<Pin> = { () -> NSFetchedResultsController<Pin> in
+//
+//    let fetchRequest = NSFetchRequest<Pin>(entityName: "Pin")
+//    fetchRequest.sortDescriptors = []
+//
+//    let fetchedResultsController = NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: self.sharedContext, sectionNameKeyPath: nil, cacheName: nil)
+//    fetchedResultsController.delegate = self
+//
+//    return fetchedResultsController
+//  }()
+//
+//  var sharedContext = self.appDelegate.shared.managedObjectContext!
+
   override func viewDidLoad() {
     super.viewDidLoad()
+    //CoreDataStack.dropAllData(CoreDataStack: self)
 
     locationManager.delegate = self
     locationManager.desiredAccuracy = kCLLocationAccuracyBest
@@ -91,6 +105,8 @@ class ViewController: UIViewController, MKMapViewDelegate, UIApplicationDelegate
         } else {
 
           performUIUpdatesOnMain {
+
+            print("results: \(results)")
             self.bottomToolBar.isHidden = false
           }
         }
@@ -99,36 +115,25 @@ class ViewController: UIViewController, MKMapViewDelegate, UIApplicationDelegate
   }
 
 //  func mapView(_ mapView: MKMapView, didSelect view: MKAnnotationView) {
-//    print("Pin Tapped")
-//    let pin = view.annotation as! CoreDataTableViewController
-//        performSegue(withIdentifier: "pinTapped", sender: pin)
-//        print("tapped pin 1")
-//  }
-
-  func prepare(for segue: UIStoryboardSegue, sender: AnyObject?) {
-    if segue.identifier == "pinTapped" {
-      let viewController = segue.destination as! CoreDataTableViewController
-      viewController.images = sender as! [NSManagedObject]
-      print("pin tapped 2")
-    }
-  }
+//
+//    let pinPred = NSPredicate(format: "lon == %lf AND lat == %lf ",(view.annotation?.coordinate.longitude)!,(view.annotation?.coordinate.latitude)!)
 //
 //
-//  func mapView(_ mapView: MKMapView, annotationView view: MKAnnotationView, calloutAccessoryControlTapped control: UIControl) {
+//    frcPin.fetchRequest.predicate = pinPred
 //
-//    //When pin is tapped, segue to Collection View Controller
-//    let pin = view.annotation as! CoreDataTableViewController
-//    performSegue(withIdentifier: "pinTapped", sender: pin)
-//    print("tapped pin 1")
-//  }
+//    do {
+//      try frcPin.performFetch()
+//    } catch {
+//      print(error)
+//    }
 //
-//  func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-//
-//    if segue.identifier == "pinTapped" {
-//
-//      let collectionVC = segue.destination as! CoreDataTableViewController
-//      collectionVC.images = sender as! [NSManagedObject]
-//      print("tapped pin 2")
+//    //Transition to the PhotoViewController
+//    for newPin in (frcPin.fetchedObjects)! {
+//      //Set the Current Pin selection
+//      Common.shared.currentPin = newPin
+//      performSegue(withIdentifier: "photoCollection", sender: self)
+//      mapView.deselectAnnotation(view.annotation, animated: false)
+//      return
 //    }
 //  }
 
