@@ -114,28 +114,27 @@ class ViewController: UIViewController, MKMapViewDelegate, UIApplicationDelegate
     }
   }
 
-//  func mapView(_ mapView: MKMapView, didSelect view: MKAnnotationView) {
-//
-//    let pinPred = NSPredicate(format: "lon == %lf AND lat == %lf ",(view.annotation?.coordinate.longitude)!,(view.annotation?.coordinate.latitude)!)
-//
-//
-//    frcPin.fetchRequest.predicate = pinPred
-//
-//    do {
-//      try frcPin.performFetch()
-//    } catch {
-//      print(error)
-//    }
-//
-//    //Transition to the PhotoViewController
-//    for newPin in (frcPin.fetchedObjects)! {
-//      //Set the Current Pin selection
-//      Common.shared.currentPin = newPin
-//      performSegue(withIdentifier: "photoCollection", sender: self)
-//      mapView.deselectAnnotation(view.annotation, animated: false)
-//      return
-//    }
-//  }
+  func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView? {
+
+    let annotation = annotation
+    let identifier = "pin"
+    var view: MKPinAnnotationView
+    if let dequeuedView = self.mapView.dequeueReusableAnnotationView(withIdentifier: identifier) as? MKPinAnnotationView {
+      dequeuedView.annotation = annotation
+      view = dequeuedView
+    } else {
+      view = MKPinAnnotationView(annotation: annotation, reuseIdentifier: identifier)
+      view.canShowCallout = false
+      view.isEnabled = true
+    }
+    return view
+  }
+
+
+  func mapView(_ mapView: MKMapView, didSelect view: MKAnnotationView) {
+    print("tapped")
+
+  }
 
   public func bottomToolBarStatus(hidden: Bool) {
     bottomToolBar.isHidden = hidden
