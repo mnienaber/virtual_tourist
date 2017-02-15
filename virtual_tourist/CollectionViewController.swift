@@ -11,113 +11,54 @@ import UIKit
 import MapKit
 import CoreData
 
-class CollectionViewController: UICollectionViewController, MKMapViewDelegate, CLLocationManagerDelegate {
+class CollectionViewController:  CoreDataMasterController, UICollectionViewDataSource, UICollectionViewDelegate, MKMapViewDelegate {
 
-  @IBOutlet weak var miniMapView: MKMapView!
+  @IBOutlet weak var mapView: MKMapView!
   @IBOutlet weak var bottomToolBar: UIToolbar!
   @IBOutlet weak var photoCollectionView: UICollectionView!
+  @IBOutlet weak var imageView: UIImageView!
 
-  var blockOperations: [BlockOperation] = []
+
+  var image : Photos?
+
+  let delegate = UIApplication.shared.delegate as! AppDelegate
+
+
 
   override func viewDidLoad() {
     super.viewDidLoad()
+
+    photoCollectionView.delegate = self
+    photoCollectionView.dataSource = self
+
+
+    // Set the title
+    title = "Photo View"
+
+    // Get the stack
+    let stack = delegate.stack
+
+//    // Create a fetchrequest
+    let fr = NSFetchRequest<NSFetchRequestResult>(entityName: "Photos")
+    fr.sortDescriptors = [NSSortDescriptor(key: "title", ascending: true)]
+
+    // Create the FetchedResultsController
+    fetchedResultsController = NSFetchedResultsController(fetchRequest: fr, managedObjectContext: stack.context, sectionNameKeyPath: nil, cacheName: nil)
+
     // Do any additional setup after loading the view, typically from a nib.
   }
 
-  func controllerWillChangeContent(controller: NSFetchedResultsController<NSFetchRequestResult>) {
-    blockOperations.removeAll(keepingCapacity: false)
+  func photoCollectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+
+    let numberOfItems = self.fetchedResultsController?.sections?[section]
+
+    return (numberOfItems?.numberOfObjects)!
   }
 
-  func controller(controller: NSFetchedResultsController<NSFetchRequestResult>, didChangeObject anObject: AnyObject, atIndexPath indexPath: NSIndexPath?, forChangeType type: NSFetchedResultsChangeType, newIndexPath: NSIndexPath?) {
+  func photoCollectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {}
 
-    if type == NSFetchedResultsChangeType.insert {
-      print("insert Object: \(newIndexPath)")
 
-      blockOperations.append(
-        BlockOperation(block: { [weak self] in
-          if let this = self {
-            this.collectionView!.insertItems(at: [newIndexPath! as IndexPath])
-          }
-        })
-      )
-    }
-    else if type == NSFetchedResultsChangeType.update {
-      print("Update Object: \(indexPath)")
-      blockOperations.append(
-        BlockOperation(block: { [weak self] in
-          if let this = self {
-            this.collectionView!.reloadItems(at: [indexPath! as IndexPath])
-          }
-        })
-      )
-    }
-    else if type == NSFetchedResultsChangeType.move {
-      print("move Object: \(indexPath)")
 
-      blockOperations.append(
-        BlockOperation(block: { [weak self] in
-          if let this = self {
-            this.collectionView!.moveItem(at: indexPath! as IndexPath, to: newIndexPath! as IndexPath)
-          }
-        })
-      )
-    }
-    else if type == NSFetchedResultsChangeType.delete {
-      print("Delete Object: \(indexPath)")
-
-      blockOperations.append(
-        BlockOperation(block: { [weak self] in
-          if let this = self {
-            this.collectionView!.deleteItems(at: [indexPath! as IndexPath])
-          }
-        })
-      )
-    }
-  }
-
-  func controller(controller: NSFetchedResultsController<NSFetchRequestResult>, didChangeSection sectionInfo: NSFetchedResultsSectionInfo, atIndex sectionIndex: Int, forChangeType type: NSFetchedResultsChangeType) {
-
-    if type == NSFetchedResultsChangeType.insert {
-      print("insert Section: \(sectionIndex)")
-
-      blockOperations.append(
-        BlockOperation(block: { [weak self] in
-          if let this = self {
-            this.collectionView!.insertSections(NSIndexSet(index: sectionIndex) as IndexSet)
-          }
-        })
-      )
-    }
-    else if type == NSFetchedResultsChangeType.update {
-      print("Update Section: \(sectionIndex)")
-      blockOperations.append(
-        BlockOperation(block: { [weak self] in
-          if let this = self {
-            this.collectionView!.reloadSections(NSIndexSet(index: sectionIndex) as IndexSet)
-          }
-        })
-      )
-    }
-    else if type == NSFetchedResultsChangeType.delete {
-      print("Delete Section: \(sectionIndex)")
-
-      blockOperations.append(
-        BlockOperation(block: { [weak self] in
-          if let this = self {
-            this.collectionView!.deleteSections(NSIndexSet(index: sectionIndex) as IndexSet)
-          }
-        })
-      )
-    }
-  }
-
-  func controllerDidChangeContent(controller: NSFetchedResultsController<NSFetchRequestResult>) {
-    collectionView!.performBatchUpdates({ () -> Void in
-      for operation: BlockOperation in self.blockOperations {
-        operation.start()
-      }
-    }, completion: { (finished) -> Void in
-      self.blockOperations.removeAll(keepingCapacity: false)
-    })
-  }
+  func configureCell(cell: CollectionViewCell) -> <#return type#> {
+    <#function body#>
 }

@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		2E4215E31E458FAF00DD8DC3 /* MapDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E4215E21E458FAF00DD8DC3 /* MapDetailViewController.swift */; };
+		2E4215E51E54349900DD8DC3 /* CollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E4215E41E54349900DD8DC3 /* CollectionViewCell.swift */; };
 		2E4A96AC1DEC194B000CC944 /* Photos+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E4A96A81DEC194B000CC944 /* Photos+CoreDataClass.swift */; };
 		2E4A96AD1DEC194B000CC944 /* Photos+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E4A96A91DEC194B000CC944 /* Photos+CoreDataProperties.swift */; };
 		2E4A96AE1DEC194B000CC944 /* Pin+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E4A96AA1DEC194B000CC944 /* Pin+CoreDataClass.swift */; };
@@ -21,7 +22,6 @@
 		2E4C640B1DC1E8D3002B59E0 /* virtual_touristUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E4C640A1DC1E8D3002B59E0 /* virtual_touristUITests.swift */; };
 		2E4C641A1DC1E8ED002B59E0 /* Model.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 2E4C64181DC1E8ED002B59E0 /* Model.xcdatamodeld */; };
 		2E4C645C1DC9C851002B59E0 /* CollectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E4C645B1DC9C851002B59E0 /* CollectionViewController.swift */; };
-		2E5E9CA41E3B17DD002DD730 /* CoreDataTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E5E9CA31E3B17DD002DD730 /* CoreDataTableViewController.swift */; };
 		2E5E9CA61E3B69BB002DD730 /* CoreDataMasterController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E5E9CA51E3B69BB002DD730 /* CoreDataMasterController.swift */; };
 		2E5E9CA81E400076002DD730 /* CoreDataStack.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E5E9CA71E400076002DD730 /* CoreDataStack.swift */; };
 		2E8809D41E04D1B300898A34 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E8809D31E04D1B300898A34 /* Constants.swift */; };
@@ -52,6 +52,7 @@
 
 /* Begin PBXFileReference section */
 		2E4215E21E458FAF00DD8DC3 /* MapDetailViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MapDetailViewController.swift; sourceTree = "<group>"; };
+		2E4215E41E54349900DD8DC3 /* CollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CollectionViewCell.swift; sourceTree = "<group>"; };
 		2E4A96A81DEC194B000CC944 /* Photos+CoreDataClass.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "Photos+CoreDataClass.swift"; path = "../Photos+CoreDataClass.swift"; sourceTree = "<group>"; };
 		2E4A96A91DEC194B000CC944 /* Photos+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "Photos+CoreDataProperties.swift"; path = "../Photos+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		2E4A96AA1DEC194B000CC944 /* Pin+CoreDataClass.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "Pin+CoreDataClass.swift"; path = "../Pin+CoreDataClass.swift"; sourceTree = "<group>"; };
@@ -71,7 +72,6 @@
 		2E4C640C1DC1E8D3002B59E0 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		2E4C64191DC1E8ED002B59E0 /* Model.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Model.xcdatamodel; sourceTree = "<group>"; };
 		2E4C645B1DC9C851002B59E0 /* CollectionViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CollectionViewController.swift; sourceTree = "<group>"; };
-		2E5E9CA31E3B17DD002DD730 /* CoreDataTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CoreDataTableViewController.swift; sourceTree = "<group>"; };
 		2E5E9CA51E3B69BB002DD730 /* CoreDataMasterController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CoreDataMasterController.swift; sourceTree = "<group>"; };
 		2E5E9CA71E400076002DD730 /* CoreDataStack.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CoreDataStack.swift; sourceTree = "<group>"; };
 		2E8809D31E04D1B300898A34 /* Constants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
@@ -174,6 +174,7 @@
 				2E8809D91E04D65900898A34 /* Reachability.swift */,
 				2E8809DE1E05061400898A34 /* BlackBox.swift */,
 				2E8809E01E05086A00898A34 /* ImageObject.swift */,
+				2E4215E41E54349900DD8DC3 /* CollectionViewCell.swift */,
 			);
 			name = Model;
 			sourceTree = "<group>";
@@ -184,7 +185,6 @@
 				2E4C63EC1DC1E8D3002B59E0 /* ViewController.swift */,
 				2E4C645B1DC9C851002B59E0 /* CollectionViewController.swift */,
 				2EE8ABE81E0636D900A8A8C1 /* CoreDataCollectionViewController.swift */,
-				2E5E9CA31E3B17DD002DD730 /* CoreDataTableViewController.swift */,
 				2E5E9CA51E3B69BB002DD730 /* CoreDataMasterController.swift */,
 				2E4C63EE1DC1E8D3002B59E0 /* Main.storyboard */,
 				2E4215E21E458FAF00DD8DC3 /* MapDetailViewController.swift */,
@@ -350,10 +350,10 @@
 				2E8809E11E05086A00898A34 /* ImageObject.swift in Sources */,
 				2E8809D61E04D1C800898A34 /* Client.swift in Sources */,
 				2E4C641A1DC1E8ED002B59E0 /* Model.xcdatamodeld in Sources */,
+				2E4215E51E54349900DD8DC3 /* CollectionViewCell.swift in Sources */,
 				2E8809DF1E05061400898A34 /* BlackBox.swift in Sources */,
 				2E4215E31E458FAF00DD8DC3 /* MapDetailViewController.swift in Sources */,
 				2E8809D41E04D1B300898A34 /* Constants.swift in Sources */,
-				2E5E9CA41E3B17DD002DD730 /* CoreDataTableViewController.swift in Sources */,
 				2EE8ABE91E0636D900A8A8C1 /* CoreDataCollectionViewController.swift in Sources */,
 				2E4A96AE1DEC194B000CC944 /* Pin+CoreDataClass.swift in Sources */,
 				2E4A96AC1DEC194B000CC944 /* Photos+CoreDataClass.swift in Sources */,
