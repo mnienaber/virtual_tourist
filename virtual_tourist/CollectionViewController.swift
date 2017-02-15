@@ -55,10 +55,14 @@ class CollectionViewController:  CoreDataMasterController, UICollectionViewDataS
     return (numberOfItems?.numberOfObjects)!
   }
 
-  func photoCollectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {}
+  func photoCollectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
+
+    let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "Cell", for: indexPath as IndexPath) as! CollectionViewCell
+    return cell
+  }
 
 
 
-  func configureCell(cell: CollectionViewCell) -> <#return type#> {
-    <#function body#>
+//  func configureCell(cell: CollectionViewCell) -> <#return type#> {
+//    <#function body#>
 }

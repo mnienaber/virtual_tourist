@@ -9,7 +9,7 @@
 import UIKit
 import CoreData
 
-class CoreDataMasterController: UIViewController {
+class CoreDataMasterController: CollectionViewController {
 
   var blockOperations: [BlockOperation] = []
 
