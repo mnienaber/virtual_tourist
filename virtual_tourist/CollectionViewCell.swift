@@ -12,5 +12,16 @@ import UIKit
 class CollectionViewCell: UICollectionViewCell {
 
   @IBOutlet weak var imageView: UIImageView!
+  @IBOutlet weak var colorPanel: UIView!
+
+  var color: UIColor {
+    set {
+      self.colorPanel.backgroundColor = newValue
+    }
+
+    get {
+      return self.colorPanel.backgroundColor ?? UIColor.white
+    }
+  }
 
 }

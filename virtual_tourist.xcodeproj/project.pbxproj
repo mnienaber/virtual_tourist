@@ -172,7 +172,6 @@
 				2E8809D91E04D65900898A34 /* Reachability.swift */,
 				2E8809DE1E05061400898A34 /* BlackBox.swift */,
 				2E8809E01E05086A00898A34 /* ImageObject.swift */,
-				2E4215E41E54349900DD8DC3 /* CollectionViewCell.swift */,
 			);
 			name = Model;
 			sourceTree = "<group>";
@@ -182,6 +181,7 @@
 			children = (
 				2E4C63EC1DC1E8D3002B59E0 /* ViewController.swift */,
 				2E4C645B1DC9C851002B59E0 /* CollectionViewController.swift */,
+				2E4215E41E54349900DD8DC3 /* CollectionViewCell.swift */,
 				2E5E9CA51E3B69BB002DD730 /* CoreDataMasterController.swift */,
 				2E4C63EE1DC1E8D3002B59E0 /* Main.storyboard */,
 				2E4215E21E458FAF00DD8DC3 /* MapDetailViewController.swift */,
