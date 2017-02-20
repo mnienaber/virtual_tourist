@@ -30,7 +30,6 @@
 		2E8809DC1E04D7FA00898A34 /* Convenience.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E8809DB1E04D7FA00898A34 /* Convenience.swift */; };
 		2E8809DF1E05061400898A34 /* BlackBox.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E8809DE1E05061400898A34 /* BlackBox.swift */; };
 		2E8809E11E05086A00898A34 /* ImageObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E8809E01E05086A00898A34 /* ImageObject.swift */; };
-		2EE8ABE91E0636D900A8A8C1 /* CoreDataCollectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2EE8ABE81E0636D900A8A8C1 /* CoreDataCollectionViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -80,7 +79,6 @@
 		2E8809DB1E04D7FA00898A34 /* Convenience.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Convenience.swift; sourceTree = "<group>"; };
 		2E8809DE1E05061400898A34 /* BlackBox.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BlackBox.swift; sourceTree = "<group>"; };
 		2E8809E01E05086A00898A34 /* ImageObject.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageObject.swift; sourceTree = "<group>"; };
-		2EE8ABE81E0636D900A8A8C1 /* CoreDataCollectionViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CoreDataCollectionViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -184,7 +182,6 @@
 			children = (
 				2E4C63EC1DC1E8D3002B59E0 /* ViewController.swift */,
 				2E4C645B1DC9C851002B59E0 /* CollectionViewController.swift */,
-				2EE8ABE81E0636D900A8A8C1 /* CoreDataCollectionViewController.swift */,
 				2E5E9CA51E3B69BB002DD730 /* CoreDataMasterController.swift */,
 				2E4C63EE1DC1E8D3002B59E0 /* Main.storyboard */,
 				2E4215E21E458FAF00DD8DC3 /* MapDetailViewController.swift */,
@@ -354,7 +351,6 @@
 				2E8809DF1E05061400898A34 /* BlackBox.swift in Sources */,
 				2E4215E31E458FAF00DD8DC3 /* MapDetailViewController.swift in Sources */,
 				2E8809D41E04D1B300898A34 /* Constants.swift in Sources */,
-				2EE8ABE91E0636D900A8A8C1 /* CoreDataCollectionViewController.swift in Sources */,
 				2E4A96AE1DEC194B000CC944 /* Pin+CoreDataClass.swift in Sources */,
 				2E4A96AC1DEC194B000CC944 /* Photos+CoreDataClass.swift in Sources */,
 				2E4C645C1DC9C851002B59E0 /* CollectionViewController.swift in Sources */,

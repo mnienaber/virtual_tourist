@@ -20,21 +20,21 @@ class CoreDataMasterController: CollectionViewController {
       // reload the table
       fetchedResultsController?.delegate = self
       executeSearch()
-      collectionView?.reloadData()
+      photoCollectionView?.reloadData()
     }
   }
 
-  init(fetchedResultsController fc : NSFetchedResultsController<NSFetchRequestResult>,
-       style : UITableViewStyle = .plain){
-    fetchedResultsController = fc
-  }
-
-  // Do not worry about this initializer. I has to be implemented
-  // because of the way Swift interfaces with an Objective C
-  // protocol called NSArchiving. It's not relevant.
-  required init?(coder aDecoder: NSCoder) {
-    super.init(coder: aDecoder)
-  }
+//  init(fetchedResultsController fc : NSFetchedResultsController<NSFetchRequestResult>){
+//    super.init()
+//    fetchedResultsController = fc
+//  }
+//
+//  // Do not worry about this initializer. I has to be implemented
+//  // because of the way Swift interfaces with an Objective C
+//  // protocol called NSArchiving. It's not relevant.
+//  required init?(coder aDecoder: NSCoder) {
+//    super.init(coder: aDecoder)
+//  }
 
 
 }
@@ -58,11 +58,11 @@ extension CoreDataMasterController{
 // MARK:  - Delegate
 extension CoreDataMasterController: NSFetchedResultsControllerDelegate{
 
-//
-//  func controllerWillChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
-//    collectionView?.beginUpdates()
-//  }
-//
+
+  func controllerWillChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
+    photoCollectionView?
+  }
+
 //  func controller(_ controller: NSFetchedResultsController<NSFetchRequestResult>,
 //                  didChange sectionInfo: NSFetchedResultsSectionInfo,
 //                  atSectionIndex sectionIndex: Int,
@@ -73,10 +73,10 @@ extension CoreDataMasterController: NSFetchedResultsControllerDelegate{
 //    switch (type){
 //
 //    case .insert:
-//      collectionView?.insertSections(
+//      photoCollectionView?.insertSections(NSIndexSet(index: section)
 //
 //    case .delete:
-//      collectionView?.deleteSections(.fade)
+//      photoCollectionView?.deleteSections(section)
 //
 //    default:
 //      // irrelevant in our case
@@ -84,35 +84,35 @@ extension CoreDataMasterController: NSFetchedResultsControllerDelegate{
 //
 //    }
 //  }
+}
+
+  func controller(_ controller: NSFetchedResultsController<NSFetchRequestResult>,
+                  didChange anObject: Any,
+                  at indexPath: IndexPath?,
+                  for type: NSFetchedResultsChangeType,
+                  newIndexPath: IndexPath?) {
 
 
-//  func controller(_ controller: NSFetchedResultsController<NSFetchRequestResult>,
-//                  didChange anObject: Any,
-//                  at indexPath: IndexPath?,
-//                  for type: NSFetchedResultsChangeType,
-//                  newIndexPath: IndexPath?) {
-//
-//
-//
-//    switch(type){
-//
-//    case .insert:
-//      tableView.insertRows(at: [newIndexPath!], with: .fade)
-//
-//    case .delete:
-//      tableView.deleteRows(at: [indexPath!], with: .fade)
-//
-//    case .update:
-//      tableView.reloadRows(at: [indexPath!], with: .fade)
-//
-//    case .move:
-//      tableView.deleteRows(at: [indexPath!], with: .fade)
-//      tableView.insertRows(at: [newIndexPath!], with: .fade)
-//    }
-//
-//  }
-//
-//  func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
-//    tableView.endUpdates()
-//  }
+
+    switch(type){
+
+    case .insert:
+      tableView.insertRows(at: [newIndexPath!], with: .fade)
+
+    case .delete:
+      tableView.deleteRows(at: [indexPath!], with: .fade)
+
+    case .update:
+      tableView.reloadRows(at: [indexPath!], with: .fade)
+
+    case .move:
+      tableView.deleteRows(at: [indexPath!], with: .fade)
+      tableView.insertRows(at: [newIndexPath!], with: .fade)
+    }
+
+  }
+
+  func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
+    tableView.endUpdates()
+  }
 }

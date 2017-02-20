@@ -11,7 +11,7 @@ import UIKit
 import MapKit
 import CoreData
 
-class CollectionViewController:  CoreDataMasterController, UICollectionViewDataSource, UICollectionViewDelegate, MKMapViewDelegate {
+class CollectionViewController:  UIViewController, UICollectionViewDelegate, UICollectionViewDataSource, MKMapViewDelegate {
 
   @IBOutlet weak var mapView: MKMapView!
   @IBOutlet weak var bottomToolBar: UIToolbar!
@@ -23,14 +23,8 @@ class CollectionViewController:  CoreDataMasterController, UICollectionViewDataS
 
   let delegate = UIApplication.shared.delegate as! AppDelegate
 
-
-
   override func viewDidLoad() {
     super.viewDidLoad()
-
-    photoCollectionView.delegate = self
-    photoCollectionView.dataSource = self
-
 
     // Set the title
     title = "Photo View"
@@ -43,26 +37,31 @@ class CollectionViewController:  CoreDataMasterController, UICollectionViewDataS
     fr.sortDescriptors = [NSSortDescriptor(key: "title", ascending: true)]
 
     // Create the FetchedResultsController
-    fetchedResultsController = NSFetchedResultsController(fetchRequest: fr, managedObjectContext: stack.context, sectionNameKeyPath: nil, cacheName: nil)
 
-    // Do any additional setup after loading the view, typically from a nib.
+    fetchedResultsController = NSFetchedResultsController(fetchRequest: fr, managedObjectContext: stack.context, sectionNameKeyPath: nil, cacheName: nil)
   }
 
+
+
+extension CollectionViewController {
+  //1
   func photoCollectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
 
     let numberOfItems = self.fetchedResultsController?.sections?[section]
-
     return (numberOfItems?.numberOfObjects)!
   }
 
   func photoCollectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
 
-    let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "Cell", for: indexPath as IndexPath) as! CollectionViewCell
+    let cell = photoCollectionView.dequeueReusableCell(withReuseIdentifier: "Cell", for: indexPath as IndexPath) as! CollectionViewCell
+    cell.backgroundColor = UIColor.black
     return cell
   }
 
+  func numberOfSections(in collectionView: UICollectionView) -> Int {
 
-
-//  func configureCell(cell: CollectionViewCell) -> <#return type#> {
-//    <#function body#>
+    let numberOfItems = self.fetchedResultsController?.sections?[section]
+    return (numberOfItems?.numberOfObjects)!
+  }
+  }
 }
