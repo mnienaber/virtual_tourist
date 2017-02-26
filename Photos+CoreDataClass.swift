@@ -9,6 +9,7 @@
 import Foundation
 import CoreData
 
+@objc(Photos)
 class Photos: NSManagedObject {
 
   convenience init(title: String, url: String, image: Data, context: NSManagedObjectContext) {

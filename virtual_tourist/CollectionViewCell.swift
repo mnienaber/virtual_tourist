@@ -20,7 +20,7 @@ class CollectionViewCell: UICollectionViewCell {
     }
 
     get {
-      return self.colorPanel.backgroundColor ?? UIColor.white
+      return self.colorPanel.backgroundColor ?? UIColor.black
     }
   }
 
