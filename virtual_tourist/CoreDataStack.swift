@@ -13,12 +13,12 @@ struct CoreDataStack {
 
   // MARK: Properties
 
-  private let model: NSManagedObjectModel
-  internal let coordinator: NSPersistentStoreCoordinator
-  private let modelURL: URL
-  internal let dbURL: URL
-  internal let persistingContext: NSManagedObjectContext
-  internal let backgroundContext: NSManagedObjectContext
+  let model: NSManagedObjectModel
+  let coordinator: NSPersistentStoreCoordinator
+  let modelURL: URL
+  let dbURL: URL
+  let persistingContext: NSManagedObjectContext
+  let backgroundContext: NSManagedObjectContext
   let context: NSManagedObjectContext
 
   // MARK: Initializers

@@ -63,7 +63,7 @@ extension Client {
 
                   let appDelegate =
                     UIApplication.shared.delegate as! AppDelegate
-                  let managedContext = appDelegate.persistentContainer.viewContext
+                  let managedContext = appDelegate.stack.context
                   let entity =  NSEntityDescription.entity(forEntityName: "Photos",
                                                            in:managedContext)
                   let image = NSManagedObject(entity: entity!,

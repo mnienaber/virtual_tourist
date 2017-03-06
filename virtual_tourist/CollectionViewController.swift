@@ -17,6 +17,7 @@ class CollectionViewController:  UIViewController, UICollectionViewDelegate, UIC
   @IBOutlet weak var bottomToolBar: UIToolbar!
   @IBOutlet weak var collectionView: UICollectionView!
   @IBOutlet weak var imageView: UIImageView!
+  @IBOutlet weak var backButton: UIBarButtonItem!
 
   let delegate = UIApplication.shared.delegate as! AppDelegate
 
@@ -26,7 +27,7 @@ class CollectionViewController:  UIViewController, UICollectionViewDelegate, UIC
     let fetchRequest = NSFetchRequest<Photos>(entityName: "Photos")
     fetchRequest.sortDescriptors = []
 
-    let fetchedResultsController = NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: self.delegate.managedObjectContext, sectionNameKeyPath: nil, cacheName: nil)
+    let fetchedResultsController = NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: self.delegate.stack.context, sectionNameKeyPath: nil, cacheName: nil)
     fetchedResultsController.delegate = self
 
     return fetchedResultsController
@@ -43,7 +44,6 @@ class CollectionViewController:  UIViewController, UICollectionViewDelegate, UIC
     print("in viewDidLoad()")
 
     super.viewDidLoad()
-
 
     // Start the fetched results controller
     var error: NSError?
@@ -87,11 +87,11 @@ class CollectionViewController:  UIViewController, UICollectionViewDelegate, UIC
     // If the cell is "selected", its color panel is grayed out
     // we use the Swift `find` function to see if the indexPath is in the array
 
-    if let _ = selectedIndexes.index(of: indexPath) {
-      cell.colorPanel.alpha = 0.05
-    } else {
-      cell.colorPanel.alpha = 1.0
-    }
+//    if let _ = selectedIndexes.index(of: indexPath) {
+//      cell.colorPanel.alpha = 0.05
+//    } else {
+//      cell.colorPanel.alpha = 1.0
+//    }
   }
 
   func numberOfSections(in collectionView: UICollectionView) -> Int {

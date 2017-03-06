@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="11762" systemVersion="16C67" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="axg-8g-8AD">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="11762" systemVersion="16D32" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="axg-8g-8AD">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
@@ -182,24 +182,15 @@
                                                 <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="5Vx-oz-WOb">
                                                     <rect key="frame" x="0.0" y="0.0" width="135" height="114"/>
                                                 </imageView>
-                                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="dnH-eL-xh7">
-                                                    <rect key="frame" x="0.0" y="0.0" width="135" height="114"/>
-                                                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                                </view>
                                             </subviews>
                                         </view>
                                         <constraints>
                                             <constraint firstItem="5Vx-oz-WOb" firstAttribute="leading" secondItem="YzX-Cc-vex" secondAttribute="leading" id="8mS-sh-CMe"/>
-                                            <constraint firstItem="dnH-eL-xh7" firstAttribute="leading" secondItem="5Vx-oz-WOb" secondAttribute="leading" id="OML-eE-tFG"/>
-                                            <constraint firstItem="dnH-eL-xh7" firstAttribute="trailing" secondItem="5Vx-oz-WOb" secondAttribute="trailing" id="Rwh-ha-ZrO"/>
-                                            <constraint firstItem="dnH-eL-xh7" firstAttribute="top" secondItem="5Vx-oz-WOb" secondAttribute="top" id="WpP-bV-6hO"/>
                                             <constraint firstAttribute="trailing" secondItem="5Vx-oz-WOb" secondAttribute="trailing" id="XF8-2r-Shw"/>
-                                            <constraint firstItem="dnH-eL-xh7" firstAttribute="bottom" secondItem="5Vx-oz-WOb" secondAttribute="bottom" id="gba-ka-u1t"/>
                                             <constraint firstItem="5Vx-oz-WOb" firstAttribute="top" secondItem="YzX-Cc-vex" secondAttribute="top" id="ix7-D9-zAu"/>
                                             <constraint firstAttribute="bottom" secondItem="5Vx-oz-WOb" secondAttribute="bottom" id="yVI-Ij-FyL"/>
                                         </constraints>
                                         <connections>
-                                            <outlet property="colorPanel" destination="dnH-eL-xh7" id="2pZ-Fq-Ao7"/>
                                             <outlet property="imageView" destination="5Vx-oz-WOb" id="V3o-0i-cl1"/>
                                         </connections>
                                     </collectionViewCell>
@@ -231,9 +222,7 @@
                             <constraint firstItem="gfm-uJ-GVl" firstAttribute="leading" secondItem="NMh-nC-DXO" secondAttribute="leading" id="vKT-I7-3fI"/>
                         </constraints>
                     </view>
-                    <navigationItem key="navigationItem" id="8Fu-kp-RY8">
-                        <barButtonItem key="leftBarButtonItem" title="Back" id="sOh-4x-LjX"/>
-                    </navigationItem>
+                    <navigationItem key="navigationItem" id="8Fu-kp-RY8"/>
                     <connections>
                         <outlet property="collectionView" destination="gfm-uJ-GVl" id="uk9-ne-jfU"/>
                         <outlet property="mapView" destination="NMh-nC-DXO" id="HdS-YH-CnV"/>
