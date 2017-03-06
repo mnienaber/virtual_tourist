@@ -14,10 +14,11 @@ import CoreData
 class CollectionViewController:  UIViewController, UICollectionViewDelegate, UICollectionViewDataSource, NSFetchedResultsControllerDelegate, MKMapViewDelegate, UICollectionViewDataSourcePrefetching {
 
   @IBOutlet weak var mapView: MKMapView!
-  @IBOutlet weak var bottomToolBar: UIToolbar!
   @IBOutlet weak var collectionView: UICollectionView!
   @IBOutlet weak var imageView: UIImageView!
   @IBOutlet weak var backButton: UIBarButtonItem!
+  @IBOutlet weak var bottomActionOutlet: UIBarButtonItem!
+
 
   let delegate = UIApplication.shared.delegate as! AppDelegate
 
@@ -45,6 +46,8 @@ class CollectionViewController:  UIViewController, UICollectionViewDelegate, UIC
 
     super.viewDidLoad()
 
+    bottomActionOutlet.title = "New Photo Album"
+
     // Start the fetched results controller
     var error: NSError?
     do {
@@ -56,9 +59,6 @@ class CollectionViewController:  UIViewController, UICollectionViewDelegate, UIC
     if let error = error {
       print("Error performing initial fetch: \(error)")
     }
-
-
-
   }
 
   override func viewDidLayoutSubviews() {
@@ -129,14 +129,16 @@ class CollectionViewController:  UIViewController, UICollectionViewDelegate, UIC
     let cell = collectionView.cellForItem(at: indexPath) as! CollectionViewCell
     print("selected cell")
     if let index = selectedIndexes.index(of: indexPath) {
+      bottomActionOutlet.title = "Remove Images"
       cell.colorPanel.isHidden = false
       selectedIndexes.remove(at: index)
+      print("delete")
     } else {
+      bottomActionOutlet.title = "New Photo Album"
       selectedIndexes.append(indexPath)
       cell.colorPanel.isHidden = true
+      print("new")
     }
-    cell.colorPanel.isHidden = false
-
   }
 
   // MARK: - Fetched Results Controller Delegate
@@ -216,6 +218,14 @@ class CollectionViewController:  UIViewController, UICollectionViewDelegate, UIC
       }
 
     }, completion: nil)
+  }
+  @IBAction func bottomAction(_ sender: Any) {
+
+//    switch bottomActionOutlet {
+//    case bottomActionOutlet.title = "New Photo Album":
+//      //TODO: make new call for images
+//    case bottomActionOutlet.title = "Remove Images":
+//      //TODO: invoke delete images func
   }
 }
 
