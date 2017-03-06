@@ -19,19 +19,6 @@ class ViewController: UIViewController, MKMapViewDelegate, UIApplicationDelegate
   @IBOutlet weak var mapView: MKMapView!
   @IBOutlet weak var bottomToolBar: UIToolbar!
 
-//  lazy var frcPin: NSFetchedResultsController<Pin> = { () -> NSFetchedResultsController<Pin> in
-//
-//    let fetchRequest = NSFetchRequest<Pin>(entityName: "Pin")
-//    fetchRequest.sortDescriptors = []
-//
-//    let fetchedResultsController = NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: self.sharedContext, sectionNameKeyPath: nil, cacheName: nil)
-//    fetchedResultsController.delegate = self
-//
-//    return fetchedResultsController
-//  }()
-//
-//  var sharedContext = self.appDelegate.shared.managedObjectContext!
-
   override func viewDidLoad() {
     super.viewDidLoad()
     //CoreDataStack.dropAllData(CoreDataStack: self)
@@ -113,49 +100,6 @@ class ViewController: UIViewController, MKMapViewDelegate, UIApplicationDelegate
       }
     }
   }
-
-  // In a storyboard-based application, you will often want to do a little preparation before navigation
-//  override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-//    // Get the new view controller using segue.destinationViewController.
-//    // Pass the selected object to the new view controller.
-//
-//    if segue.identifier! == "displayNote"{
-//
-//      if let photosVC = segue.destination as? ViewController {
-//
-//        // Create Fetch Request
-//        let fr = NSFetchRequest<NSFetchRequestResult>(entityName: "Photos")
-//
-//        fr.sortDescriptors = [NSSortDescriptor(key: "image", ascending: false),
-//                              NSSortDescriptor(key: "title", ascending: true)]
-//
-//        // So far we have a search that will match ALL notes. However, we're
-//        // only interested in those within the current notebook:
-//        // NSPredicate to the rescue!
-//        let indexPath = mapView.indexPathForSelectedRow!
-//        let notebook = fetchedResultsController?.object(at: indexPath) as? Notebook
-//
-//        let pred = NSPredicate(format: "notebook = %@", argumentArray: [notebook!])
-//
-//        fr.predicate = pred
-//
-//        // Create FetchedResultsController
-//        let fc = NSFetchedResultsController(fetchRequest: fr,
-//                                            managedObjectContext:fetchedResultsController!.managedObjectContext,
-//                                            sectionNameKeyPath: "humanReadableAge",
-//                                            cacheName: nil)
-//
-//        // Inject it into the notesVC
-//        notesVC.fetchedResultsController = fc
-//
-//        // Inject the notebook too!
-//        notesVC.notebook = notebook
-//
-//      }
-//    }
-//  }
-
-
 
   func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView? {
 

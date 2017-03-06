@@ -56,6 +56,9 @@ class CollectionViewController:  UIViewController, UICollectionViewDelegate, UIC
     if let error = error {
       print("Error performing initial fetch: \(error)")
     }
+
+
+
   }
 
   override func viewDidLayoutSubviews() {
@@ -81,17 +84,13 @@ class CollectionViewController:  UIViewController, UICollectionViewDelegate, UIC
 
     if let image = UIImage(data: photo.image!,scale:1.0) {
 
+      cell.activityIndicator.isHidden = true
+      cell.colorPanel.isHidden = true
       cell.imageView.image = image
     }
 
     // If the cell is "selected", its color panel is grayed out
     // we use the Swift `find` function to see if the indexPath is in the array
-
-//    if let _ = selectedIndexes.index(of: indexPath) {
-//      cell.colorPanel.alpha = 0.05
-//    } else {
-//      cell.colorPanel.alpha = 1.0
-//    }
   }
 
   func numberOfSections(in collectionView: UICollectionView) -> Int {
@@ -124,6 +123,20 @@ class CollectionViewController:  UIViewController, UICollectionViewDelegate, UIC
   func collectionView(_ collectionView: UICollectionView, cancelPrefetchingForItemsAt indexPaths: [IndexPath]) {
     collectionView.prefetchDataSource = nil
     collectionView.isPrefetchingEnabled = false
+  }
+
+  func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+    let cell = collectionView.cellForItem(at: indexPath) as! CollectionViewCell
+    print("selected cell")
+    if let index = selectedIndexes.index(of: indexPath) {
+      cell.colorPanel.isHidden = false
+      selectedIndexes.remove(at: index)
+    } else {
+      selectedIndexes.append(indexPath)
+      cell.colorPanel.isHidden = true
+    }
+    cell.colorPanel.isHidden = false
+
   }
 
   // MARK: - Fetched Results Controller Delegate
