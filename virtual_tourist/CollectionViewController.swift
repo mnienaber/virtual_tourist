@@ -11,7 +11,7 @@ import UIKit
 import MapKit
 import CoreData
 
-class CollectionViewController:  UIViewController, UICollectionViewDelegate, UICollectionViewDataSource, NSFetchedResultsControllerDelegate, MKMapViewDelegate, UICollectionViewDataSourcePrefetching {
+class CollectionViewController:  UIViewController, UICollectionViewDelegate, UICollectionViewDataSource, NSFetchedResultsControllerDelegate, MKMapViewDelegate, UICollectionViewDataSourcePrefetching, CLLocationManagerDelegate {
 
   @IBOutlet weak var mapView: MKMapView!
   @IBOutlet weak var collectionView: UICollectionView!
@@ -19,6 +19,8 @@ class CollectionViewController:  UIViewController, UICollectionViewDelegate, UIC
   @IBOutlet weak var backButton: UIBarButtonItem!
   @IBOutlet weak var bottomActionOutlet: UIBarButtonItem!
 
+  var pinSelected: Pin?
+  var detailLocation = CLLocationCoordinate2D()
 
   let delegate = UIApplication.shared.delegate as! AppDelegate
 
@@ -47,6 +49,11 @@ class CollectionViewController:  UIViewController, UICollectionViewDelegate, UIC
     super.viewDidLoad()
 
     bottomActionOutlet.title = "New Photo Album"
+
+    let annotation = MKPointAnnotation()
+    annotation.coordinate.latitude = CLLocationDegrees((detailLocation.latitude))
+    annotation.coordinate.longitude = CLLocationDegrees((detailLocation.longitude))
+    self.mapView.addAnnotation(annotation)
 
     // Start the fetched results controller
     var error: NSError?

@@ -15,6 +15,9 @@ class ViewController: UIViewController, MKMapViewDelegate, UIApplicationDelegate
   var appDelegate: AppDelegate!
   let locationManager = CLLocationManager()
   let regionRadius: CLLocationDistance = 100
+  var coordinatesForPin = CLLocationCoordinate2D()
+  var currentPin: Pin?
+  var pin: Pin?
 
   @IBOutlet weak var mapView: MKMapView!
   @IBOutlet weak var bottomToolBar: UIToolbar!
@@ -82,6 +85,7 @@ class ViewController: UIViewController, MKMapViewDelegate, UIApplicationDelegate
       mapView.addAnnotation(newAnnotation)
       Client.sharedInstance().latitude = Float(newCoord.latitude)
       Client.sharedInstance().longitude = Float(newCoord.longitude)
+      //Client.sharedInstance().savePinToCoreData(lat: Client.sharedInstance().latitude, long: Client.sharedInstance().longitude)
       Client.sharedInstance().getImages(latitude: Client.sharedInstance().latitude, longitude: Client.sharedInstance().longitude) { results, error in
 
         if error != nil {
@@ -117,10 +121,79 @@ class ViewController: UIViewController, MKMapViewDelegate, UIApplicationDelegate
     return view
   }
 
+  override func prepare(for segue: UIStoryboardSegue, sender: Any?){
+    if segue.identifier == "tappedPin"{
+      let collectionVC = segue.destination as! CollectionViewController
+      collectionVC.pinSelected = currentPin!
+      collectionVC.detailLocation = coordinatesForPin
+    }
+  }
+
+  //If callout is clicked then segue.
+  func mapView(_ mapView: MKMapView, annotationView view: MKAnnotationView, calloutAccessoryControlTapped control: UIControl) {
+    if control == view.rightCalloutAccessoryView {
+      //TODO: Create
+      performSegue(withIdentifier: "tappedPin", sender: self)
+
+    }
+  }
 
   func mapView(_ mapView: MKMapView, didSelect view: MKAnnotationView) {
     print("tapped")
+    coordinatesForPin = (view.annotation?.coordinate)!
+    let pin = self.getPin(latitude: coordinatesForPin.latitude, longitude: coordinatesForPin.longitude)
 
+    if pin != nil, pin!.count > 0 {
+      currentPin = pin!.first!
+    }
+  }
+
+  func showPins() {
+    let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "Pin")
+
+    let pins: [Pin]? = fetchPin(fetchRequest: fetchRequest)
+
+    guard pins != nil else {
+      return
+    }
+
+    mapView.addAnnotations(pins!.map { pin in
+      let annotation = MKPointAnnotation()
+      annotation.coordinate.latitude = CLLocationDegrees(pin.latitude)
+      annotation.coordinate.longitude = CLLocationDegrees(pin.longitude)
+      annotation.title = "See Photos"
+      return annotation
+    })
+  }
+
+  func fetchPin(fetchRequest: NSFetchRequest<NSFetchRequestResult>) -> [Pin]? {
+    var pins: [Pin]?
+
+    do {
+      pins = try appDelegate.stack.context.fetch(fetchRequest) as? [Pin]
+    } catch {
+      print("whoops")
+      //VTClient.sharedInstance().showAlert(controller: self, title: "Could not load pins", message: "Try again")
+    }
+
+    return pins
+  }
+
+  func getPin(latitude: CLLocationDegrees, longitude: CLLocationDegrees) -> [Pin]? {
+    let fetchRequest = getFetchRequest(entityName: "Pin", format: "latitude = %@ && longitude = %@", argArray: [latitude, longitude])
+
+    let pins: [Pin]? = fetchPin(fetchRequest: fetchRequest)
+
+    return pins
+  }
+
+  func getFetchRequest(entityName: String, format: String, argArray: [Any]?) -> NSFetchRequest<NSFetchRequestResult> {
+    let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: entityName)
+
+    let predicate = NSPredicate(format: format, argumentArray: argArray)
+    fetchRequest.predicate = predicate
+
+    return fetchRequest
   }
 
   public func bottomToolBarStatus(hidden: Bool) {

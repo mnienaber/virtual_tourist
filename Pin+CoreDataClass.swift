@@ -9,6 +9,7 @@
 import Foundation
 import CoreData
 
+@objc(Pin)
 class Pin: NSManagedObject {
 
   convenience init(latitude: Float, longitude: Float, context: NSManagedObjectContext) {

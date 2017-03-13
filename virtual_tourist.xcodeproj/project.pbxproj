@@ -130,6 +130,7 @@
 		2E4C63E91DC1E8D3002B59E0 /* virtual_tourist */ = {
 			isa = PBXGroup;
 			children = (
+				2E71737D1E765BE900ED7768 /* Core Data */,
 				2E8809DD1E04D80300898A34 /* Control */,
 				2E4C641B1DC1F05B002B59E0 /* Model */,
 				2E4C63EA1DC1E8D3002B59E0 /* AppDelegate.swift */,
@@ -163,10 +164,6 @@
 			isa = PBXGroup;
 			children = (
 				2E5E9CA71E400076002DD730 /* CoreDataStack.swift */,
-				2E4A96A81DEC194B000CC944 /* Photos+CoreDataClass.swift */,
-				2E4A96A91DEC194B000CC944 /* Photos+CoreDataProperties.swift */,
-				2E4A96AA1DEC194B000CC944 /* Pin+CoreDataClass.swift */,
-				2E4A96AB1DEC194B000CC944 /* Pin+CoreDataProperties.swift */,
 				2E8809D31E04D1B300898A34 /* Constants.swift */,
 				2E8809D51E04D1C800898A34 /* Client.swift */,
 				2E8809D91E04D65900898A34 /* Reachability.swift */,
@@ -187,6 +184,17 @@
 				2E4215E21E458FAF00DD8DC3 /* MapDetailViewController.swift */,
 			);
 			name = View;
+			sourceTree = "<group>";
+		};
+		2E71737D1E765BE900ED7768 /* Core Data */ = {
+			isa = PBXGroup;
+			children = (
+				2E4A96A81DEC194B000CC944 /* Photos+CoreDataClass.swift */,
+				2E4A96A91DEC194B000CC944 /* Photos+CoreDataProperties.swift */,
+				2E4A96AA1DEC194B000CC944 /* Pin+CoreDataClass.swift */,
+				2E4A96AB1DEC194B000CC944 /* Pin+CoreDataProperties.swift */,
+			);
+			name = "Core Data";
 			sourceTree = "<group>";
 		};
 		2E8809DD1E04D80300898A34 /* Control */ = {

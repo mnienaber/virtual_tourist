@@ -92,6 +92,26 @@ extension Client {
     }
   }
 
+  func savePinToCoreData(lat: Float, long: Float) -> Void {
+
+    let appDelegate =
+      UIApplication.shared.delegate as! AppDelegate
+    let managedContext = appDelegate.stack.context
+    let entity =  NSEntityDescription.entity(forEntityName: "Pin",
+                                             in:managedContext)
+    let pin = NSManagedObject(entity: entity!,
+                                insertInto: managedContext)
+    pin.setValue(latitude, forKey: "latitude")
+    pin.setValue(longitude, forKey: "longitude")
+
+    do {
+      try managedContext.save()
+      print("pin managedContext \(Client.sharedInstance().photoManagedObject.append(pin))")
+    } catch let error as NSError {
+      print("Could not save pin \(error), \(error.userInfo)")
+    }
+  }
+
   func escapedParameters(parameters: [String : AnyObject]) -> String {
 
     var urlVars = [String]()
