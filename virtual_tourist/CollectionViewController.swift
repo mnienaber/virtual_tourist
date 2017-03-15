@@ -28,7 +28,8 @@ class CollectionViewController:  UIViewController, UICollectionViewDelegate, UIC
   lazy var fetchedResultsController: NSFetchedResultsController<Photos> = { () -> NSFetchedResultsController<Photos> in
 
     let fetchRequest = NSFetchRequest<Photos>(entityName: "Photos")
-    fetchRequest.sortDescriptors = []
+    let titleSort = NSSortDescriptor(key: "title", ascending: true)
+    fetchRequest.sortDescriptors = [titleSort]
 
     let fetchedResultsController = NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: self.delegate.stack.context, sectionNameKeyPath: nil, cacheName: nil)
     fetchedResultsController.delegate = self
@@ -237,7 +238,6 @@ class CollectionViewController:  UIViewController, UICollectionViewDelegate, UIC
     } else {
 
       deleteAllPhotos()
-
       Client.sharedInstance().getImages(latitude: Client.sharedInstance().latitude, longitude: Client.sharedInstance().longitude) { results, error in
 
         if error != nil {
@@ -277,6 +277,7 @@ class CollectionViewController:  UIViewController, UICollectionViewDelegate, UIC
 
       print("dead photo")
     }
+    bottomActionOutlet.title = "New Photo Album"
   }
 
   func updateBottomButton() {
