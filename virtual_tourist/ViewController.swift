@@ -91,20 +91,27 @@ class ViewController: UIViewController, MKMapViewDelegate, UIApplicationDelegate
       Client.sharedInstance().latitude = Float(newCoord.latitude)
       Client.sharedInstance().longitude = Float(newCoord.longitude)
       Client.sharedInstance().savePinToCoreData(lat: Client.sharedInstance().latitude, long: Client.sharedInstance().longitude)
-      Client.sharedInstance().getImages(latitude: Client.sharedInstance().latitude, longitude: Client.sharedInstance().longitude) { results, error in
 
-        if error != nil {
+      if Reachability.isConnectedToNetwork() == false {
 
-          performUIUpdatesOnMain {
-            print(error)
-          }
-        } else {
+        FailAlerts.sharedInstance().failGenOK(title: "No Connection", message: "You don't seem to be connected to the internet", alerttitle: "I'll fix it!")
+      } else {
+        
+        Client.sharedInstance().getImages(latitude: Client.sharedInstance().latitude, longitude: Client.sharedInstance().longitude) { results, error in
 
-          performUIUpdatesOnMain {
+          if error != nil {
 
-            print("results: \(results)")
-            self.bottomToolBar.isHidden = false
-            self.appDelegate.stack.save()
+            performUIUpdatesOnMain {
+              FailAlerts.sharedInstance().failGenOK(title: "No Images", message: "Your search returned no images", alerttitle: "Try Again")
+            }
+          } else {
+
+            performUIUpdatesOnMain {
+
+              print("results: \(results)")
+              self.bottomToolBar.isHidden = false
+              self.appDelegate.stack.save()
+            }
           }
         }
       }
@@ -182,7 +189,6 @@ class ViewController: UIViewController, MKMapViewDelegate, UIApplicationDelegate
       pins = try appDelegate.stack.context.fetch(fetchRequest) as? [Pin]
     } catch {
       print("whoops")
-      //VTClient.sharedInstance().showAlert(controller: self, title: "Could not load pins", message: "Try again")
     }
     return pins
   }

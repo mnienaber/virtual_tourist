@@ -28,8 +28,8 @@ class CollectionViewController:  UIViewController, UICollectionViewDelegate, UIC
   lazy var fetchedResultsController: NSFetchedResultsController<Photos> = { () -> NSFetchedResultsController<Photos> in
 
     let fetchRequest = NSFetchRequest<Photos>(entityName: "Photos")
-    let titleSort = NSSortDescriptor(key: "title", ascending: true)
-    fetchRequest.sortDescriptors = [titleSort]
+    let latSort = NSSortDescriptor(key: "latitude", ascending: true)
+    fetchRequest.sortDescriptors = [latSort]
 
     let fetchedResultsController = NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: self.delegate.stack.context, sectionNameKeyPath: nil, cacheName: nil)
     fetchedResultsController.delegate = self
@@ -120,6 +120,7 @@ class CollectionViewController:  UIViewController, UICollectionViewDelegate, UIC
 
   func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
     print("in collectionView(_:cellForItemAtIndexPath)")
+    
     let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "Cell", for: indexPath) as! CollectionViewCell
 
     self.configureCell(cell, atIndexPath: indexPath)
@@ -244,6 +245,7 @@ class CollectionViewController:  UIViewController, UICollectionViewDelegate, UIC
 
           performUIUpdatesOnMain {
             print(error)
+            FailAlerts.sharedInstance().failGenOK(title: "No Images", message: "Your search returned no images", alerttitle: "Try Again")
           }
         } else {
 
