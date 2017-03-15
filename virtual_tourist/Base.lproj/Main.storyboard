@@ -209,7 +209,7 @@
                                             <constraint firstAttribute="bottom" secondItem="5Vx-oz-WOb" secondAttribute="bottom" id="yVI-Ij-FyL"/>
                                         </constraints>
                                         <connections>
-                                            <outlet property="activityIndicator" destination="m64-pg-Otl" id="nSp-wj-C8m"/>
+                                            <outlet property="activityIndicator" destination="m64-pg-Otl" id="ZgF-0I-IxO"/>
                                             <outlet property="colorPanel" destination="5fy-pL-ECx" id="XKM-Z0-UbX"/>
                                             <outlet property="imageView" destination="5Vx-oz-WOb" id="V3o-0i-cl1"/>
                                         </connections>

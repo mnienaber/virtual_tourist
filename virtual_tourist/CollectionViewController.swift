@@ -139,14 +139,14 @@ class CollectionViewController:  UIViewController, UICollectionViewDelegate, UIC
   func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
     let cell = collectionView.cellForItem(at: indexPath) as! CollectionViewCell
     if let index = selectedIndexes.index(of: indexPath) {
-      bottomActionOutlet.title = "New Photo Album"
       selectedIndexes.remove(at: index)
       cell.colorPanel.isHidden = true
+      updateBottomButton()
       print("deselected")
     } else {
-      bottomActionOutlet.title = "Remove Images"
       cell.colorPanel.isHidden = false
       selectedIndexes.append(indexPath)
+      updateBottomButton()
       print("selected")
     }
   }
@@ -202,7 +202,6 @@ class CollectionViewController:  UIViewController, UICollectionViewDelegate, UIC
     }
   }
 
-
   // This method is invoked after all of the changed objects in the current batch have been collected
   // into the three index path arrays (insert, delete, and upate). We now need to loop through the
   // arrays and perform the changes.
@@ -233,13 +232,76 @@ class CollectionViewController:  UIViewController, UICollectionViewDelegate, UIC
 
     if bottomActionOutlet.title == "Remove Images" {
 
+      deleteSeletedPhotos()
+      print("item selected, waiting to be deleted")
     } else {
 
-      print("TODO: call new photo album")
+      deleteAllPhotos()
+
+      Client.sharedInstance().getImages(latitude: Client.sharedInstance().latitude, longitude: Client.sharedInstance().longitude) { results, error in
+
+        if error != nil {
+
+          performUIUpdatesOnMain {
+            print(error)
+          }
+        } else {
+
+          performUIUpdatesOnMain {
+            print("results: \(results)")
+          }
+        }
+      }
+    }
+  }
+
+  func deleteAllPhotos() {
+
+    for photos in fetchedResultsController.fetchedObjects! {
+      self.delegate.stack.context.delete(photos)
+    }
+  }
+
+  func deleteSeletedPhotos() {
+
+    var photosToDelete = [Photos]()
+
+    for indexPath in selectedIndexes {
+
+      photosToDelete.append(fetchedResultsController.object(at: indexPath))
     }
 
+    for deadPhoto in photosToDelete {
 
+      self.delegate.stack.context.delete(deadPhoto)
+
+      print("dead photo")
+    }
+  }
+
+  func updateBottomButton() {
+
+    if selectedIndexes.count > 0 {
+      bottomActionOutlet.title = "Remove Images"
+    } else {
+      bottomActionOutlet.title = "New Photo Album"
+    }
   }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
