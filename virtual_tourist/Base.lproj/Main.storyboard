@@ -33,7 +33,11 @@
                             <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="GVh-pP-axS">
                                 <rect key="frame" x="0.0" y="623" width="375" height="44"/>
                                 <items>
-                                    <barButtonItem title="Go To Album" id="htY-EV-Cod"/>
+                                    <barButtonItem title="Go To Album" id="htY-EV-Cod">
+                                        <connections>
+                                            <segue destination="wVH-Rg-jEt" kind="show" id="Zyx-JV-y0b"/>
+                                        </connections>
+                                    </barButtonItem>
                                 </items>
                             </toolbar>
                         </subviews>
@@ -53,7 +57,6 @@
                     <connections>
                         <outlet property="bottomToolBar" destination="GVh-pP-axS" id="wNl-bu-FRH"/>
                         <outlet property="mapView" destination="mGA-hL-kk6" id="Lsa-vP-e4s"/>
-                        <segue destination="wVH-Rg-jEt" kind="show" identifier="tappedPin" id="fzw-Eh-O42"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
@@ -81,18 +84,18 @@
                                         <rect key="frame" x="0.0" y="28" width="375" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="K1u-Rl-Jkd" id="qAO-Kh-2Gu">
-                                            <rect key="frame" x="0.0" y="0.0" width="375" height="43.5"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="375" height="43"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="Title" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="wWO-us-vLv">
-                                                    <rect key="frame" x="15" y="5" width="33.5" height="20.5"/>
+                                                    <rect key="frame" x="15" y="4" width="34" height="21"/>
                                                     <autoresizingMask key="autoresizingMask"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="Subtitle" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="qj3-Z7-cbB">
-                                                    <rect key="frame" x="15" y="25.5" width="44" height="14.5"/>
+                                                    <rect key="frame" x="15" y="25" width="44" height="15"/>
                                                     <autoresizingMask key="autoresizingMask"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="12"/>
                                                     <nil key="textColor"/>
@@ -155,13 +158,13 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" mapType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="NMh-nC-DXO">
-                                <rect key="frame" x="0.0" y="64" width="375" height="269"/>
+                                <rect key="frame" x="0.0" y="64" width="375" height="191"/>
                                 <connections>
                                     <outlet property="delegate" destination="wVH-Rg-jEt" id="flM-Ga-6pn"/>
                                 </connections>
                             </mapView>
                             <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="gfm-uJ-GVl">
-                                <rect key="frame" x="0.0" y="341" width="370" height="326"/>
+                                <rect key="frame" x="0.0" y="263" width="370" height="404"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="fBm-At-2rB">
                                     <size key="itemSize" width="135" height="114"/>
@@ -233,14 +236,14 @@
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstItem="gfm-uJ-GVl" firstAttribute="top" secondItem="NMh-nC-DXO" secondAttribute="bottom" constant="8" symbolic="YES" id="3AM-oV-Xo1"/>
+                            <constraint firstItem="gfm-uJ-GVl" firstAttribute="top" secondItem="NMh-nC-DXO" secondAttribute="bottom" constant="8" id="3AM-oV-Xo1"/>
                             <constraint firstItem="gfm-uJ-GVl" firstAttribute="bottom" secondItem="UCj-kh-yPS" secondAttribute="top" id="4BZ-PC-pcF"/>
                             <constraint firstAttribute="trailingMargin" secondItem="NMh-nC-DXO" secondAttribute="trailing" constant="-16" id="ANM-pS-vjz"/>
                             <constraint firstItem="4vv-49-duz" firstAttribute="centerX" secondItem="gfm-uJ-GVl" secondAttribute="centerX" id="LqV-iN-jms"/>
                             <constraint firstItem="4vv-49-duz" firstAttribute="leading" secondItem="QgJ-60-rA8" secondAttribute="leadingMargin" constant="-18" id="ThO-f8-9Lr"/>
                             <constraint firstAttribute="trailingMargin" secondItem="gfm-uJ-GVl" secondAttribute="trailing" constant="-11" id="bjY-IQ-Y8v"/>
                             <constraint firstItem="NMh-nC-DXO" firstAttribute="leading" secondItem="QgJ-60-rA8" secondAttribute="leadingMargin" constant="-16" id="cNl-mU-jT9"/>
-                            <constraint firstItem="UCj-kh-yPS" firstAttribute="top" secondItem="NMh-nC-DXO" secondAttribute="bottom" constant="334" id="ey9-W5-9f1"/>
+                            <constraint firstItem="UCj-kh-yPS" firstAttribute="top" secondItem="NMh-nC-DXO" secondAttribute="bottom" constant="412" id="ey9-W5-9f1"/>
                             <constraint firstItem="4vv-49-duz" firstAttribute="bottom" secondItem="UCj-kh-yPS" secondAttribute="top" id="ozO-4P-t12"/>
                             <constraint firstItem="NMh-nC-DXO" firstAttribute="top" secondItem="vHe-x2-qHa" secondAttribute="bottom" id="vDm-ra-fEZ"/>
                             <constraint firstItem="gfm-uJ-GVl" firstAttribute="leading" secondItem="NMh-nC-DXO" secondAttribute="leading" id="vKT-I7-3fI"/>

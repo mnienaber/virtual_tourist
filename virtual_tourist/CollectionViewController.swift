@@ -51,8 +51,12 @@ class CollectionViewController:  UIViewController, UICollectionViewDelegate, UIC
     bottomActionOutlet.title = "New Photo Album"
 
     let annotation = MKPointAnnotation()
-    annotation.coordinate.latitude = CLLocationDegrees((detailLocation.latitude))
-    annotation.coordinate.longitude = CLLocationDegrees((detailLocation.longitude))
+
+    //TODO: segue will include selected pin cordinates - hard coded for now.
+//    annotation.coordinate.latitude = CLLocationDegrees((detailLocation.latitude))
+//    annotation.coordinate.latitude = CLLocationDegrees((detailLocation.longitude))
+    annotation.coordinate.latitude = CLLocationDegrees((-35.19809))
+    annotation.coordinate.longitude = CLLocationDegrees((141.7202))
     self.mapView.addAnnotation(annotation)
 
     // Start the fetched results controller
@@ -134,17 +138,16 @@ class CollectionViewController:  UIViewController, UICollectionViewDelegate, UIC
 
   func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
     let cell = collectionView.cellForItem(at: indexPath) as! CollectionViewCell
-    print("selected cell")
     if let index = selectedIndexes.index(of: indexPath) {
+      bottomActionOutlet.title = "New Photo Album"
+      selectedIndexes.remove(at: index)
+      cell.colorPanel.isHidden = true
+      print("deselected")
+    } else {
       bottomActionOutlet.title = "Remove Images"
       cell.colorPanel.isHidden = false
-      selectedIndexes.remove(at: index)
-      print("delete")
-    } else {
-      bottomActionOutlet.title = "New Photo Album"
       selectedIndexes.append(indexPath)
-      cell.colorPanel.isHidden = true
-      print("new")
+      print("selected")
     }
   }
 
@@ -228,11 +231,14 @@ class CollectionViewController:  UIViewController, UICollectionViewDelegate, UIC
   }
   @IBAction func bottomAction(_ sender: Any) {
 
-//    switch bottomActionOutlet {
-//    case bottomActionOutlet.title = "New Photo Album":
-//      //TODO: make new call for images
-//    case bottomActionOutlet.title = "Remove Images":
-//      //TODO: invoke delete images func
+    if bottomActionOutlet.title == "Remove Images" {
+
+    } else {
+
+      print("TODO: call new photo album")
+    }
+
+
   }
 }
 

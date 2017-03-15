@@ -24,7 +24,12 @@ class ViewController: UIViewController, MKMapViewDelegate, UIApplicationDelegate
 
   override func viewDidLoad() {
     super.viewDidLoad()
-    //CoreDataStack.dropAllData(CoreDataStack: self)
+
+//    do {
+//      try self.appDelegate.stack.dropAllData()
+//    } catch {
+//      print(error as? NSError)
+//    }
 
     locationManager.delegate = self
     locationManager.desiredAccuracy = kCLLocationAccuracyBest
@@ -81,11 +86,11 @@ class ViewController: UIViewController, MKMapViewDelegate, UIApplicationDelegate
     newAnnotation.coordinate = newCoord
     newCoord.latitude = newAnnotation.coordinate.latitude
     newCoord.longitude = newAnnotation.coordinate.longitude
-    if gestureRecognizer.state == .began {
+    if gestureRecognizer.state == .ended {
       mapView.addAnnotation(newAnnotation)
       Client.sharedInstance().latitude = Float(newCoord.latitude)
       Client.sharedInstance().longitude = Float(newCoord.longitude)
-      //Client.sharedInstance().savePinToCoreData(lat: Client.sharedInstance().latitude, long: Client.sharedInstance().longitude)
+      Client.sharedInstance().savePinToCoreData(lat: Client.sharedInstance().latitude, long: Client.sharedInstance().longitude)
       Client.sharedInstance().getImages(latitude: Client.sharedInstance().latitude, longitude: Client.sharedInstance().longitude) { results, error in
 
         if error != nil {
@@ -99,6 +104,7 @@ class ViewController: UIViewController, MKMapViewDelegate, UIApplicationDelegate
 
             print("results: \(results)")
             self.bottomToolBar.isHidden = false
+            self.appDelegate.stack.save()
           }
         }
       }
@@ -107,18 +113,21 @@ class ViewController: UIViewController, MKMapViewDelegate, UIApplicationDelegate
 
   func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView? {
 
-    let annotation = annotation
-    let identifier = "pin"
-    var view: MKPinAnnotationView
-    if let dequeuedView = self.mapView.dequeueReusableAnnotationView(withIdentifier: identifier) as? MKPinAnnotationView {
-      dequeuedView.annotation = annotation
-      view = dequeuedView
-    } else {
-      view = MKPinAnnotationView(annotation: annotation, reuseIdentifier: identifier)
-      view.canShowCallout = false
-      view.isEnabled = true
+    let reuseId = "pin"
+
+    var pinView = mapView.dequeueReusableAnnotationView(withIdentifier: reuseId) as? MKPinAnnotationView
+
+    if pinView == nil {
+      pinView = MKPinAnnotationView(annotation: annotation, reuseIdentifier: reuseId)
+      pinView!.canShowCallout = true
+      pinView!.pinColor = .green
+      pinView!.rightCalloutAccessoryView = UIButton(type: .detailDisclosure)
     }
-    return view
+    else {
+      pinView!.annotation = annotation
+    }
+
+    return pinView
   }
 
   override func prepare(for segue: UIStoryboardSegue, sender: Any?){
@@ -175,7 +184,6 @@ class ViewController: UIViewController, MKMapViewDelegate, UIApplicationDelegate
       print("whoops")
       //VTClient.sharedInstance().showAlert(controller: self, title: "Could not load pins", message: "Try again")
     }
-
     return pins
   }
 
