@@ -21,7 +21,8 @@ class CollectionViewController:  UIViewController, UICollectionViewDelegate, UIC
 
   var pinSelected: Pin?
   var detailLocation = CLLocationCoordinate2D()
-
+  let lat: Float = -35.19809
+  let long: Float = 141.7202
   let delegate = UIApplication.shared.delegate as! AppDelegate
 
   // MARK: - Instance Variables
@@ -120,11 +121,25 @@ class CollectionViewController:  UIViewController, UICollectionViewDelegate, UIC
 
   func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
     print("in collectionView(_:cellForItemAtIndexPath)")
-    
+
     let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "Cell", for: indexPath) as! CollectionViewCell
 
-    self.configureCell(cell, atIndexPath: indexPath)
+    cell.imageView.image = UIImage(named: "placeholder")
+    cell.activityIndicator.startAnimating()
+    cell.imageView.contentMode = .scaleAspectFit
 
+    let photo = self.fetchedResultsController.object(at: indexPath) as? Photos
+
+    if photo?.value(forKey: "image") == nil {
+      performUIUpdatesOnMain {
+        
+        self.getFlickrPhotos(lat: self.lat, long: self.lat)
+        }
+    } else {
+      cell.activityIndicator.stopAnimating()
+      self.configureCell(cell, atIndexPath: indexPath)
+    }
+    //If there is already and image downloaded for that indexPath, the show it.
     return cell
   }
 
@@ -239,21 +254,8 @@ class CollectionViewController:  UIViewController, UICollectionViewDelegate, UIC
     } else {
 
       deleteAllPhotos()
-      Client.sharedInstance().getImages(latitude: Client.sharedInstance().latitude, longitude: Client.sharedInstance().longitude) { results, error in
+      getFlickrPhotos(lat: lat, long: long)
 
-        if error != nil {
-
-          performUIUpdatesOnMain {
-            print(error)
-            FailAlerts.sharedInstance().failGenOK(title: "No Images", message: "Your search returned no images", alerttitle: "Try Again")
-          }
-        } else {
-
-          performUIUpdatesOnMain {
-            print("results: \(results)")
-          }
-        }
-      }
     }
   }
 
@@ -276,7 +278,7 @@ class CollectionViewController:  UIViewController, UICollectionViewDelegate, UIC
     for deadPhoto in photosToDelete {
 
       self.delegate.stack.context.delete(deadPhoto)
-
+      bottomActionOutlet.title = "New Photo Album"
       print("dead photo")
     }
     bottomActionOutlet.title = "New Photo Album"
@@ -285,9 +287,30 @@ class CollectionViewController:  UIViewController, UICollectionViewDelegate, UIC
   func updateBottomButton() {
 
     if selectedIndexes.count > 0 {
+
       bottomActionOutlet.title = "Remove Images"
     } else {
+      selectedIndexes.removeAll()
       bottomActionOutlet.title = "New Photo Album"
+    }
+  }
+
+  func getFlickrPhotos(lat: Float, long: Float) {
+
+    Client.sharedInstance().getImages(latitude: Client.sharedInstance().latitude, longitude: Client.sharedInstance().longitude) { results, error in
+
+      if error != nil {
+
+        performUIUpdatesOnMain {
+          print(error)
+          FailAlerts.sharedInstance().failGenOK(title: "No Images", message: "Your search returned no images", alerttitle: "Try Again")
+        }
+      } else {
+
+        performUIUpdatesOnMain {
+          print("results: \(results)")
+        }
+      }
     }
   }
 }

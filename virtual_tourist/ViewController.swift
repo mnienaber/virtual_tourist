@@ -94,7 +94,9 @@ class ViewController: UIViewController, MKMapViewDelegate, UIApplicationDelegate
 
       if Reachability.isConnectedToNetwork() == false {
 
-        FailAlerts.sharedInstance().failGenOK(title: "No Connection", message: "You don't seem to be connected to the internet", alerttitle: "I'll fix it!")
+        performUIUpdatesOnMain {
+          FailAlerts.sharedInstance().failGenOK(title: "No Connection", message: "You don't seem to be connected to the internet", alerttitle: "I'll fix it!")
+        }
       } else {
         
         Client.sharedInstance().getImages(latitude: Client.sharedInstance().latitude, longitude: Client.sharedInstance().longitude) { results, error in
