@@ -109,8 +109,6 @@ class ViewController: UIViewController, MKMapViewDelegate, UIApplicationDelegate
           } else {
 
             performUIUpdatesOnMain {
-
-              print("results: \(results)")
               self.bottomToolBar.isHidden = false
               self.appDelegate.stack.save()
             }

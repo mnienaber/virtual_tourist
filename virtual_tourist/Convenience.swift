@@ -164,7 +164,6 @@ extension Client {
         print(error!)
         completion(nil, response, error)
       } else {
-
         completion(data, response, nil)
       }
     }

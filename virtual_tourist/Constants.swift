@@ -21,7 +21,7 @@ extension Client {
       static let EXTRAS = "url_m"
       static let DATA_FORMAT = "json"
       static let NO_JSON_CALLBACK = "1"
-      static let PER_PAGE = "20"
+      static let PER_PAGE = "5"
     }
 
     struct ParseResponseKeys {

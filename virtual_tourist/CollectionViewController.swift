@@ -124,16 +124,18 @@ class CollectionViewController:  UIViewController, UICollectionViewDelegate, UIC
 
     let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "Cell", for: indexPath) as! CollectionViewCell
 
-    cell.imageView.image = UIImage(named: "placeholder")
-    cell.activityIndicator.startAnimating()
-    cell.imageView.contentMode = .scaleAspectFit
-
     let photo = self.fetchedResultsController.object(at: indexPath) as? Photos
 
     if photo?.value(forKey: "image") == nil {
       performUIUpdatesOnMain {
+
+        cell.imageView.image = UIImage(named: "placeholder")
+        cell.activityIndicator.startAnimating()
+        cell.imageView.contentMode = .scaleAspectFit
         
-        self.getFlickrPhotos(lat: self.lat, long: self.lat)
+        performBackgroundUpdatesOnGlobal {
+          self.getFlickrPhotos(lat: self.lat, long: self.lat)
+        }
         }
     } else {
       cell.activityIndicator.stopAnimating()
@@ -245,19 +247,6 @@ class CollectionViewController:  UIViewController, UICollectionViewDelegate, UIC
 
     }, completion: nil)
   }
-  @IBAction func bottomAction(_ sender: Any) {
-
-    if bottomActionOutlet.title == "Remove Images" {
-
-      deleteSeletedPhotos()
-      print("item selected, waiting to be deleted")
-    } else {
-
-      deleteAllPhotos()
-      getFlickrPhotos(lat: lat, long: long)
-
-    }
-  }
 
   func deleteAllPhotos() {
 
@@ -277,9 +266,17 @@ class CollectionViewController:  UIViewController, UICollectionViewDelegate, UIC
 
     for deadPhoto in photosToDelete {
 
+      print("dead photo")
       self.delegate.stack.context.delete(deadPhoto)
       bottomActionOutlet.title = "New Photo Album"
-      print("dead photo")
+    }
+
+    selectedIndexes = [IndexPath]()
+
+    do {
+      try self.delegate.stack.context.save()
+    } catch {
+      print("coundn't save context for some reason")
     }
     bottomActionOutlet.title = "New Photo Album"
   }
@@ -295,7 +292,7 @@ class CollectionViewController:  UIViewController, UICollectionViewDelegate, UIC
     }
   }
 
-  func getFlickrPhotos(lat: Float, long: Float) {
+  func getFlickrPhotos(lat: Float, long: Float) -> Bool {
 
     Client.sharedInstance().getImages(latitude: Client.sharedInstance().latitude, longitude: Client.sharedInstance().longitude) { results, error in
 
@@ -304,11 +301,40 @@ class CollectionViewController:  UIViewController, UICollectionViewDelegate, UIC
         performUIUpdatesOnMain {
           print(error)
           FailAlerts.sharedInstance().failGenOK(title: "No Images", message: "Your search returned no images", alerttitle: "Try Again")
+          return
         }
       } else {
 
-        performUIUpdatesOnMain {
-          print("results: \(results)")
+        print("results: \(results)")
+      }
+    }
+    print("true")
+    return true
+  }
+
+  @IBAction func bottomAction(_ sender: Any) {
+
+    if bottomActionOutlet.title == "Remove Images" {
+
+      deleteSeletedPhotos()
+      print("deleteselectedphotos")
+    } else {
+
+      deleteAllPhotos()
+      performBackgroundUpdatesOnGlobal {
+        Client.sharedInstance().getImages(latitude: Client.sharedInstance().latitude, longitude: Client.sharedInstance().longitude) { results, error in
+
+          if error != nil {
+
+            performUIUpdatesOnMain {
+              print(error)
+              FailAlerts.sharedInstance().failGenOK(title: "No Images", message: "Your search returned no images", alerttitle: "Try Again")
+              return
+            }
+          } else {
+
+            print("results of bottomaction: \(results)")
+          }
         }
       }
     }
