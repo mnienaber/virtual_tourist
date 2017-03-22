@@ -165,9 +165,9 @@
 		2E4C641B1DC1F05B002B59E0 /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				2E8809D51E04D1C800898A34 /* Client.swift */,
 				2E5E9CA71E400076002DD730 /* CoreDataStack.swift */,
 				2E8809D31E04D1B300898A34 /* Constants.swift */,
-				2E8809D51E04D1C800898A34 /* Client.swift */,
 				2E8809D91E04D65900898A34 /* Reachability.swift */,
 				2E8809DE1E05061400898A34 /* BlackBox.swift */,
 				2E8809E01E05086A00898A34 /* ImageObject.swift */,

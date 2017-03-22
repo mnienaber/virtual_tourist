@@ -78,7 +78,7 @@ extension Client {
                   do {
                     try managedContext.save()
                     Client.sharedInstance().photoManagedObject.append(image)
-                    print("managedobject: \(Client.sharedInstance().photoManagedObject)")
+                    //print("managedobject: \(Client.sharedInstance().photoManagedObject)")
                   } catch let error as NSError  {
                     print("Could not save \(error), \(error.userInfo)")
                   }

@@ -124,22 +124,19 @@ class CollectionViewController:  UIViewController, UICollectionViewDelegate, UIC
 
     let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "Cell", for: indexPath) as! CollectionViewCell
 
-    cell.imageView.image = UIImage(named: "placeholder")
-    cell.activityIndicator.startAnimating()
-    cell.imageView.contentMode = .scaleAspectFit
-
     let photo = self.fetchedResultsController.object(at: indexPath) as? Photos
 
     if photo?.image == nil {
-      performBackgroundUpdatesOnGlobal {
+      cell.imageView.image = UIImage(named: "placeholder")
+      cell.activityIndicator.startAnimating()
+      cell.imageView.contentMode = .scaleAspectFit
 
-        self.getFlickrPhotos(lat: self.lat, long: self.lat)
-      }
     } else {
       cell.activityIndicator.stopAnimating()
       self.configureCell(cell, atIndexPath: indexPath)
     }
     //If there is already and image downloaded for that indexPath, the show it.
+    cell.activityIndicator.stopAnimating()
     return cell
   }
 
@@ -290,7 +287,7 @@ class CollectionViewController:  UIViewController, UICollectionViewDelegate, UIC
     }
   }
 
-  func getFlickrPhotos(lat: Float, long: Float) -> Bool {
+  func getFlickrPhotos(lat: Float, long: Float, completion: @escaping (_ success: Bool, _ error: String?) -> Void) {
 
     performBackgroundUpdatesOnGlobal {
       Client.sharedInstance().getImages(latitude: Client.sharedInstance().latitude, longitude: Client.sharedInstance().longitude) { results, error in
@@ -300,16 +297,17 @@ class CollectionViewController:  UIViewController, UICollectionViewDelegate, UIC
           performUIUpdatesOnMain {
             print(error)
             FailAlerts.sharedInstance().failGenOK(title: "No Images", message: "Your search returned no images", alerttitle: "Try Again")
-            return
+            completion(false, "Something went wrong")
           }
         } else {
 
+          self.deleteAllPhotos()
+
           print("results: \(results)")
+          completion(true, "nothing to see here")
         }
       }
     }
-    print("true")
-    return true
   }
 
   //Check if there are Photos in the database.
@@ -333,19 +331,18 @@ class CollectionViewController:  UIViewController, UICollectionViewDelegate, UIC
       print("deleteselectedphotos")
     } else {
 
+      let photos = self.fetchedResultsController.fetchedObjects
+      for photo in photos! {
+        photo.image = nil
+      }
+
       performBackgroundUpdatesOnGlobal {
-        Client.sharedInstance().getImages(latitude: Client.sharedInstance().latitude, longitude: Client.sharedInstance().longitude) { results, error in
 
-          if error != nil {
-
-            performUIUpdatesOnMain {
-              print(error)
-              FailAlerts.sharedInstance().failGenOK(title: "No Images", message: "Your search returned no images", alerttitle: "Try Again")
-              return
-            }
+        self.getFlickrPhotos(lat: self.lat, long: self.long) { (success, error) in
+          if success {
+            self.deleteAllPhotos()
           } else {
-
-            print("results of bottomaction: \(results)")
+            print("something went wrong")
           }
         }
       }
@@ -359,6 +356,20 @@ class CollectionViewController:  UIViewController, UICollectionViewDelegate, UIC
 
 
 
+
+//Client.sharedInstance().getImages(latitude: Client.sharedInstance().latitude, longitude: Client.sharedInstance().longitude) { results, error in
+//
+//  if error != nil {
+//
+//    performUIUpdatesOnMain {
+//      print(error)
+//      FailAlerts.sharedInstance().failGenOK(title: "No Images", message: "Your search returned no images", alerttitle: "Try Again")
+//      return
+//    }
+//  } else {
+//
+//    print("results of bottomaction: \(results)")
+//}
 
 
 
