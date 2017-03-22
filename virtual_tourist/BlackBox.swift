@@ -20,3 +20,4 @@ func performBackgroundUpdatesOnGlobal(_ updates: @escaping () -> Void) {
     updates()
   }
 }
+

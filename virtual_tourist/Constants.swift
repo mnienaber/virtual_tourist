@@ -64,6 +64,13 @@ extension Client {
       static let FlickrResults = "photos"
     }
 
+    struct CameraKeys {
+      static let CenterLat = "CenterLat"
+      static let CenterLon = "CenterLon"
+      static let altitude = "altitude"
+      static let pitch = "pitch"
+    }
+
     struct bottomToolBarStatus {
       static var status = true
     }

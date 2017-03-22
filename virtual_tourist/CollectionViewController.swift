@@ -39,7 +39,6 @@ class CollectionViewController:  UIViewController, UICollectionViewDelegate, UIC
   }()
 
   var selectedIndexes = [IndexPath]()
-  // Keep the changes. We will keep track of insertions, deletions, and updates.
   var insertedIndexPaths: [IndexPath]!
   var deletedIndexPaths: [IndexPath]!
   var updatedIndexPaths: [IndexPath]!
@@ -72,6 +71,11 @@ class CollectionViewController:  UIViewController, UICollectionViewDelegate, UIC
     if let error = error {
       print("Error performing initial fetch: \(error)")
     }
+  }
+
+  override func viewWillAppear(_ animated: Bool) {
+    self.delegate.stack.autoSave(20)
+
   }
 
   override func viewDidLayoutSubviews() {
@@ -300,9 +304,7 @@ class CollectionViewController:  UIViewController, UICollectionViewDelegate, UIC
             completion(false, "Something went wrong")
           }
         } else {
-
           self.deleteAllPhotos()
-
           print("results: \(results)")
           completion(true, "nothing to see here")
         }
@@ -310,7 +312,6 @@ class CollectionViewController:  UIViewController, UICollectionViewDelegate, UIC
     }
   }
 
-  //Check if there are Photos in the database.
   func getPhotos() -> [Photos]? {
 
     var photos: [Photos]?
@@ -319,7 +320,6 @@ class CollectionViewController:  UIViewController, UICollectionViewDelegate, UIC
     } catch {
       FailAlerts.sharedInstance().failGenOK(title: "Sorry", message: "Couldn't load photos", alerttitle: "Please try again")
     }
-
     return photos
   }
 
@@ -341,6 +341,9 @@ class CollectionViewController:  UIViewController, UICollectionViewDelegate, UIC
         self.getFlickrPhotos(lat: self.lat, long: self.long) { (success, error) in
           if success {
             self.deleteAllPhotos()
+            self.delegate.stack.save()
+            print("printing self.fetchedResultsController.fetchedObjects")
+            print(self.fetchedResultsController.fetchedObjects)
           } else {
             print("something went wrong")
           }
@@ -349,29 +352,6 @@ class CollectionViewController:  UIViewController, UICollectionViewDelegate, UIC
     }
   }
 }
-
-
-
-
-
-
-
-
-//Client.sharedInstance().getImages(latitude: Client.sharedInstance().latitude, longitude: Client.sharedInstance().longitude) { results, error in
-//
-//  if error != nil {
-//
-//    performUIUpdatesOnMain {
-//      print(error)
-//      FailAlerts.sharedInstance().failGenOK(title: "No Images", message: "Your search returned no images", alerttitle: "Try Again")
-//      return
-//    }
-//  } else {
-//
-//    print("results of bottomaction: \(results)")
-//}
-
-
 
 
 

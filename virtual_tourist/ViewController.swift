@@ -18,18 +18,17 @@ class ViewController: UIViewController, MKMapViewDelegate, UIApplicationDelegate
   var coordinatesForPin = CLLocationCoordinate2D()
   var currentPin: Pin?
   var pin: Pin?
+  var cameraAltitude = CLLocationDistance()
+  var cameraCenterLon = CLLocationDegrees()
+  var cameraCenterLat = CLLocationDegrees()
+  var savedRegionLoaded = false
+  let delegate = UIApplication.shared.delegate as! AppDelegate
 
   @IBOutlet weak var mapView: MKMapView!
   @IBOutlet weak var bottomToolBar: UIToolbar!
 
   override func viewDidLoad() {
     super.viewDidLoad()
-
-//    do {
-//      try self.appDelegate.stack.dropAllData()
-//    } catch {
-//      print(error as? NSError)
-//    }
 
     locationManager.delegate = self
     locationManager.desiredAccuracy = kCLLocationAccuracyBest
@@ -49,6 +48,16 @@ class ViewController: UIViewController, MKMapViewDelegate, UIApplicationDelegate
     longTap.minimumPressDuration = 0.5
     longTap.allowableMovement = 10
     mapView.addGestureRecognizer(longTap)
+
+    showPins()
+    printDatabaseStatistics()
+  }
+
+  override func viewDidAppear(_ animated: Bool) {
+    if !savedRegionLoaded{
+      checkAndSetMapCamera()
+    }
+    savedRegionLoaded = true
   }
 
   override func didReceiveMemoryWarning() {
@@ -87,18 +96,24 @@ class ViewController: UIViewController, MKMapViewDelegate, UIApplicationDelegate
     newCoord.latitude = newAnnotation.coordinate.latitude
     newCoord.longitude = newAnnotation.coordinate.longitude
     if gestureRecognizer.state == .ended {
+      let touchPoint = gestureRecognizer.location(in: mapView)
+      let newCoordinates = mapView.convert(touchPoint, toCoordinateFrom: mapView)
+      coordinatesForPin = newCoordinates
+      let annotation = MKPointAnnotation()
+      annotation.coordinate = newCoordinates
+      annotation.title = "See Photos"
       mapView.addAnnotation(newAnnotation)
-      Client.sharedInstance().latitude = Float(newCoord.latitude)
-      Client.sharedInstance().longitude = Float(newCoord.longitude)
-      Client.sharedInstance().savePinToCoreData(lat: Client.sharedInstance().latitude, long: Client.sharedInstance().longitude)
-
+//      Client.sharedInstance().latitude = Float(newCoord.latitude)
+//      Client.sharedInstance().longitude = Float(newCoord.longitude)
+//      Client.sharedInstance().savePinToCoreData(lat: Client.sharedInstance().latitude, long: Client.sharedInstance().longitude)
+      _ = Pin(latitude: Float(newCoord.latitude), longitude: Float(newCoord.longitude), context: self.delegate.stack.context)
+      self.delegate.stack.save()
       if Reachability.isConnectedToNetwork() == false {
 
         performUIUpdatesOnMain {
           FailAlerts.sharedInstance().failGenOK(title: "No Connection", message: "You don't seem to be connected to the internet", alerttitle: "I'll fix it!")
         }
       } else {
-        
         Client.sharedInstance().getImages(latitude: Client.sharedInstance().latitude, longitude: Client.sharedInstance().longitude) { results, error in
 
           if error != nil {
@@ -109,8 +124,9 @@ class ViewController: UIViewController, MKMapViewDelegate, UIApplicationDelegate
           } else {
 
             performUIUpdatesOnMain {
+              self.printDatabaseStatistics()
               self.bottomToolBar.isHidden = false
-              self.appDelegate.stack.save()
+              self.delegate.stack.save()
             }
           }
         }
@@ -186,7 +202,7 @@ class ViewController: UIViewController, MKMapViewDelegate, UIApplicationDelegate
     var pins: [Pin]?
 
     do {
-      pins = try appDelegate.stack.context.fetch(fetchRequest) as? [Pin]
+      pins = try self.delegate.stack.context.fetch(fetchRequest) as? [Pin]
     } catch {
       print("whoops")
     }
@@ -218,6 +234,47 @@ class ViewController: UIViewController, MKMapViewDelegate, UIApplicationDelegate
     } else {
       bottomToolBar.isHidden = false
     }
+  }
+
+  func printDatabaseStatistics() {
+    let pinCount = try? self.delegate.stack.context.count(for: NSFetchRequest(entityName: "Pin"))
+    let photoCount = try? self.delegate.stack.context.count(for: NSFetchRequest(entityName: "Photos"))
+    print("\(pinCount) Pins Found")
+    print("\(photoCount) Photos Found")
+  }
+
+  func checkAndSetMapCamera(){
+    if let altitude = UserDefaults.standard.value(forKey: Client.Constants.CameraKeys.altitude){
+      mapView.camera.altitude = altitude as! CLLocationDistance
+    } else{
+      UserDefaults.standard.set(mapView.camera.altitude, forKey: Client.Constants.CameraKeys.altitude)
+    }
+
+    if let cameraCenterLatitude = UserDefaults.standard.value(forKey: Client.Constants.CameraKeys.CenterLat){
+      mapView.camera.centerCoordinate.latitude = cameraCenterLatitude as! CLLocationDegrees
+    } else {
+      UserDefaults.standard.set(mapView.camera.centerCoordinate.latitude, forKey: Client.Constants.CameraKeys.CenterLat)
+    }
+
+    if let cameraCenterLongitude = UserDefaults.standard.value(forKey: Client.Constants.CameraKeys.CenterLon){
+      mapView.camera.centerCoordinate.longitude = cameraCenterLongitude as! CLLocationDegrees
+    } else {
+      UserDefaults.standard.set(mapView.camera.centerCoordinate.longitude, forKey: Client.Constants.CameraKeys.CenterLon)
+    }
+
+    print(mapView.camera.centerCoordinate as Any)
+
+  }
+
+  func saveCameraSettings() {
+    cameraAltitude = mapView.camera.altitude
+    cameraCenterLat = mapView.camera.centerCoordinate.latitude
+    cameraCenterLon = mapView.camera.centerCoordinate.longitude
+
+    UserDefaults.standard.set(cameraAltitude, forKey: Client.Constants.CameraKeys.altitude)
+    UserDefaults.standard.set(cameraCenterLat, forKey: Client.Constants.CameraKeys.CenterLat)
+    UserDefaults.standard.set(cameraCenterLon, forKey: Client.Constants.CameraKeys.CenterLon)
+    UserDefaults.standard.synchronize()
   }
 
 }

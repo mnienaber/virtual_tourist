@@ -106,7 +106,7 @@ extension Client {
 
     do {
       try managedContext.save()
-      print("pin managedContext \(Client.sharedInstance().photoManagedObject.append(pin))")
+      print("pin managedContext \(managedContext)")
     } catch let error as NSError {
       print("Could not save pin \(error), \(error.userInfo)")
     }
@@ -129,7 +129,6 @@ extension Client {
 
     URLSession.shared.dataTask(with: url) {
       (data, response, error) in
-      print("Download completed: \(data)")
       completion(data, response, error)
       }.resume()
   }
@@ -152,6 +151,7 @@ extension Client {
           imageData = data
         }
       }
+      print("Download completed: \(imageData)")
       completion(data, response, error)
     }
   }
