@@ -49,7 +49,23 @@ class ViewController: UIViewController, MKMapViewDelegate, UIApplicationDelegate
     longTap.allowableMovement = 10
     mapView.addGestureRecognizer(longTap)
 
-    showPins()
+    //showPins()
+    let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "Pin")
+
+    let pins: [Pin]? = fetchPin(fetchRequest: fetchRequest)
+    print("pins: \(pins)")
+
+    guard pins != nil else {
+      return
+    }
+
+    mapView.addAnnotations(pins!.map { pin in
+      let annotation = MKPointAnnotation()
+      annotation.coordinate.latitude = CLLocationDegrees(pin.latitude)
+      annotation.coordinate.longitude = CLLocationDegrees(pin.longitude)
+      annotation.title = "See Photos"
+      return annotation
+    })
     printDatabaseStatistics()
   }
 
@@ -203,6 +219,7 @@ class ViewController: UIViewController, MKMapViewDelegate, UIApplicationDelegate
 
     do {
       pins = try self.delegate.stack.context.fetch(fetchRequest) as? [Pin]
+      print("pins from function: \(pins)")
     } catch {
       print("whoops")
     }
@@ -235,6 +252,8 @@ class ViewController: UIViewController, MKMapViewDelegate, UIApplicationDelegate
       bottomToolBar.isHidden = false
     }
   }
+
+
 
   func printDatabaseStatistics() {
     let pinCount = try? self.delegate.stack.context.count(for: NSFetchRequest(entityName: "Pin"))
