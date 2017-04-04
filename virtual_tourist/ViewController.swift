@@ -171,6 +171,7 @@ class ViewController: UIViewController, MKMapViewDelegate, UIApplicationDelegate
 
   override func prepare(for segue: UIStoryboardSegue, sender: Any?){
     if segue.identifier == "tappedPin"{
+      print("you've been tapped")
       let collectionVC = segue.destination as! CollectionViewController
       collectionVC.pinSelected = currentPin!
       collectionVC.detailLocation = coordinatesForPin
