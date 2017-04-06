@@ -29,6 +29,27 @@ class ViewController: UIViewController, MKMapViewDelegate, UIApplicationDelegate
 
   override func viewDidLoad() {
     super.viewDidLoad()
+    showPins()
+
+//    let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "Pin")
+//
+//    print(fetchRequest)
+//
+//    let pins: [Pin]? = fetchPin(fetchRequest: fetchRequest)
+//    print("pins: \(pins)")
+//
+//    guard pins != nil else {
+//      return
+//    }
+//
+//    mapView.addAnnotations(pins!.map { pin in
+//      let annotation = MKPointAnnotation()
+//      annotation.coordinate.latitude = CLLocationDegrees(pin.latitude)
+//      annotation.coordinate.longitude = CLLocationDegrees(pin.longitude)
+//      annotation.title = "See Photos"
+//      return annotation
+//    })
+    printDatabaseStatistics()
 
     locationManager.delegate = self
     locationManager.desiredAccuracy = kCLLocationAccuracyBest
@@ -48,26 +69,8 @@ class ViewController: UIViewController, MKMapViewDelegate, UIApplicationDelegate
     longTap.minimumPressDuration = 0.5
     longTap.allowableMovement = 10
     mapView.addGestureRecognizer(longTap)
-
-    //showPins()
-    let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "Pin")
-
-    let pins: [Pin]? = fetchPin(fetchRequest: fetchRequest)
-    print("pins: \(pins)")
-
-    guard pins != nil else {
-      return
-    }
-
-    mapView.addAnnotations(pins!.map { pin in
-      let annotation = MKPointAnnotation()
-      annotation.coordinate.latitude = CLLocationDegrees(pin.latitude)
-      annotation.coordinate.longitude = CLLocationDegrees(pin.longitude)
-      annotation.title = "See Photos"
-      return annotation
-    })
-    printDatabaseStatistics()
   }
+
 
   override func viewDidAppear(_ animated: Bool) {
     if !savedRegionLoaded{
@@ -119,8 +122,8 @@ class ViewController: UIViewController, MKMapViewDelegate, UIApplicationDelegate
       annotation.coordinate = newCoordinates
       annotation.title = "See Photos"
       mapView.addAnnotation(newAnnotation)
-//      Client.sharedInstance().latitude = Float(newCoord.latitude)
-//      Client.sharedInstance().longitude = Float(newCoord.longitude)
+      Client.sharedInstance().latitude = Float(newCoord.latitude)
+      Client.sharedInstance().longitude = Float(newCoord.longitude)
 //      Client.sharedInstance().savePinToCoreData(lat: Client.sharedInstance().latitude, long: Client.sharedInstance().longitude)
       _ = Pin(latitude: Float(newCoord.latitude), longitude: Float(newCoord.longitude), context: self.delegate.stack.context)
       self.delegate.stack.save()
@@ -198,9 +201,9 @@ class ViewController: UIViewController, MKMapViewDelegate, UIApplicationDelegate
   }
 
   func showPins() {
-    let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "Pin")
+    let fetchRequest = NSFetchRequest<Pin>(entityName: "Pin")
 
-    let pins: [Pin]? = fetchPin(fetchRequest: fetchRequest)
+    let pins: [Pin]? = fetchPin(fetchRequest: fetchRequest as! NSFetchRequest<NSFetchRequestResult>)
 
     guard pins != nil else {
       return
@@ -220,7 +223,7 @@ class ViewController: UIViewController, MKMapViewDelegate, UIApplicationDelegate
 
     do {
       pins = try self.delegate.stack.context.fetch(fetchRequest) as? [Pin]
-      print("pins from function: \(pins)")
+      print("pins from function: \(try self.delegate.stack.context.count(for: fetchRequest))") //returns a valid number of pins
     } catch {
       print("whoops")
     }
