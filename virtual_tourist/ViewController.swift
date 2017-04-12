@@ -25,31 +25,10 @@ class ViewController: UIViewController, MKMapViewDelegate, UIApplicationDelegate
   let delegate = UIApplication.shared.delegate as! AppDelegate
 
   @IBOutlet weak var mapView: MKMapView!
-  @IBOutlet weak var bottomToolBar: UIToolbar!
 
   override func viewDidLoad() {
     super.viewDidLoad()
     showPins()
-
-//    let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "Pin")
-//
-//    print(fetchRequest)
-//
-//    let pins: [Pin]? = fetchPin(fetchRequest: fetchRequest)
-//    print("pins: \(pins)")
-//
-//    guard pins != nil else {
-//      return
-//    }
-//
-//    mapView.addAnnotations(pins!.map { pin in
-//      let annotation = MKPointAnnotation()
-//      annotation.coordinate.latitude = CLLocationDegrees(pin.latitude)
-//      annotation.coordinate.longitude = CLLocationDegrees(pin.longitude)
-//      annotation.title = "See Photos"
-//      return annotation
-//    })
-    printDatabaseStatistics()
 
     locationManager.delegate = self
     locationManager.desiredAccuracy = kCLLocationAccuracyBest
@@ -58,7 +37,6 @@ class ViewController: UIViewController, MKMapViewDelegate, UIApplicationDelegate
 
     mapView.delegate = self
     mapView.showsUserLocation = true
-    bottomToolBar.isHidden = true
 
     appDelegate = UIApplication.shared.delegate as! AppDelegate
 
@@ -69,7 +47,10 @@ class ViewController: UIViewController, MKMapViewDelegate, UIApplicationDelegate
     longTap.minimumPressDuration = 0.5
     longTap.allowableMovement = 10
     mapView.addGestureRecognizer(longTap)
+
+    printDatabaseStatistics()
   }
+
 
 
   override func viewDidAppear(_ animated: Bool) {
@@ -106,7 +87,6 @@ class ViewController: UIViewController, MKMapViewDelegate, UIApplicationDelegate
 
   func action(gestureRecognizer:UIGestureRecognizer) {
 
-    bottomToolBar.isHidden = true
     let touchPoint = gestureRecognizer.location(in: self.mapView)
     var newCoord:CLLocationCoordinate2D = mapView.convert(touchPoint, toCoordinateFrom: self.mapView)
 
@@ -144,7 +124,6 @@ class ViewController: UIViewController, MKMapViewDelegate, UIApplicationDelegate
 
             performUIUpdatesOnMain {
               self.printDatabaseStatistics()
-              self.bottomToolBar.isHidden = false
               self.delegate.stack.save()
             }
           }
@@ -162,7 +141,7 @@ class ViewController: UIViewController, MKMapViewDelegate, UIApplicationDelegate
     if pinView == nil {
       pinView = MKPinAnnotationView(annotation: annotation, reuseIdentifier: reuseId)
       pinView!.canShowCallout = true
-      pinView!.pinColor = .red
+      pinView!.pinTintColor = .red
       pinView!.rightCalloutAccessoryView = UIButton(type: .detailDisclosure)
     }
     else {
@@ -246,18 +225,6 @@ class ViewController: UIViewController, MKMapViewDelegate, UIApplicationDelegate
 
     return fetchRequest
   }
-
-  public func bottomToolBarStatus(hidden: Bool) {
-    bottomToolBar.isHidden = hidden
-
-    if hidden {
-      bottomToolBar.isHidden = true
-    } else {
-      bottomToolBar.isHidden = false
-    }
-  }
-
-
 
   func printDatabaseStatistics() {
     let pinCount = try? self.delegate.stack.context.count(for: NSFetchRequest(entityName: "Pin"))

@@ -72,8 +72,6 @@ extension Client {
                   image.setValue(data, forKey: "image")
                   image.setValue(title, forKey: "title")
                   image.setValue(url, forKey: "url")
-                  //image.setValue(lat, forKey: "latitude")
-                  //image.setValue(lon, forKey: "longitude")
 
                   do {
                     try managedContext.save()
@@ -101,8 +99,8 @@ extension Client {
                                              in:managedContext)
     let pin = NSManagedObject(entity: entity!,
                                 insertInto: managedContext)
-    pin.setValue(latitude, forKey: "latitude")
-    pin.setValue(longitude, forKey: "longitude")
+    pin.setValue(lat, forKey: "latitude")
+    pin.setValue(long, forKey: "longitude")
 
     do {
       try managedContext.save()
@@ -143,11 +141,9 @@ extension Client {
     getDataFromUrl(url: fileUrl!) { (data, response, error)  in
 
       if let error = error {
-
         print(error)
       } else {
         if let data = data {
-
           imageData = data
         }
       }

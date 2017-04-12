@@ -45,10 +45,8 @@ class CollectionViewController:  UIViewController, UICollectionViewDelegate, UIC
 
   // MARK: - View Lifecycle Methods
   override func viewDidLoad() {
-    print("in viewDidLoad()")
-
     super.viewDidLoad()
-
+    mapView.delegate = self
     bottomActionOutlet.title = "New Photo Album"
 
     let annotation = MKPointAnnotation()
@@ -76,6 +74,24 @@ class CollectionViewController:  UIViewController, UICollectionViewDelegate, UIC
   override func viewWillAppear(_ animated: Bool) {
     self.delegate.stack.autoSave(20)
 
+  }
+
+  func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView? {
+
+    let reuseId = "pin"
+
+    var pinView = mapView.dequeueReusableAnnotationView(withIdentifier: reuseId) as? MKPinAnnotationView
+
+    if pinView == nil {
+      pinView = MKPinAnnotationView(annotation: annotation, reuseIdentifier: reuseId)
+      pinView!.canShowCallout = false
+      pinView!.pinColor = .red
+    }
+    else {
+      pinView!.annotation = annotation
+    }
+
+    return pinView
   }
 
   override func viewDidLayoutSubviews() {
@@ -128,9 +144,9 @@ class CollectionViewController:  UIViewController, UICollectionViewDelegate, UIC
 
     let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "Cell", for: indexPath) as! CollectionViewCell
 
-    let photo = self.fetchedResultsController.object(at: indexPath) as? Photos
+    let photo = self.fetchedResultsController.object(at: indexPath)
 
-    if photo?.image == nil {
+    if photo.image == nil {
       cell.imageView.image = UIImage(named: "placeholder")
       cell.activityIndicator.startAnimating()
       cell.imageView.contentMode = .scaleAspectFit
@@ -294,7 +310,7 @@ class CollectionViewController:  UIViewController, UICollectionViewDelegate, UIC
   func getFlickrPhotos(lat: Float, long: Float, completion: @escaping (_ success: Bool, _ error: String?) -> Void) {
 
     performBackgroundUpdatesOnGlobal {
-      Client.sharedInstance().getImages(latitude: Client.sharedInstance().latitude, longitude: Client.sharedInstance().longitude) { results, error in
+      Client.sharedInstance().getImages(latitude: Float(self.detailLocation.latitude), longitude: Float(self.detailLocation.longitude)) { results, error in
 
         if error != nil {
 
@@ -340,7 +356,6 @@ class CollectionViewController:  UIViewController, UICollectionViewDelegate, UIC
 
         self.getFlickrPhotos(lat: self.lat, long: self.long) { (success, error) in
           if success {
-            self.deleteAllPhotos()
             self.delegate.stack.save()
             print("printing self.fetchedResultsController.fetchedObjects")
             print(self.fetchedResultsController.fetchedObjects)

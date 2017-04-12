@@ -30,30 +30,19 @@
                                     <outletCollection property="gestureRecognizers" destination="xKR-t4-Cm9" appends="YES" id="CvW-Be-iuw"/>
                                 </connections>
                             </mapView>
-                            <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="GVh-pP-axS">
-                                <rect key="frame" x="0.0" y="623" width="375" height="44"/>
-                                <items>
-                                    <barButtonItem title="Go To Album" id="htY-EV-Cod"/>
-                                </items>
-                            </toolbar>
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
-                            <constraint firstItem="wfy-db-euE" firstAttribute="top" secondItem="GVh-pP-axS" secondAttribute="bottom" id="88g-XN-sFF"/>
                             <constraint firstItem="mGA-hL-kk6" firstAttribute="bottom" secondItem="wfy-db-euE" secondAttribute="top" id="9rG-VK-yWb"/>
-                            <constraint firstItem="GVh-pP-axS" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leadingMargin" constant="-16" id="BKu-lt-33R"/>
                             <constraint firstItem="mGA-hL-kk6" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" id="J4N-TJ-ZEP"/>
-                            <constraint firstItem="GVh-pP-axS" firstAttribute="top" secondItem="y3c-jy-aDJ" secondAttribute="bottom" constant="559" id="NHi-CX-vZM"/>
                             <constraint firstAttribute="trailing" secondItem="mGA-hL-kk6" secondAttribute="trailing" id="RP6-Tm-obF"/>
-                            <constraint firstAttribute="trailingMargin" secondItem="GVh-pP-axS" secondAttribute="trailing" constant="-16" id="UXJ-hf-b4n"/>
                             <constraint firstItem="mGA-hL-kk6" firstAttribute="top" secondItem="y3c-jy-aDJ" secondAttribute="bottom" id="oEo-53-o1J"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" title="Virtual Tourist" id="Ti7-qO-rZg"/>
                     <connections>
-                        <outlet property="bottomToolBar" destination="GVh-pP-axS" id="wNl-bu-FRH"/>
                         <outlet property="mapView" destination="mGA-hL-kk6" id="Lsa-vP-e4s"/>
-                        <segue destination="wVH-Rg-jEt" kind="show" identifier="tappedPin" id="P0p-u5-Nx9"/>
+                        <segue destination="Dfe-tG-L8l" kind="show" identifier="tappedPin" id="P0p-u5-Nx9"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
@@ -142,7 +131,7 @@
             </objects>
             <point key="canvasLocation" x="292" y="-355"/>
         </scene>
-        <!--Collection View Controller-->
+        <!--Photo Album-->
         <scene sceneID="nds-xk-Y60">
             <objects>
                 <viewController id="wVH-Rg-jEt" customClass="CollectionViewController" customModule="virtual_tourist" customModuleProvider="target" sceneMemberID="viewController">
@@ -246,7 +235,9 @@
                             <constraint firstItem="gfm-uJ-GVl" firstAttribute="leading" secondItem="NMh-nC-DXO" secondAttribute="leading" id="vKT-I7-3fI"/>
                         </constraints>
                     </view>
-                    <navigationItem key="navigationItem" id="8Fu-kp-RY8"/>
+                    <navigationItem key="navigationItem" title="Photo Album" id="8Fu-kp-RY8">
+                        <barButtonItem key="backBarButtonItem" title="Back" id="ja9-fI-KLE"/>
+                    </navigationItem>
                     <connections>
                         <outlet property="bottomActionOutlet" destination="PLq-Sa-7uz" id="IUR-oz-jL4"/>
                         <outlet property="collectionView" destination="gfm-uJ-GVl" id="uk9-ne-jfU"/>
@@ -255,7 +246,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="c7G-3P-fCH" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2325.5999999999999" y="-355.7721139430285"/>
+            <point key="canvasLocation" x="3264.8000000000002" y="-355.7721139430285"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="fSs-dJ-GFk">
@@ -274,6 +265,24 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="E8z-ed-Zpf" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="1951.2" y="392.65367316341832"/>
+        </scene>
+        <!--Navigation Controller-->
+        <scene sceneID="0Q1-rn-pZn">
+            <objects>
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="Dfe-tG-L8l" sceneMemberID="viewController">
+                    <toolbarItems/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="ejx-Es-jBO">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <nil name="viewControllers"/>
+                    <connections>
+                        <segue destination="wVH-Rg-jEt" kind="relationship" relationship="rootViewController" id="QId-oc-76Q"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="nN5-CR-AAL" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="2325.5999999999999" y="-355.7721139430285"/>
         </scene>
     </scenes>
 </document>
