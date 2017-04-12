@@ -29,8 +29,8 @@ class CollectionViewController:  UIViewController, UICollectionViewDelegate, UIC
   lazy var fetchedResultsController: NSFetchedResultsController<Photos> = { () -> NSFetchedResultsController<Photos> in
 
     let fetchRequest = NSFetchRequest<Photos>(entityName: "Photos")
-    let latSort = NSSortDescriptor(key: "latitude", ascending: true)
-    fetchRequest.sortDescriptors = [latSort]
+    let titleSort = NSSortDescriptor(key: "title", ascending: true)
+    fetchRequest.sortDescriptors = [titleSort]
 
     let fetchedResultsController = NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: self.delegate.stack.context, sectionNameKeyPath: nil, cacheName: nil)
     fetchedResultsController.delegate = self
@@ -54,10 +54,10 @@ class CollectionViewController:  UIViewController, UICollectionViewDelegate, UIC
     let annotation = MKPointAnnotation()
 
     //TODO: segue will include selected pin cordinates - hard coded for now.
-//    annotation.coordinate.latitude = CLLocationDegrees((detailLocation.latitude))
-//    annotation.coordinate.latitude = CLLocationDegrees((detailLocation.longitude))
-    annotation.coordinate.latitude = CLLocationDegrees((-35.19809))
-    annotation.coordinate.longitude = CLLocationDegrees((141.7202))
+    annotation.coordinate.latitude = CLLocationDegrees((detailLocation.latitude))
+    annotation.coordinate.latitude = CLLocationDegrees((detailLocation.longitude))
+//    annotation.coordinate.latitude = CLLocationDegrees((-35.19809))
+//    annotation.coordinate.longitude = CLLocationDegrees((141.7202))
     self.mapView.addAnnotation(annotation)
 
     // Start the fetched results controller
