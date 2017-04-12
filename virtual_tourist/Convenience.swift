@@ -72,8 +72,8 @@ extension Client {
                   image.setValue(data, forKey: "image")
                   image.setValue(title, forKey: "title")
                   image.setValue(url, forKey: "url")
-                  image.setValue(Client.sharedInstance().latitude, forKey: "latitude")
-                  image.setValue(Client.sharedInstance().longitude, forKey: "longitude")
+                  //image.setValue(lat, forKey: "latitude")
+                  //image.setValue(lon, forKey: "longitude")
 
                   do {
                     try managedContext.save()
