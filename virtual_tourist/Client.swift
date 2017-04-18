@@ -65,6 +65,7 @@ class Client : NSObject {
 
     completionHandlerForConvertData(parsedResult as AnyObject?, nil)
   }
+
 }
 
 extension Client {

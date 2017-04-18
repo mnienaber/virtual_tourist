@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="11762" systemVersion="16E195" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="12118" systemVersion="16E195" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11757"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12086"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -42,7 +42,7 @@
                     <navigationItem key="navigationItem" title="Virtual Tourist" id="Ti7-qO-rZg"/>
                     <connections>
                         <outlet property="mapView" destination="mGA-hL-kk6" id="Lsa-vP-e4s"/>
-                        <segue destination="Dfe-tG-L8l" kind="show" identifier="tappedPin" id="P0p-u5-Nx9"/>
+                        <segue destination="wVH-Rg-jEt" kind="show" identifier="tappedPin" id="xnj-e9-jOw"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
@@ -239,6 +239,7 @@
                         <barButtonItem key="backBarButtonItem" title="Back" id="ja9-fI-KLE"/>
                     </navigationItem>
                     <connections>
+                        <outlet property="backButton" destination="ja9-fI-KLE" id="X61-fo-zwb"/>
                         <outlet property="bottomActionOutlet" destination="PLq-Sa-7uz" id="IUR-oz-jL4"/>
                         <outlet property="collectionView" destination="gfm-uJ-GVl" id="uk9-ne-jfU"/>
                         <outlet property="mapView" destination="NMh-nC-DXO" id="HdS-YH-CnV"/>
@@ -246,7 +247,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="c7G-3P-fCH" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="3264.8000000000002" y="-355.7721139430285"/>
+            <point key="canvasLocation" x="2361" y="-356"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="fSs-dJ-GFk">
@@ -265,24 +266,6 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="E8z-ed-Zpf" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="1951.2" y="392.65367316341832"/>
-        </scene>
-        <!--Navigation Controller-->
-        <scene sceneID="0Q1-rn-pZn">
-            <objects>
-                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="Dfe-tG-L8l" sceneMemberID="viewController">
-                    <toolbarItems/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="ejx-Es-jBO">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
-                        <autoresizingMask key="autoresizingMask"/>
-                    </navigationBar>
-                    <nil name="viewControllers"/>
-                    <connections>
-                        <segue destination="wVH-Rg-jEt" kind="relationship" relationship="rootViewController" id="QId-oc-76Q"/>
-                    </connections>
-                </navigationController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="nN5-CR-AAL" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="2325.5999999999999" y="-355.7721139430285"/>
         </scene>
     </scenes>
 </document>

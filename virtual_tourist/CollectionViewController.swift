@@ -21,8 +21,6 @@ class CollectionViewController:  UIViewController, UICollectionViewDelegate, UIC
 
   var pinSelected: Pin?
   var detailLocation = CLLocationCoordinate2D()
-  let lat: Float = -35.19809
-  let long: Float = 141.7202
   let delegate = UIApplication.shared.delegate as! AppDelegate
 
   // MARK: - Instance Variables
@@ -52,6 +50,8 @@ class CollectionViewController:  UIViewController, UICollectionViewDelegate, UIC
     let annotation = MKPointAnnotation()
 
     //TODO: segue will include selected pin cordinates - hard coded for now.
+    print("\(detailLocation.latitude)")
+    print("\(detailLocation.longitude)")
     annotation.coordinate.latitude = CLLocationDegrees((detailLocation.latitude))
     annotation.coordinate.latitude = CLLocationDegrees((detailLocation.longitude))
 //    annotation.coordinate.latitude = CLLocationDegrees((-35.19809))

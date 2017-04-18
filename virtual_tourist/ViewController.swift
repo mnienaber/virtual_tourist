@@ -28,6 +28,10 @@ class ViewController: UIViewController, MKMapViewDelegate, UIApplicationDelegate
 
   override func viewDidLoad() {
     super.viewDidLoad()
+
+    self.mapView.delegate = self
+    mapView.showsUserLocation = true
+
     showPins()
 
     locationManager.delegate = self
@@ -35,8 +39,7 @@ class ViewController: UIViewController, MKMapViewDelegate, UIApplicationDelegate
     locationManager.requestWhenInUseAuthorization()
     locationManager.startUpdatingLocation()
 
-    mapView.delegate = self
-    mapView.showsUserLocation = true
+
 
     appDelegate = UIApplication.shared.delegate as! AppDelegate
 
@@ -104,7 +107,6 @@ class ViewController: UIViewController, MKMapViewDelegate, UIApplicationDelegate
       mapView.addAnnotation(newAnnotation)
       Client.sharedInstance().latitude = Float(newCoord.latitude)
       Client.sharedInstance().longitude = Float(newCoord.longitude)
-//      Client.sharedInstance().savePinToCoreData(lat: Client.sharedInstance().latitude, long: Client.sharedInstance().longitude)
       _ = Pin(latitude: Float(newCoord.latitude), longitude: Float(newCoord.longitude), context: self.delegate.stack.context)
       self.delegate.stack.save()
       if Reachability.isConnectedToNetwork() == false {
@@ -151,8 +153,20 @@ class ViewController: UIViewController, MKMapViewDelegate, UIApplicationDelegate
     return pinView
   }
 
+  func mapView(_ mapView: MKMapView, didSelect view: MKAnnotationView) {
+    print("tapped")
+    coordinatesForPin = (view.annotation?.coordinate)!
+    let pin = self.getPin(latitude: coordinatesForPin.latitude, longitude: coordinatesForPin.longitude)
+    currentPin = pin!.first!
+
+
+//    if pin != nil, pin!.count > 0 {
+//      currentPin = pin!.first!
+//    }
+  }
+
   override func prepare(for segue: UIStoryboardSegue, sender: Any?){
-    if segue.identifier == "tappedPin"{
+    if segue.identifier == "tappedPin" {
       print("you've been tapped")
       let collectionVC = segue.destination as! CollectionViewController
       collectionVC.pinSelected = currentPin!
@@ -169,15 +183,7 @@ class ViewController: UIViewController, MKMapViewDelegate, UIApplicationDelegate
     }
   }
 
-  func mapView(_ mapView: MKMapView, didSelect view: MKAnnotationView) {
-    print("tapped")
-    coordinatesForPin = (view.annotation?.coordinate)!
-    let pin = self.getPin(latitude: coordinatesForPin.latitude, longitude: coordinatesForPin.longitude)
 
-    if pin != nil, pin!.count > 0 {
-      currentPin = pin!.first!
-    }
-  }
 
   func showPins() {
     let fetchRequest = NSFetchRequest<Pin>(entityName: "Pin")
