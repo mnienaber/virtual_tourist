@@ -22,6 +22,7 @@ class CollectionViewController:  UIViewController, UICollectionViewDelegate, UIC
   var pinSelected: Pin?
   var detailLocation = CLLocationCoordinate2D()
   let delegate = UIApplication.shared.delegate as! AppDelegate
+  let locationManager = CLLocationManager()
 
   // MARK: - Instance Variables
   lazy var fetchedResultsController: NSFetchedResultsController<Photos> = { () -> NSFetchedResultsController<Photos> in
@@ -44,19 +45,12 @@ class CollectionViewController:  UIViewController, UICollectionViewDelegate, UIC
   // MARK: - View Lifecycle Methods
   override func viewDidLoad() {
     super.viewDidLoad()
+    locationManager.delegate = self
+    locationManager.desiredAccuracy = kCLLocationAccuracyBest
     mapView.delegate = self
     bottomActionOutlet.title = "New Photo Album"
 
-    let annotation = MKPointAnnotation()
-
-    //TODO: segue will include selected pin cordinates - hard coded for now.
-    print("\(detailLocation.latitude)")
-    print("\(detailLocation.longitude)")
-    annotation.coordinate.latitude = CLLocationDegrees((detailLocation.latitude))
-    annotation.coordinate.latitude = CLLocationDegrees((detailLocation.longitude))
-//    annotation.coordinate.latitude = CLLocationDegrees((-35.19809))
-//    annotation.coordinate.longitude = CLLocationDegrees((141.7202))
-    self.mapView.addAnnotation(annotation)
+    showPin()
 
     // Start the fetched results controller
     var error: NSError?
@@ -90,7 +84,6 @@ class CollectionViewController:  UIViewController, UICollectionViewDelegate, UIC
     else {
       pinView!.annotation = annotation
     }
-
     return pinView
   }
 
@@ -310,7 +303,7 @@ class CollectionViewController:  UIViewController, UICollectionViewDelegate, UIC
   func getFlickrPhotos(lat: Float, long: Float, completion: @escaping (_ success: Bool, _ error: String?) -> Void) {
 
     performBackgroundUpdatesOnGlobal {
-      Client.sharedInstance().getImages(latitude: Float(self.detailLocation.latitude), longitude: Float(self.detailLocation.longitude)) { results, error in
+      Client.sharedInstance().getImages(latitude: lat, longitude: long) { results, error in
 
         if error != nil {
 
@@ -320,7 +313,7 @@ class CollectionViewController:  UIViewController, UICollectionViewDelegate, UIC
             completion(false, "Something went wrong")
           }
         } else {
-          self.deleteAllPhotos()
+
           print("results: \(results)")
           completion(true, "nothing to see here")
         }
@@ -339,6 +332,20 @@ class CollectionViewController:  UIViewController, UICollectionViewDelegate, UIC
     return photos
   }
 
+  func showPin() {
+
+    var annotations = [MKPointAnnotation]()
+
+    let coordinate = detailLocation
+    let span = MKCoordinateSpanMake(0.05, 0.05)
+    let region = MKCoordinateRegionMake(coordinate, span)
+    let annotation = MKPointAnnotation()
+    annotation.coordinate = coordinate
+    annotations.append(annotation)
+    self.mapView.addAnnotations(annotations)
+    self.mapView.setRegion(region, animated: true)
+  }
+
   @IBAction func bottomAction(_ sender: Any) {
 
     if bottomActionOutlet.title == "Remove Images" {
@@ -354,17 +361,21 @@ class CollectionViewController:  UIViewController, UICollectionViewDelegate, UIC
 
       performBackgroundUpdatesOnGlobal {
 
-        self.getFlickrPhotos(lat: self.lat, long: self.long) { (success, error) in
+        self.getFlickrPhotos(lat: Float(self.detailLocation.latitude), long: Float(self.detailLocation.longitude)) { (success, error) in
           if success {
             self.delegate.stack.save()
-            print("printing self.fetchedResultsController.fetchedObjects")
-            print(self.fetchedResultsController.fetchedObjects)
           } else {
             print("something went wrong")
           }
         }
       }
     }
+  }
+
+  @IBAction func backButton(_ sender: Any) {
+    print("baaaack")
+
+    let _ = self.navigationController?.popToRootViewController(animated: true)
   }
 }
 

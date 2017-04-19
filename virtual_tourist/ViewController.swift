@@ -156,19 +156,15 @@ class ViewController: UIViewController, MKMapViewDelegate, UIApplicationDelegate
   func mapView(_ mapView: MKMapView, didSelect view: MKAnnotationView) {
     print("tapped")
     coordinatesForPin = (view.annotation?.coordinate)!
-    let pin = self.getPin(latitude: coordinatesForPin.latitude, longitude: coordinatesForPin.longitude)
-    currentPin = pin!.first!
-
-
-//    if pin != nil, pin!.count > 0 {
-//      currentPin = pin!.first!
-//    }
+    var pin = self.getPin(latitude: coordinatesForPin.latitude, longitude: coordinatesForPin.longitude)
+    currentPin = pin!.removeFirst()
   }
 
   override func prepare(for segue: UIStoryboardSegue, sender: Any?){
     if segue.identifier == "tappedPin" {
       print("you've been tapped")
-      let collectionVC = segue.destination as! CollectionViewController
+      let nav = segue.destination as! UINavigationController
+      let collectionVC = nav.topViewController as! CollectionViewController
       collectionVC.pinSelected = currentPin!
       collectionVC.detailLocation = coordinatesForPin
     }
@@ -177,13 +173,10 @@ class ViewController: UIViewController, MKMapViewDelegate, UIApplicationDelegate
   //If callout is clicked then segue.
   func mapView(_ mapView: MKMapView, annotationView view: MKAnnotationView, calloutAccessoryControlTapped control: UIControl) {
     if control == view.rightCalloutAccessoryView {
-      //TODO: Create
       performSegue(withIdentifier: "tappedPin", sender: self)
 
     }
   }
-
-
 
   func showPins() {
     let fetchRequest = NSFetchRequest<Pin>(entityName: "Pin")
