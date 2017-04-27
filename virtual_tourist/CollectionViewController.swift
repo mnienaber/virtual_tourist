@@ -28,8 +28,9 @@ class CollectionViewController:  UIViewController, UICollectionViewDelegate, UIC
   lazy var fetchedResultsController: NSFetchedResultsController<Photos> = { () -> NSFetchedResultsController<Photos> in
 
     let fetchRequest = NSFetchRequest<Photos>(entityName: "Photos")
-    let titleSort = NSSortDescriptor(key: "title", ascending: true)
-    fetchRequest.sortDescriptors = [titleSort]
+    print(fetchRequest)
+    let latLongSort = NSSortDescriptor(key: "title", ascending: true)
+    fetchRequest.sortDescriptors = [latLongSort]
 
     let fetchedResultsController = NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: self.delegate.stack.context, sectionNameKeyPath: nil, cacheName: nil)
     fetchedResultsController.delegate = self
@@ -88,7 +89,6 @@ class CollectionViewController:  UIViewController, UICollectionViewDelegate, UIC
   }
 
   override func viewDidLayoutSubviews() {
-    print("in viewDidLayoutSubviews()")
     super.viewDidLayoutSubviews()
 
     // Layout the collection view so that cells take up 1/3 of the width,
@@ -105,7 +105,6 @@ class CollectionViewController:  UIViewController, UICollectionViewDelegate, UIC
 
   // MARK: - UICollectionView
   func configureCell(_ cell: CollectionViewCell, atIndexPath indexPath: IndexPath) {
-    print("in configureCell")
     let photo = self.fetchedResultsController.object(at: indexPath)
 
     if let image = UIImage(data: photo.image!,scale:1.0) {
@@ -120,20 +119,16 @@ class CollectionViewController:  UIViewController, UICollectionViewDelegate, UIC
   }
 
   func numberOfSections(in collectionView: UICollectionView) -> Int {
-    print("in numberOfSectionsInCollectionView()")
     return self.fetchedResultsController.sections?.count ?? 0
   }
 
   func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-    print("in collectionView(_:numberOfItemsInSection)")
     let sectionInfo = self.fetchedResultsController.sections![section]
 
-    print("number Of Cells: \(sectionInfo.numberOfObjects)")
     return sectionInfo.numberOfObjects
   }
 
   func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-    print("in collectionView(_:cellForItemAtIndexPath)")
 
     let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "Cell", for: indexPath) as! CollectionViewCell
 
@@ -373,6 +368,7 @@ class CollectionViewController:  UIViewController, UICollectionViewDelegate, UIC
   }
 
   @IBAction func backButton(_ sender: Any) {
+    
     print("baaaack")
 
     let _ = self.navigationController?.popToRootViewController(animated: true)

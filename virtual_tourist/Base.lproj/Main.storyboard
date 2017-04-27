@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="12118" systemVersion="16E195" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="axg-8g-8AD">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="12118" systemVersion="16E195" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="3tx-cq-jFk">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
@@ -42,13 +42,13 @@
                     <navigationItem key="navigationItem" title="Virtual Tourist" id="Ti7-qO-rZg"/>
                     <connections>
                         <outlet property="mapView" destination="mGA-hL-kk6" id="Lsa-vP-e4s"/>
-                        <segue destination="e83-e3-Hhj" kind="showDetail" identifier="tappedPin" action="showViewController:sender:" id="xnj-e9-jOw"/>
+                        <segue destination="wVH-Rg-jEt" kind="show" identifier="tappedPin" id="cij-IQ-gmr"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
                 <pongPressGestureRecognizer allowableMovement="10" minimumPressDuration="0.5" id="xKR-t4-Cm9"/>
             </objects>
-            <point key="canvasLocation" x="1253" y="-354"/>
+            <point key="canvasLocation" x="2191.1999999999998" y="-354.87256371814095"/>
         </scene>
         <!--Core Data Table View Controller-->
         <scene sceneID="XND-ik-PU9">
@@ -112,24 +112,6 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="pzB-yg-JHz" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="2890.4000000000001" y="392.65367316341832"/>
-        </scene>
-        <!--virtual_tourist-->
-        <scene sceneID="kxW-h5-yjB">
-            <objects>
-                <navigationController title="virtual_tourist" automaticallyAdjustsScrollViewInsets="NO" id="axg-8g-8AD" sceneMemberID="viewController">
-                    <toolbarItems/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="HlC-1g-A7X">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
-                        <autoresizingMask key="autoresizingMask"/>
-                    </navigationBar>
-                    <nil name="viewControllers"/>
-                    <connections>
-                        <segue destination="BYZ-38-t0r" kind="relationship" relationship="rootViewController" id="G5c-kg-9vf"/>
-                    </connections>
-                </navigationController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="lWw-AN-zl3" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="292" y="-355"/>
         </scene>
         <!--Photo Album-->
         <scene sceneID="nds-xk-Y60">
@@ -250,7 +232,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="c7G-3P-fCH" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="3300" y="-356.67166416791605"/>
+            <point key="canvasLocation" x="3170" y="-355"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="fSs-dJ-GFk">
@@ -271,22 +253,22 @@
             <point key="canvasLocation" x="1951.2" y="392.65367316341832"/>
         </scene>
         <!--Navigation Controller-->
-        <scene sceneID="fWU-OH-cQU">
+        <scene sceneID="ZHA-xb-whK">
             <objects>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="zz8-wE-JUP" userLabel="First Responder" sceneMemberID="firstResponder"/>
-                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="e83-e3-Hhj" sceneMemberID="viewController">
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="3tx-cq-jFk" sceneMemberID="viewController">
                     <toolbarItems/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="goP-NE-RT2">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="2Le-kJ-0nZ">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
                     <nil name="viewControllers"/>
                     <connections>
-                        <segue destination="wVH-Rg-jEt" kind="relationship" relationship="rootViewController" id="dbV-h3-zuu"/>
+                        <segue destination="BYZ-38-t0r" kind="relationship" relationship="rootViewController" id="3Tw-iv-SDL"/>
                     </connections>
                 </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Mse-on-v0k" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2360.8000000000002" y="-356.67166416791605"/>
+            <point key="canvasLocation" x="1252" y="-354.87256371814095"/>
         </scene>
     </scenes>
 </document>

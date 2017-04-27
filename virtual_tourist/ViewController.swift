@@ -39,8 +39,6 @@ class ViewController: UIViewController, MKMapViewDelegate, UIApplicationDelegate
     locationManager.requestWhenInUseAuthorization()
     locationManager.startUpdatingLocation()
 
-
-
     appDelegate = UIApplication.shared.delegate as! AppDelegate
 
     let longTap: UILongPressGestureRecognizer = UILongPressGestureRecognizer(target: self, action: #selector(ViewController.action(gestureRecognizer:)))
@@ -54,13 +52,16 @@ class ViewController: UIViewController, MKMapViewDelegate, UIApplicationDelegate
     printDatabaseStatistics()
   }
 
-
-
   override func viewDidAppear(_ animated: Bool) {
     if !savedRegionLoaded{
       checkAndSetMapCamera()
     }
     savedRegionLoaded = true
+  }
+
+  override func viewWillAppear(_ animated: Bool) {
+    print("viewwillappear")
+    showPins()
   }
 
   override func didReceiveMemoryWarning() {
@@ -126,6 +127,8 @@ class ViewController: UIViewController, MKMapViewDelegate, UIApplicationDelegate
 
             performUIUpdatesOnMain {
               self.printDatabaseStatistics()
+              self.showPins()
+              print("showpins")
               self.delegate.stack.save()
             }
           }
@@ -163,8 +166,8 @@ class ViewController: UIViewController, MKMapViewDelegate, UIApplicationDelegate
   override func prepare(for segue: UIStoryboardSegue, sender: Any?){
     if segue.identifier == "tappedPin" {
       print("you've been tapped")
-      let nav = segue.destination as! UINavigationController
-      let collectionVC = nav.topViewController as! CollectionViewController
+      //let nav = segue.destination as! UINavigationController
+      let collectionVC = segue.destination as! CollectionViewController
       collectionVC.pinSelected = currentPin!
       collectionVC.detailLocation = coordinatesForPin
     }
