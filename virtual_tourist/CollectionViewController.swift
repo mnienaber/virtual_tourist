@@ -28,9 +28,9 @@ class CollectionViewController:  UIViewController, UICollectionViewDelegate, UIC
   lazy var fetchedResultsController: NSFetchedResultsController<Photos> = { () -> NSFetchedResultsController<Photos> in
 
     let fetchRequest = NSFetchRequest<Photos>(entityName: "Photos")
-    //: MARK - predicate can't be called before initialized
-    //fetchRequest.predicate = NSPredicate(format: "pin = %@", pinSelected!)
-    print(fetchRequest)
+    fetchRequest.predicate = NSPredicate(format: "pin = %@", self.pinSelected!)
+    print(fetchRequest.predicate ?? nil)
+    print(self.pinSelected?.latitude)
     let latLongSort = NSSortDescriptor(key: "title", ascending: true)
     fetchRequest.sortDescriptors = [latLongSort]
 
@@ -69,7 +69,7 @@ class CollectionViewController:  UIViewController, UICollectionViewDelegate, UIC
   }
 
   override func viewWillAppear(_ animated: Bool) {
-    self.delegate.stack.autoSave(20)
+    self.delegate.stack.autoSave(60)
 
   }
 
