@@ -108,15 +108,17 @@ class ViewController: UIViewController, MKMapViewDelegate, UIApplicationDelegate
       mapView.addAnnotation(newAnnotation)
       Client.sharedInstance().latitude = Float(newCoord.latitude)
       Client.sharedInstance().longitude = Float(newCoord.longitude)
-      _ = Pin(latitude: Float(newCoord.latitude), longitude: Float(newCoord.longitude), context: self.delegate.stack.context)
+      let pin = Pin(latitude: Float(newCoord.latitude), longitude: Float(newCoord.longitude), context: self.delegate.stack.context)
+      print("pin: \(pin)")
       self.delegate.stack.save()
+
       if Reachability.isConnectedToNetwork() == false {
 
         performUIUpdatesOnMain {
           FailAlerts.sharedInstance().failGenOK(title: "No Connection", message: "You don't seem to be connected to the internet", alerttitle: "I'll fix it!")
         }
       } else {
-        Client.sharedInstance().getImages(latitude: Client.sharedInstance().latitude, longitude: Client.sharedInstance().longitude) { results, error in
+        Client.sharedInstance().getImages(pin: pin) { results, error in
 
           if error != nil {
 

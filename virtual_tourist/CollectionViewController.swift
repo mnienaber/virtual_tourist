@@ -38,7 +38,7 @@ class CollectionViewController:  UIViewController, UICollectionViewDelegate, UIC
     fetchedResultsController.delegate = self
 
     return fetchedResultsController
-  }()
+  }() 
 
   var selectedIndexes = [IndexPath]()
   var insertedIndexPaths: [IndexPath]!

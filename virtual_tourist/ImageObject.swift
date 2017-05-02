@@ -24,6 +24,7 @@ struct ImageObject {
   let title: AnyObject
   let imageUrl: AnyObject
   let width: AnyObject
+  let data: Data
 
 
   init?(dictionary: [String:AnyObject]) {
@@ -52,6 +53,8 @@ struct ImageObject {
     imageUrl = iurl
     guard let w = (dictionary[Client.Constants.ParseResponseKeys.Width] as AnyObject!) else { return nil }
     width = w
+    guard let d = (dictionary[Client.Constants.ParseResponseKeys.Data] as! Data!) else { return nil }
+    data = d
   }
 
   static func SLOFromResults(results: [String:AnyObject]) -> Bool {
@@ -66,6 +69,8 @@ struct ImageObject {
     }
 
     for result in photoArray {
+
+      Client.sharedInstance().photosArray.append(result)
 
       print("this is a result: \(result["title"]))")
       print("photoTitle: \(result["url_m"])")

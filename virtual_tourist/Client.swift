@@ -17,6 +17,7 @@ class Client : NSObject {
   var photoManagedObject = [NSManagedObject]()
   var latitude = Float()
   var longitude = Float()
+  var photosArray: [ImageObject]
 
 
   override init() {

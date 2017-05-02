@@ -14,10 +14,10 @@ extension Client {
 
   typealias CompletionHandler = (_ data: Data?, _  response: URLResponse?, _ error: Error?) -> Void
 
-  func getImages(latitude: Float, longitude: Float, completionHanderForGetImages: @escaping (_ results: Bool, _ error: Error?) -> Void) {
+  func getImages(pin: Pin, completionHanderForGetImages: @escaping (_ results: Bool, _ error: Error?) -> Void) {
 
-    let lat:String = String(format:"%f", latitude)
-    let lon:String = String(format:"%f", longitude)
+    let lat:String = String(format:"%f", pin.latitude)
+    let lon:String = String(format:"%f", pin.longitude)
 
 
     let methodArguments: [String: String?] = [
@@ -51,7 +51,7 @@ extension Client {
             let title = result["title"]
             let url = result["url_m"]
 
-            self.saveImageToCoreData(title: title as! String, url: url as! String) { data, response, error in
+            self.getImageData(title: title as! String, url: url as! String) { data, response, error in
 
               if error != nil {
 
@@ -60,25 +60,30 @@ extension Client {
               } else {
 
                 if let data = data {
+                  
 
-                  let appDelegate =
-                    UIApplication.shared.delegate as! AppDelegate
-                  let managedContext = appDelegate.stack.context
-                  let entity =  NSEntityDescription.entity(forEntityName: "Photos",
-                                                           in:managedContext)
-                  let image = NSManagedObject(entity: entity!,
-                                              insertInto: managedContext)
-
-                  image.setValue(data, forKey: "image")
-                  image.setValue(title, forKey: "title")
-                  image.setValue(url, forKey: "url")
-
-                  do {
-                    try managedContext.save()
-                    print("saving image to core data")
-                  } catch let error as NSError  {
-                    print("Could not save \(error), \(error.userInfo)")
-                  }
+//                  let appDelegate =
+//                    UIApplication.shared.delegate as! AppDelegate
+//                  let managedContext = appDelegate.stack.context
+//                  let entity =  NSEntityDescription.entity(forEntityName: "Photos",
+//                                                           in:managedContext)
+//                  let image = NSManagedObject(entity: entity!,
+//                                              insertInto: managedContext)
+//
+//                  image.setValue(data, forKey: "image")
+//                  image.setValue(title, forKey: "title")
+//                  image.setValue(url, forKey: "url")
+//
+//
+//
+//                  print(image)
+//
+//                  do {
+//                    try managedContext.save()
+//                    print("saving image to core data")
+//                  } catch let error as NSError  {
+//                    print("Could not save \(error), \(error.userInfo)")
+//                  }
                 }
               }
             }
@@ -151,7 +156,7 @@ extension Client {
     }
   }
 
-  func saveImageToCoreData(title: String, url: String, completion: @escaping CompletionHandler) {
+  func getImageData(title: String, url: String, completion: @escaping CompletionHandler) {
 
     downloadImage(title: title, url: url) { data, response, error in
 
@@ -163,6 +168,14 @@ extension Client {
       }
     }
   }
+
+  func saveImagesToContext(images: Photos, pin: Pin) {
+    appDelegate.stack.context.perform(){
+      _ = Photos.corePhotoWithNetworkInfo(pictureInfo: <#T##ImageObject#>, pinUsed: pin, inManagedObjectContext: <#T##NSManagedObjectContext#>)
+    }
+
+      self.appDelegate.stack.save()
+    }
 }
 
 

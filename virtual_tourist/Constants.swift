@@ -38,6 +38,7 @@ extension Client {
       static let Title = "title"
       static let ImageUrl = "imageurl"
       static let Width = "width"
+      static let Data = "data"
     }
 
     struct FlickrResponseKeys {
