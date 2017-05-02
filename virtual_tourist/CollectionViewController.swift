@@ -349,10 +349,10 @@ class CollectionViewController:  UIViewController, UICollectionViewDelegate, UIC
       print("deleteselectedphotos")
     } else {
 
-      let photos = self.fetchedResultsController.fetchedObjects
-      for photo in photos! {
-        photo.image = nil
-      }
+//      let photos = self.fetchedResultsController.fetchedObjects
+//      for photo in photos! {
+//        photo.image = nil
+//      }
 
       performBackgroundUpdatesOnGlobal {
 

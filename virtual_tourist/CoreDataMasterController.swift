@@ -1,11 +1,11 @@
+////
+////  CoreDataMasterController.swift
+////  virtual_tourist
+////
+////  Created by Michael Nienaber on 1/27/17.
+////  Copyright © 2017 Michael Nienaber. All rights reserved.
+////
 //
-//  CoreDataMasterController.swift
-//  virtual_tourist
-//
-//  Created by Michael Nienaber on 1/27/17.
-//  Copyright © 2017 Michael Nienaber. All rights reserved.
-//
-
 //import UIKit
 //import CoreData
 //
