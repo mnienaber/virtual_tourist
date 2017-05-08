@@ -60,6 +60,8 @@ extension Client {
               } else {
 
                 if let data = data {
+
+                  ImageObject.SLOFromResults(results: data)
                   
 
 //                  let appDelegate =

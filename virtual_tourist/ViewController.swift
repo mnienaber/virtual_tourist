@@ -106,8 +106,8 @@ class ViewController: UIViewController, MKMapViewDelegate, UIApplicationDelegate
       annotation.coordinate = newCoordinates
       annotation.title = "See Photos"
       mapView.addAnnotation(newAnnotation)
-      Client.sharedInstance().latitude = Float(newCoord.latitude)
-      Client.sharedInstance().longitude = Float(newCoord.longitude)
+//      Client.sharedInstance().latitude = Float(newCoord.latitude)
+//      Client.sharedInstance().longitude = Float(newCoord.longitude)
       let pin = Pin(latitude: Float(newCoord.latitude), longitude: Float(newCoord.longitude), context: self.delegate.stack.context)
       print("pin: \(pin)")
       self.delegate.stack.save()

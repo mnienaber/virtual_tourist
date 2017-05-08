@@ -12,49 +12,30 @@ import CoreData
 
 struct ImageObject {
 
-  let farm: AnyObject
-  let height: AnyObject
-  let id: AnyObject
-  let isFamiliy: AnyObject
-  let isFriend: AnyObject
-  let isPublic: AnyObject
-  let owner: AnyObject
-  let secret: AnyObject
-  let server: AnyObject
-  let title: AnyObject
-  let imageUrl: AnyObject
-  let width: AnyObject
-  let data: Data
+  var title: String
+  var URL: String
+  var id: String
+  var data: Data?
 
 
-  init?(dictionary: [String:AnyObject]) {
+  init?(dictionary: [String: AnyObject]){
+    if let titleFound = dictionary[Client.Constants.FlickrResponseKeys.Title] as? String {
+      title = titleFound
+    } else {
+      title = ""
+    }
 
-    guard let f = (dictionary[Client.Constants.ParseResponseKeys.Farm] as AnyObject!) else { return nil }
-    farm = f
-    guard let h = (dictionary[Client.Constants.ParseResponseKeys.Height] as AnyObject!) else { return nil }
-    height = h
-    guard let i = (dictionary[Client.Constants.ParseResponseKeys.Id] as AnyObject!) else { return nil }
-    id = i
-    guard let ifa = (dictionary[Client.Constants.ParseResponseKeys.IsFamily] as AnyObject!) else { return nil }
-    isFamiliy = ifa
-    guard let ifr = (dictionary[Client.Constants.ParseResponseKeys.IsFriend] as AnyObject!) else { return nil }
-    isFriend = ifr
-    guard let ip = (dictionary[Client.Constants.ParseResponseKeys.IsPubic] as AnyObject!) else { return nil }
-    isPublic = ip
-    guard let o = (dictionary[Client.Constants.ParseResponseKeys.Owner] as AnyObject!) else { return nil }
-    owner = o
-    guard let s = (dictionary[Client.Constants.ParseResponseKeys.Secret] as AnyObject!) else { return nil }
-    secret = s
-    guard let ser = (dictionary[Client.Constants.ParseResponseKeys.Server] as AnyObject!) else { return nil }
-    server = ser
-    guard let t = (dictionary[Client.Constants.ParseResponseKeys.Title] as AnyObject!) else { return nil }
-    title = t
-    guard let iurl = (dictionary[Client.Constants.ParseResponseKeys.ImageUrl] as AnyObject!) else { return nil }
-    imageUrl = iurl
-    guard let w = (dictionary[Client.Constants.ParseResponseKeys.Width] as AnyObject!) else { return nil }
-    width = w
-    guard let d = (dictionary[Client.Constants.ParseResponseKeys.Data] as! Data!) else { return nil }
-    data = d
+    if let URLFound = dictionary[Client.Constants.FlickrResponseKeys.MediumURL] as? String {
+      URL = URLFound
+    } else {
+      URL = ""
+    }
+
+    if let idFound = dictionary[Client.Constants.FlickrResponseKeys.id] as? String {
+      id = idFound
+    } else {
+      id = ""
+    }
   }
 
   static func SLOFromResults(results: [String:AnyObject]) -> Bool {
@@ -70,11 +51,9 @@ struct ImageObject {
 
     for result in photoArray {
 
-      Client.sharedInstance().photosArray.append(result)
+      ImageObjectDetail.sharedInstance().pictures.append((ImageObject(dictionary: result))!)
 
-      print("this is a result: \(result["title"]))")
-      print("photoTitle: \(result["url_m"])")
-
+      print("this is a ImageObject result: \(ImageObjectDetail.sharedInstance().pictures))")
     }
     return true
   }
