@@ -17,7 +17,7 @@ class Client : NSObject {
   var photoManagedObject = [NSManagedObject]()
   var latitude = Float()
   var longitude = Float()
-  var photosArray: [ImageObject]
+//  var photosArray: [ImageObject]
 
 
   override init() {
@@ -56,15 +56,38 @@ class Client : NSObject {
 
   func convertDataWithCompletionHandler(_ data: Data, completionHandlerForConvertData: @escaping (_ result: AnyObject?, _ error: NSError?) -> Void) {
 
-    var parsedResult: Any!
+    var parsedResult: [String:AnyObject]!
     do {
-      parsedResult = try JSONSerialization.jsonObject(with: data, options: .allowFragments)
+      parsedResult = try JSONSerialization.jsonObject(with: data, options: .allowFragments) as! [String:AnyObject]
     } catch {
       let userInfo = [NSLocalizedDescriptionKey : "Could not parse the data as JSON: '\(data)'"]
       completionHandlerForConvertData(nil, NSError(domain: "convertDataWithCompletionHandler", code: 1, userInfo: userInfo))
     }
 
+    if let photosDictionary = parsedResult[Client.Constants.FlickrResponseKeys.Photos] as? [String:AnyObject] {
+
+      guard let photosArray = photosDictionary[Client.Constants.FlickrResponseKeys.Photo] as? [[String: AnyObject]] else {
+        completionHandlerForConvertData(nil, NSError(domain: "convertDataWithCompletionHandler", code: 1, userInfo: nil))
+        return
+      }
+
+      ImageObject.SLOFromResults(photosArray) { (finishedConverting, pictures) in
+
+        if finishedConverting {
+
+          ImageObjectDetail.sharedInstance().pictures = pictures
+          for pic in ImageObjectDetail.sharedInstance().pictures {
+
+            Photos.corePhotoWithNetworkInfo(pictureInfo: pic, pinUsed: <#T##Pin#>, inManagedObjectContext:
+          }
+
+          print("pictures: \(pictures)")
+          completionHandlerForConvertData(parsedResult as AnyObject, nil)
+        }
+
     completionHandlerForConvertData(parsedResult as AnyObject?, nil)
+      }
+    }
   }
 
 }

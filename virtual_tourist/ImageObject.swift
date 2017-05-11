@@ -38,24 +38,24 @@ struct ImageObject {
     }
   }
 
-  static func SLOFromResults(results: [String:AnyObject]) -> Bool {
+  static func SLOFromResults(_ results: [[String:AnyObject]], completionHandlerForResults: @escaping (_ finishedConverting: Bool, _ pictures: [ImageObject]) -> Void) {
 
     func displayError(_ error: String) {
       print(error)
     }
 
-    guard let photoArray = results[Client.Constants.FlickrResponseKeys.Photo] as? [[String:AnyObject]] else {
-        displayError("Cannot find keys '\(Client.Constants.FlickrResponseKeys.Photos)' and '\(Client.Constants.FlickrResponseKeys.Photo)' in \(results)")
-        return false
-    }
+//    guard let photoArray = results[Client.Constants.FlickrResponseKeys.Photo] as? [[String:AnyObject]] else {
+//        displayError("Cannot find keys '\(Client.Constants.FlickrResponseKeys.Photos)' and '\(Client.Constants.FlickrResponseKeys.Photo)' in \(results)")
+//        return false
+//    }
 
-    for result in photoArray {
+    for result in results {
 
       ImageObjectDetail.sharedInstance().pictures.append((ImageObject(dictionary: result))!)
 
-      print("this is a ImageObject result: \(ImageObjectDetail.sharedInstance().pictures))")
+      //print("this is a ImageObject result: \(ImageObjectDetail.sharedInstance().pictures))")
     }
-    return true
+    completionHandlerForResults(true, ImageObjectDetail.sharedInstance().pictures)
   }
 }
 

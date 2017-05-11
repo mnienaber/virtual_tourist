@@ -43,57 +43,33 @@ extension Client {
         completionHanderForGetImages(false, error)
       } else {
 
-        if let results = results?[Client.Constants.JSONResponseKeys.FlickrResults] as? [String:AnyObject] {
+        print("success")
 
-          let images = results[Client.Constants.FlickrResponseKeys.Photo] as? [[String:AnyObject]]
-
-          for result in images! {
-            let title = result["title"]
-            let url = result["url_m"]
-
-            self.getImageData(title: title as! String, url: url as! String) { data, response, error in
-
-              if error != nil {
-
-                print(error!)
-                completionHanderForGetImages(false, error)
-              } else {
-
-                if let data = data {
-
-                  ImageObject.SLOFromResults(results: data)
-                  
-
-//                  let appDelegate =
-//                    UIApplication.shared.delegate as! AppDelegate
-//                  let managedContext = appDelegate.stack.context
-//                  let entity =  NSEntityDescription.entity(forEntityName: "Photos",
-//                                                           in:managedContext)
-//                  let image = NSManagedObject(entity: entity!,
-//                                              insertInto: managedContext)
+//        if let results = results?[Client.Constants.JSONResponseKeys.FlickrResults] as? [String:AnyObject] {
 //
-//                  image.setValue(data, forKey: "image")
-//                  image.setValue(title, forKey: "title")
-//                  image.setValue(url, forKey: "url")
+//          let images = results[Client.Constants.FlickrResponseKeys.Photo] as? [[String:AnyObject]]
+//
+//          for result in images! {
+//            let title = result["title"]
+//            let url = result["url_m"]
 //
 //
 //
-//                  print(image)
+////            self.getImageData(title: title as! String, url: url as! String) { data, response, error in
 //
-//                  do {
-//                    try managedContext.save()
-//                    print("saving image to core data")
-//                  } catch let error as NSError  {
-//                    print("Could not save \(error), \(error.userInfo)")
-//                  }
-                }
-              }
-            }
-          }
+//              if error != nil {
+//
+//                print(error!)
+//                completionHanderForGetImages(false, error)
+//              } else {
+//
+//                print("success")
+//              }
+//            }
+//          }
         }
         completionHanderForGetImages(true, nil)
       }
-    }
   }
 
   func savePinToCoreData(lat: Float, long: Float) -> Void {
@@ -129,12 +105,17 @@ extension Client {
     return (!urlVars.isEmpty ? "?" : "") + urlVars.joined(separator: "&")
   }
 
-  func getDataFromUrl(url: URL, completion: @escaping CompletionHandler) {
+  func getImageData(title: String, url: String, completion: @escaping CompletionHandler) {
 
-    URLSession.shared.dataTask(with: url) {
-      (data, response, error) in
-      completion(data, response, error)
-      }.resume()
+    downloadImage(title: title, url: url) { data, response, error in
+
+      if error != nil {
+        print(error!)
+        completion(nil, response, error)
+      } else {
+        completion(data, response, nil)
+      }
+    }
   }
 
   func downloadImage(title: String, url: String, completion: @escaping CompletionHandler) {
@@ -142,8 +123,6 @@ extension Client {
     let fileUrl = URL(string: url)
     var imageData = Data()
     print("Download Started")
-    let urlRequest = NSURLRequest(url: fileUrl!)
-    let urlConnection: NSURLConnection = NSURLConnection(request: urlRequest as URLRequest, delegate: self)!
     getDataFromUrl(url: fileUrl!) { (data, response, error)  in
 
       if let error = error {
@@ -158,26 +137,24 @@ extension Client {
     }
   }
 
-  func getImageData(title: String, url: String, completion: @escaping CompletionHandler) {
+  func getDataFromUrl(url: URL, completion: @escaping CompletionHandler) {
 
-    downloadImage(title: title, url: url) { data, response, error in
-
-      if error != nil {
-        print(error!)
-        completion(nil, response, error)
-      } else {
-        completion(data, response, nil)
-      }
-    }
+    URLSession.shared.dataTask(with: url) {
+      (data, response, error) in
+      completion(data, response, error)
+      }.resume()
   }
 
-  func saveImagesToContext(images: Photos, pin: Pin) {
-    appDelegate.stack.context.perform(){
-      _ = Photos.corePhotoWithNetworkInfo(pictureInfo: <#T##ImageObject#>, pinUsed: pin, inManagedObjectContext: <#T##NSManagedObjectContext#>)
-    }
 
-      self.appDelegate.stack.save()
-    }
+//  func saveImagesToContext(images: [Photos], pin: Pin) {
+//    appDelegate.stack.context.perform {
+//      for image in images {
+//        _ = Photos.corePhotoWithNetworkInfo(pictureInfo: image, pinUsed: pin, imageData: <#Data#>, inManagedObjectContext: self.appDelegate.stack.context)
+//      }
+//    }
+//
+//      self.appDelegate.stack.save()
+//    }
 }
 
 

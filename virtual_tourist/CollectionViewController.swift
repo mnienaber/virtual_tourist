@@ -300,7 +300,7 @@ class CollectionViewController:  UIViewController, UICollectionViewDelegate, UIC
   func getFlickrPhotos(lat: Float, long: Float, completion: @escaping (_ success: Bool, _ error: String?) -> Void) {
 
     performBackgroundUpdatesOnGlobal {
-      Client.sharedInstance().getImages(latitude: lat, longitude: long) { results, error in
+      Client.sharedInstance().getImages(pin: self.pinSelected!) { results, error in
 
         if error != nil {
 
