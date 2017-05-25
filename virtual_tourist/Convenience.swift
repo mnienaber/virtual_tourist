@@ -14,63 +14,80 @@ extension Client {
 
   typealias CompletionHandler = (_ data: Data?, _  response: URLResponse?, _ error: Error?) -> Void
 
+//  private func flickrURLFromParameters(_ parameters: [String:AnyObject]) -> URL {
+//
+//    var components = URLComponents()
+//    components.scheme = Client.Constants
+//    components.host = VTConstants.Flickr.APIHost
+//    components.path = VTConstants.Flickr.APIPath
+//    components.queryItems = [URLQueryItem]()
+//
+//    for (key, value) in parameters {
+//      let queryItem = URLQueryItem(name: key, value: "\(value)")
+//      components.queryItems!.append(queryItem)
+//    }
+//
+//    return components.url!
+//  }
+
   func getImages(pin: Pin, completionHanderForGetImages: @escaping (_ results: Bool, _ error: Error?) -> Void) {
 
     let lat:String = String(format:"%f", pin.latitude)
     let lon:String = String(format:"%f", pin.longitude)
 
 
-    let methodArguments: [String: String?] = [
-      "method": Client.Constants.Scheme.METHOD_NAME,
-      "api_key": Client.Constants.Scheme.API_KEY,
-      "lat": lat,
-      "lon": lon,
-      "extras": Client.Constants.Scheme.EXTRAS,
-      "format": Client.Constants.Scheme.DATA_FORMAT,
-      "nojsoncallback": Client.Constants.Scheme.NO_JSON_CALLBACK,
-      "per_page": Client.Constants.Scheme.PER_PAGE
+    let methodArguments: [String: AnyObject?] = [
+      "method": Client.Constants.Scheme.METHOD_NAME as AnyObject,
+      "api_key": Client.Constants.Scheme.API_KEY as AnyObject,
+      "lat": lat as AnyObject,
+      "lon": lon as AnyObject,
+      "extras": Client.Constants.Scheme.EXTRAS as AnyObject,
+      "format": Client.Constants.Scheme.DATA_FORMAT as AnyObject,
+      "nojsoncallback": Client.Constants.Scheme.NO_JSON_CALLBACK as AnyObject,
+      "per_page": Client.Constants.Scheme.PER_PAGE as AnyObject
     ]
+
 
     _ = URLSession.shared
     let urlString = Client.Constants.Scheme.BASE_URL + escapedParameters(parameters: methodArguments as [String : AnyObject])
     let url = NSURL(string: urlString)!
     let request = NSURLRequest(url: url as URL)
 
-    taskForGETMethod(request: request) { results, error in
+    taskForGETMethod(request: request, methodArguments: methodArguments as [String : AnyObject] ) { results, error in
 
       if let error = error {
 
         completionHanderForGetImages(false, error)
       } else {
 
-        print("success")
+        print("success: \(results)")
 
-        if let results = results?[Client.Constants.JSONResponseKeys.FlickrResults] as? [String:AnyObject] {
-
-          let images = results[Client.Constants.FlickrResponseKeys.Photo] as? [[String:AnyObject]]
-
-          for result in images! {
-            let title = result["title"]
-            let url = result["url_m"]
-
-
-
-           self.getImageData(title: title as! String, url: url as! String) { data, response, error in
-
-              if error != nil {
-
-                print(error!)
-                completionHanderForGetImages(false, error)
-              } else {
-
-                print("success")
-              }
-            }
+//        if let results = results[Client.Constants.JSONResponseKeys.FlickrResults] as? [String:AnyObject] {
+//
+//          let images = results[Client.Constants.FlickrResponseKeys.Photo] as? [[String:AnyObject]]
+//
+//          for result in images! {
+//            let title = result["title"]
+//            let url = result["url_m"]
+//
+//
+//
+//           self.getImageData(title: title as! String, url: url as! String) { data, response, error in
+//
+//              if error != nil {
+//
+//                print(error!)
+//                completionHanderForGetImages(false, error)
+//              } else {
+//
+//                print("success")
+//              }
+//            }
           }
         }
         completionHanderForGetImages(true, nil)
-      }
   }
+
 
   func savePinToCoreData(lat: Float, long: Float) -> Void {
 
@@ -105,9 +122,9 @@ extension Client {
     return (!urlVars.isEmpty ? "?" : "") + urlVars.joined(separator: "&")
   }
 
-  func getImageData(title: String, url: String, completion: @escaping CompletionHandler) {
+  func getImageData(url: String, completion: @escaping CompletionHandler) {
 
-    downloadImage(title: title, url: url) { data, response, error in
+    downloadImage(url: url) { data, response, error in
 
       if error != nil {
         print(error!)
@@ -118,7 +135,7 @@ extension Client {
     }
   }
 
-  func downloadImage(title: String, url: String, completion: @escaping CompletionHandler) {
+  func downloadImage(url: String, completion: @escaping CompletionHandler) {
 
     let fileUrl = URL(string: url)
     var imageData = Data()

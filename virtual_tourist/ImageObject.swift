@@ -44,17 +44,11 @@ struct ImageObject {
       print(error)
     }
 
-//    guard let photoArray = results[Client.Constants.FlickrResponseKeys.Photo] as? [[String:AnyObject]] else {
-//        displayError("Cannot find keys '\(Client.Constants.FlickrResponseKeys.Photos)' and '\(Client.Constants.FlickrResponseKeys.Photo)' in \(results)")
-//        return false
-//    }
-
     for result in results {
 
       ImageObjectDetail.sharedInstance().pictures.append((ImageObject(dictionary: result))!)
-
-      //print("this is a ImageObject result: \(ImageObjectDetail.sharedInstance().pictures))")
     }
+    print("ImageObjectDetail.sharedInstance().pictures: \(ImageObjectDetail.sharedInstance().pictures)")
     completionHandlerForResults(true, ImageObjectDetail.sharedInstance().pictures)
   }
 }

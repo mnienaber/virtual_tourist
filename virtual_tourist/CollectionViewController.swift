@@ -85,8 +85,7 @@ class CollectionViewController:  UIViewController, UICollectionViewDelegate, UIC
           performUIUpdatesOnMain {
 
             print("back at CollectionView")
-            
-            self.delegate.stack.save()
+            self.saveImagesToContext(images: ImageObjectDetail.sharedInstance().pictures, pin: self.pinSelected!)
           }
         }
       }
@@ -159,21 +158,30 @@ class CollectionViewController:  UIViewController, UICollectionViewDelegate, UIC
 
     let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "Cell", for: indexPath) as! CollectionViewCell
 
-    let photo = self.fetchedResultsController.object(at: indexPath)
+    cell.imageView.image = UIImage(named: "placeholder")
+    cell.activityIndicator.startAnimating()
+    cell.imageView.contentMode = .scaleAspectFit
 
-    if photo.image == nil {
-      cell.imageView.image = UIImage(named: "placeholder")
-      cell.activityIndicator.startAnimating()
-      cell.imageView.contentMode = .scaleAspectFit
+    let photo = self.fetchedResultsController.object(at: indexPath) as? Photos
 
+    if photo?.image == nil {
+
+      let url = photo?.url
+      let call = Client.sharedInstance().getImageData(url: url!) { data, response, error in
+        if let image = UIImage(data: data!) {
+          performUIUpdatesOnMain {
+            cell.imageView!.image = image
+            cell.activityIndicator.stopAnimating()
+          }
+        } else {
+          print(error)
+          cell.activityIndicator.stopAnimating()
+        }
+      }
     } else {
       cell.activityIndicator.stopAnimating()
-      self.configureCell(cell, atIndexPath: indexPath)
+      cell.imageView.image = UIImage(data: (photo?.image)! as Data)
     }
-    //If there is already and image downloaded for that indexPath, the show it.
-    cell.activityIndicator.stopAnimating()
-    return cell
-  }
 
   func collectionView(_ collectionView: UICollectionView, prefetchItemsAt indexPaths: [IndexPath]) {
     collectionView.prefetchDataSource = nil
@@ -261,7 +269,7 @@ class CollectionViewController:  UIViewController, UICollectionViewDelegate, UIC
 
     print("in controllerDidChangeContent. changes.count: \(insertedIndexPaths.count + deletedIndexPaths.count)")
 
-    collectionView?.performBatchUpdates({() -> Void in
+    collectionView.performBatchUpdates({() -> Void in
 
       for indexPath in self.insertedIndexPaths {
         self.collectionView.insertItems(at: [indexPath])
@@ -322,6 +330,18 @@ class CollectionViewController:  UIViewController, UICollectionViewDelegate, UIC
     }
   }
 
+  func saveImagesToContext(images:[ImageObject], pin: Pin) {
+    self.delegate.stack.context.perform(){
+      for image in images {
+        //Create a Photo ManagedObject with the info we get from the network
+        let test = Photos.corePhotoWithNetworkInfo(pictureInfo: image, pinUsed: pin,inManagedObjectContext: self.delegate.stack.context)
+        print("test: \(String(describing: test))")
+      }
+      self.delegate.stack.save()
+    }
+  }
+
+
   func getFlickrPhotos(lat: Float, long: Float, completion: @escaping (_ success: Bool, _ error: String?) -> Void) {
 
     performBackgroundUpdatesOnGlobal {
@@ -376,11 +396,6 @@ class CollectionViewController:  UIViewController, UICollectionViewDelegate, UIC
       print("deleteselectedphotos")
     } else {
 
-//      let photos = self.fetchedResultsController.fetchedObjects
-//      for photo in photos! {
-//        photo.image = nil
-//      }
-
       performBackgroundUpdatesOnGlobal {
 
         self.getFlickrPhotos(lat: Float(self.detailLocation.latitude), long: Float(self.detailLocation.longitude)) { (success, error) in
@@ -401,6 +416,8 @@ class CollectionViewController:  UIViewController, UICollectionViewDelegate, UIC
     let _ = self.navigationController?.popToRootViewController(animated: true)
   }
 }
+}
+
 
 
 

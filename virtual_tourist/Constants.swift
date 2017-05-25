@@ -52,6 +52,20 @@ extension Client {
       static let id = "id"
     }
 
+    struct FlickrParameterKeys {
+      static let Method = "method"
+      static let APIKey = "api_key"
+      static let GalleryID = "gallery_id"
+      static let Extras = "extras"
+      static let Format = "format"
+      static let NoJSONCallback = "nojsoncallback"
+      static let SafeSearch = "safe_search"
+      static let Text = "text"
+      static let BoundingBox = "bbox"
+      static let Page = "page"
+      static let perPage = "per page"
+    }
+
     struct mapCoordinates {
 
       static let latitude = "latitude"
