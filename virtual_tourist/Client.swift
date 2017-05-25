@@ -78,8 +78,8 @@ class Client : NSObject {
           ImageObjectDetail.sharedInstance().pictures = pictures
           for pic in ImageObjectDetail.sharedInstance().pictures {
 
-            Photos.corePhotoWithNetworkInfo(pictureInfo: pic, pinUsed: <#T##Pin#>, inManagedObjectContext:
-          }
+//            Photos.corePhotoWithNetworkInfo(pictureInfo: pic, pinUsed: <#T##Pin#>, inManagedObjectContext:
+//          }
 
           print("pictures: \(pictures)")
           completionHandlerForConvertData(parsedResult as AnyObject, nil)
@@ -88,6 +88,7 @@ class Client : NSObject {
     completionHandlerForConvertData(parsedResult as AnyObject?, nil)
       }
     }
+  }
   }
 
 }

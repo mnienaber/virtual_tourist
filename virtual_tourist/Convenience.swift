@@ -45,28 +45,28 @@ extension Client {
 
         print("success")
 
-//        if let results = results?[Client.Constants.JSONResponseKeys.FlickrResults] as? [String:AnyObject] {
-//
-//          let images = results[Client.Constants.FlickrResponseKeys.Photo] as? [[String:AnyObject]]
-//
-//          for result in images! {
-//            let title = result["title"]
-//            let url = result["url_m"]
-//
-//
-//
-////            self.getImageData(title: title as! String, url: url as! String) { data, response, error in
-//
-//              if error != nil {
-//
-//                print(error!)
-//                completionHanderForGetImages(false, error)
-//              } else {
-//
-//                print("success")
-//              }
-//            }
-//          }
+        if let results = results?[Client.Constants.JSONResponseKeys.FlickrResults] as? [String:AnyObject] {
+
+          let images = results[Client.Constants.FlickrResponseKeys.Photo] as? [[String:AnyObject]]
+
+          for result in images! {
+            let title = result["title"]
+            let url = result["url_m"]
+
+
+
+           self.getImageData(title: title as! String, url: url as! String) { data, response, error in
+
+              if error != nil {
+
+                print(error!)
+                completionHanderForGetImages(false, error)
+              } else {
+
+                print("success")
+              }
+            }
+          }
         }
         completionHanderForGetImages(true, nil)
       }

@@ -66,6 +66,31 @@ class CollectionViewController:  UIViewController, UICollectionViewDelegate, UIC
     if let error = error {
       print("Error performing initial fetch: \(error)")
     }
+
+    if Reachability.isConnectedToNetwork() == false {
+
+      performUIUpdatesOnMain {
+        FailAlerts.sharedInstance().failGenOK(title: "No Connection", message: "You don't seem to be connected to the internet", alerttitle: "I'll fix it!")
+      }
+    } else {
+      Client.sharedInstance().getImages(pin: pinSelected!) { results, error in
+
+        if error != nil {
+
+          performUIUpdatesOnMain {
+            FailAlerts.sharedInstance().failGenOK(title: "No Images", message: "Your search returned no images", alerttitle: "Try Again")
+          }
+        } else {
+
+          performUIUpdatesOnMain {
+
+            print("back at CollectionView")
+            
+            self.delegate.stack.save()
+          }
+        }
+      }
+    }
   }
 
   override func viewWillAppear(_ animated: Bool) {
