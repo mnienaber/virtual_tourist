@@ -29,8 +29,6 @@ class CollectionViewController:  UIViewController, UICollectionViewDelegate, UIC
 
     let fetchRequest = NSFetchRequest<Photos>(entityName: "Photos")
     fetchRequest.predicate = NSPredicate(format: "pin = %@", self.pinSelected!)
-    print(fetchRequest.predicate ?? nil)
-    print(self.pinSelected?.latitude)
     let latLongSort = NSSortDescriptor(key: "title", ascending: true)
     fetchRequest.sortDescriptors = [latLongSort]
 
@@ -129,6 +127,50 @@ class CollectionViewController:  UIViewController, UICollectionViewDelegate, UIC
     collectionView.collectionViewLayout = layout
   }
 
+  func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+
+    let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "Cell", for: indexPath) as! CollectionViewCell
+
+    cell.imageView.image = UIImage(named: "placeholder")
+    cell.activityIndicator.startAnimating()
+    cell.imageView.contentMode = .scaleAspectFit
+
+    let photo = self.fetchedResultsController.object(at: indexPath)
+    print("let photo = self.fetchedResultsController.object(at: indexPath): \(photo)")
+
+    if photo.image == nil {
+
+      let url = photo.url
+      _ = Client.sharedInstance().getImageData(url: url!) { data, response, error in
+        if let image = UIImage(data: data!) {
+          print("image: \(image)")
+          performUIUpdatesOnMain {
+            cell.imageView!.image = image
+            cell.activityIndicator.stopAnimating()
+          }
+        } else {
+          print(error)
+          cell.activityIndicator.stopAnimating()
+        }
+      }
+    } else {
+      cell.activityIndicator.stopAnimating()
+      cell.imageView.image = UIImage(data: (photo.image)! as Data)
+    }
+    return cell
+  }
+
+  func collectionView(_ collectionView: UICollectionView, prefetchItemsAt indexPaths: [IndexPath]) {
+    collectionView.prefetchDataSource = nil
+    collectionView.isPrefetchingEnabled = false
+  }
+
+  func collectionView(_ collectionView: UICollectionView, cancelPrefetchingForItemsAt indexPaths: [IndexPath]) {
+    collectionView.prefetchDataSource = nil
+    collectionView.isPrefetchingEnabled = false
+  }
+
+
   // MARK: - UICollectionView
   func configureCell(_ cell: CollectionViewCell, atIndexPath indexPath: IndexPath) {
     let photo = self.fetchedResultsController.object(at: indexPath)
@@ -154,44 +196,6 @@ class CollectionViewController:  UIViewController, UICollectionViewDelegate, UIC
     return sectionInfo.numberOfObjects
   }
 
-  func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-
-    let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "Cell", for: indexPath) as! CollectionViewCell
-
-    cell.imageView.image = UIImage(named: "placeholder")
-    cell.activityIndicator.startAnimating()
-    cell.imageView.contentMode = .scaleAspectFit
-
-    let photo = self.fetchedResultsController.object(at: indexPath) as? Photos
-
-    if photo?.image == nil {
-
-      let url = photo?.url
-      let call = Client.sharedInstance().getImageData(url: url!) { data, response, error in
-        if let image = UIImage(data: data!) {
-          performUIUpdatesOnMain {
-            cell.imageView!.image = image
-            cell.activityIndicator.stopAnimating()
-          }
-        } else {
-          print(error)
-          cell.activityIndicator.stopAnimating()
-        }
-      }
-    } else {
-      cell.activityIndicator.stopAnimating()
-      cell.imageView.image = UIImage(data: (photo?.image)! as Data)
-    }
-
-  func collectionView(_ collectionView: UICollectionView, prefetchItemsAt indexPaths: [IndexPath]) {
-    collectionView.prefetchDataSource = nil
-    collectionView.isPrefetchingEnabled = false
-  }
-
-  func collectionView(_ collectionView: UICollectionView, cancelPrefetchingForItemsAt indexPaths: [IndexPath]) {
-    collectionView.prefetchDataSource = nil
-    collectionView.isPrefetchingEnabled = false
-  }
 
   func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
     let cell = collectionView.cellForItem(at: indexPath) as! CollectionViewCell
@@ -416,7 +420,7 @@ class CollectionViewController:  UIViewController, UICollectionViewDelegate, UIC
     let _ = self.navigationController?.popToRootViewController(animated: true)
   }
 }
-}
+
 
 
 
