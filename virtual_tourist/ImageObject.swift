@@ -40,16 +40,14 @@ struct ImageObject {
 
   static func SLOFromResults(_ results: [[String:AnyObject]], completionHandlerForResults: @escaping (_ finishedConverting: Bool, _ pictures: [ImageObject]) -> Void) {
 
-    func displayError(_ error: String) {
-      print(error)
-    }
+    var pictures = [ImageObject]()
 
     for result in results {
 
-      ImageObjectDetail.sharedInstance().pictures.append((ImageObject(dictionary: result))!)
+      pictures.append((ImageObject(dictionary: result))!)
     }
-    print("ImageObjectDetail.sharedInstance().pictures: \(ImageObjectDetail.sharedInstance().pictures)")
-    completionHandlerForResults(true, ImageObjectDetail.sharedInstance().pictures)
+    print("ImageObjectDetail.sharedInstance().pictures: \(pictures)")
+    completionHandlerForResults(true, pictures)
   }
 }
 

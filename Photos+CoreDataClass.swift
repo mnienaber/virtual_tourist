@@ -42,9 +42,10 @@ class Photos: NSManagedObject {
       photo.pin = pinUsed
       photo.image = pictureInfo.data as Data?
 
+      print(photo)
+
       return photo
     }
-
     return nil
   }
 

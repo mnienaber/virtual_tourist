@@ -109,31 +109,7 @@ class ViewController: UIViewController, MKMapViewDelegate, UIApplicationDelegate
       let pin = Pin(latitude: Float(newCoord.latitude), longitude: Float(newCoord.longitude), context: self.delegate.stack.context)
       print("pin: \(pin)")
       self.delegate.stack.save()
-
-//      if Reachability.isConnectedToNetwork() == false {
-//
-//        performUIUpdatesOnMain {
-//          FailAlerts.sharedInstance().failGenOK(title: "No Connection", message: "You don't seem to be connected to the internet", alerttitle: "I'll fix it!")
-//        }
-//      } else {
-//        Client.sharedInstance().getImages(pin: pin) { results, error in
-//
-//          if error != nil {
-//
-//            performUIUpdatesOnMain {
-//              FailAlerts.sharedInstance().failGenOK(title: "No Images", message: "Your search returned no images", alerttitle: "Try Again")
-//            }
-//          } else {
-//
-//            performUIUpdatesOnMain {
-//              self.printDatabaseStatistics()
-//              self.showPins()
-//              print("showpins")
-//              self.delegate.stack.save()
-//            }
-//          }
-//        }
-//      }
+      self.showPins()
     }
   }
 

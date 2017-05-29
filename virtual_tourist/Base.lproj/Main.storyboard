@@ -134,6 +134,10 @@
                             <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="gfm-uJ-GVl">
                                 <rect key="frame" x="0.0" y="263" width="370" height="404"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="370" id="axt-3S-fOk"/>
+                                    <constraint firstAttribute="height" constant="404" id="baq-p2-2LU"/>
+                                </constraints>
                                 <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="fBm-At-2rB">
                                     <size key="itemSize" width="135" height="114"/>
                                     <size key="headerReferenceSize" width="0.0" height="0.0"/>
@@ -166,6 +170,7 @@
                                                 </view>
                                             </subviews>
                                         </view>
+                                        <color key="backgroundColor" red="0.11635767487046633" green="0.11635767487046633" blue="0.11635767487046633" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <constraints>
                                             <constraint firstItem="5fy-pL-ECx" firstAttribute="top" secondItem="5Vx-oz-WOb" secondAttribute="top" id="7Xf-Wm-SXv"/>
                                             <constraint firstItem="5Vx-oz-WOb" firstAttribute="leading" secondItem="YzX-Cc-vex" secondAttribute="leading" id="8mS-sh-CMe"/>
@@ -204,27 +209,22 @@
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstItem="gfm-uJ-GVl" firstAttribute="top" secondItem="NMh-nC-DXO" secondAttribute="bottom" constant="8" id="3AM-oV-Xo1"/>
-                            <constraint firstItem="gfm-uJ-GVl" firstAttribute="bottom" secondItem="UCj-kh-yPS" secondAttribute="top" id="4BZ-PC-pcF"/>
                             <constraint firstAttribute="trailingMargin" secondItem="NMh-nC-DXO" secondAttribute="trailing" constant="-16" id="ANM-pS-vjz"/>
-                            <constraint firstItem="4vv-49-duz" firstAttribute="centerX" secondItem="gfm-uJ-GVl" secondAttribute="centerX" id="LqV-iN-jms"/>
                             <constraint firstItem="4vv-49-duz" firstAttribute="leading" secondItem="QgJ-60-rA8" secondAttribute="leadingMargin" constant="-18" id="ThO-f8-9Lr"/>
-                            <constraint firstAttribute="trailingMargin" secondItem="gfm-uJ-GVl" secondAttribute="trailing" constant="-11" id="bjY-IQ-Y8v"/>
+                            <constraint firstItem="4vv-49-duz" firstAttribute="centerX" secondItem="gfm-uJ-GVl" secondAttribute="centerX" id="b0U-f4-rzA"/>
+                            <constraint firstItem="4vv-49-duz" firstAttribute="bottom" secondItem="gfm-uJ-GVl" secondAttribute="bottom" id="brH-g5-lvy"/>
                             <constraint firstItem="NMh-nC-DXO" firstAttribute="leading" secondItem="QgJ-60-rA8" secondAttribute="leadingMargin" constant="-16" id="cNl-mU-jT9"/>
                             <constraint firstItem="UCj-kh-yPS" firstAttribute="top" secondItem="NMh-nC-DXO" secondAttribute="bottom" constant="412" id="ey9-W5-9f1"/>
                             <constraint firstItem="4vv-49-duz" firstAttribute="bottom" secondItem="UCj-kh-yPS" secondAttribute="top" id="ozO-4P-t12"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="4vv-49-duz" secondAttribute="trailing" constant="-14" id="pYZ-mC-Xpx"/>
                             <constraint firstItem="NMh-nC-DXO" firstAttribute="top" secondItem="vHe-x2-qHa" secondAttribute="bottom" id="vDm-ra-fEZ"/>
-                            <constraint firstItem="gfm-uJ-GVl" firstAttribute="leading" secondItem="NMh-nC-DXO" secondAttribute="leading" id="vKT-I7-3fI"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" title="Photo Album" id="8Fu-kp-RY8">
-                        <barButtonItem key="leftBarButtonItem" title="Back" id="FWh-ZO-Kuq">
-                            <connections>
-                                <action selector="backButton:" destination="wVH-Rg-jEt" id="dSh-OV-DEL"/>
-                            </connections>
-                        </barButtonItem>
+                        <barButtonItem key="leftBarButtonItem" title="Back" id="FWh-ZO-Kuq"/>
                     </navigationItem>
                     <connections>
+                        <outlet property="backButton" destination="FWh-ZO-Kuq" id="DXg-j0-a6x"/>
                         <outlet property="bottomActionOutlet" destination="PLq-Sa-7uz" id="IUR-oz-jL4"/>
                         <outlet property="collectionView" destination="gfm-uJ-GVl" id="uk9-ne-jfU"/>
                         <outlet property="mapView" destination="NMh-nC-DXO" id="HdS-YH-CnV"/>
