@@ -72,12 +72,14 @@ class CollectionViewController:  CoreDataCollectionViewController {
         //Create a Photo ManagedObject with the info we get from the network
         _ = Photos.corePhotoWithNetworkInfo(pictureInfo: image, pinUsed: pin,inManagedObjectContext: self.delegate.stack.context)
       }
+      self.collectionView.reloadData()
       self.delegate.stack.save()
     }
   }
 
   override func viewWillAppear(_ animated: Bool) {
     self.delegate.stack.autoSave(60)
+    self.collectionView.reloadData()
 
   }
 
