@@ -56,16 +56,8 @@ class CollectionViewController:  CoreDataCollectionViewController {
     } else {
       Client.sharedInstance().getImages(pin: pinSelected!) { results, error in
 
-        if error != nil {
-          performUIUpdatesOnMain {
-            FailAlerts.sharedInstance().failGenOK(title: "No Images", message: "Your search returned no images", alerttitle: "Try Again")
-          }
-        } else {
-
-          performUIUpdatesOnMain {
-            print("back at CollectionView")
-            self.saveImagesToContext(images: ImageObjectDetail.sharedInstance().pictures, pin: self.pinSelected!)
-          }
+        if results {
+          self.saveImagesToContext(images: ImageObjectDetail.sharedInstance().pictures, pin: self.pinSelected!)
         }
       }
     }
@@ -89,68 +81,7 @@ class CollectionViewController:  CoreDataCollectionViewController {
 
   }
 
-//  override func viewDidLayoutSubviews() {
-//    super.viewDidLayoutSubviews()
-//
-//    // Layout the collection view so that cells take up 1/3 of the width,
-//    // with no space in-between.
-//    let layout : UICollectionViewFlowLayout = UICollectionViewFlowLayout()
-//    layout.sectionInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
-//    layout.minimumLineSpacing = 0
-//    layout.minimumInteritemSpacing = 0
-//
-//    let width = floor(self.collectionView.frame.size.width/3)
-//    layout.itemSize = CGSize(width: width, height: width)
-//    collectionView.collectionViewLayout = layout
-//  }
 
-//  func collectionView(_ collectionView: UICollectionView, prefetchItemsAt indexPaths: [IndexPath]) {
-//    collectionView.prefetchDataSource = nil
-//    collectionView.isPrefetchingEnabled = false
-//  }
-//
-//  func collectionView(_ collectionView: UICollectionView, cancelPrefetchingForItemsAt indexPaths: [IndexPath]) {
-//    collectionView.prefetchDataSource = nil
-//    collectionView.isPrefetchingEnabled = false
-//  }
-//  func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-//    print("the extension")
-//    let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "Cell", for: indexPath) as! CollectionViewCell
-//
-//    cell.imageView.image = UIImage(named: "placeholder")
-//    cell.activityIndicator.startAnimating()
-//    cell.imageView.contentMode = .scaleAspectFit
-//
-//    let photo = self.fetchedResultsController.object(at: indexPath)
-//    print("let photo = self.fetchedResultsController.object(at: indexPath): \(photo)")
-//
-//    if photo.image == nil {
-//
-//      let url = photo.url
-//      _ = Client.sharedInstance().getImageData(url: url!) { data, response, error in
-//        if let image = UIImage(data: data!) {
-//          print("image: \(image)")
-//          performUIUpdatesOnMain {
-//            cell.imageView!.image = image
-//            cell.activityIndicator.stopAnimating()
-//          }
-//        } else {
-//          print(error)
-//          cell.activityIndicator.stopAnimating()
-//        }
-//      }
-//    } else {
-//      cell.activityIndicator.stopAnimating()
-//      cell.imageView.image = UIImage(data: (photo.image)! as Data)
-//    }
-//
-//    if let _ = self.selectedIndexes.index(of: indexPath) {
-//      cell.alpha = 0.05
-//    } else {
-//      cell.alpha = 1.0
-//    }
-//    return cell
-//  }
 
   // MARK: - UICollectionView
   func configureCell(_ cell: CollectionViewCell, atIndexPath indexPath: IndexPath) {
@@ -168,20 +99,6 @@ class CollectionViewController:  CoreDataCollectionViewController {
       cell.alpha = 1.0
     }
   }
-
-    // If the cell is "selected", its color panel is grayed out
-    // we use the Swift `find` function to see if the indexPath is in the array
-//  }
-
-//  func numberOfSections(in collectionView: UICollectionView) -> Int {
-//    return self.fetchedResultsController.sections?.count ?? 0
-//  }
-
-//  func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-//    let sectionInfo = self.fetchedResultsController.sections![section]
-//
-//    return sectionInfo.numberOfObjects
-//  }
 
 
   func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {

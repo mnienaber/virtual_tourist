@@ -46,7 +46,6 @@ struct ImageObject {
 
       pictures.append((ImageObject(dictionary: result))!)
     }
-    print("ImageObjectDetail.sharedInstance().pictures: \(pictures)")
     completionHandlerForResults(true, pictures)
   }
 }

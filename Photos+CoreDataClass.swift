@@ -31,7 +31,7 @@ class Photos: NSManagedObject {
     //Look and see if we have this photo in the database already.
     let request = NSFetchRequest<NSFetchRequestResult>(entityName: "Photos")
     //The Photo.name is the same as the VTPicture.id
-    request.predicate = NSPredicate(format: "name = %@", pictureInfo.id as CVarArg)
+    request.predicate = NSPredicate(format: "title = %@", pictureInfo.id as CVarArg)
 
     //First check if the photo exists in the database. If it does, then return it. If it doesnt, then create a ManagedObject for it.
     if let photo = (try? context.fetch(request))?.first as? Photos {

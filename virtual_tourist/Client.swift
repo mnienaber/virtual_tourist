@@ -164,6 +164,7 @@ class Client : NSObject {
         ImageObject.SLOFromResults(photosArray){(finishedConverting, pictures) in
           if finishedConverting {
             ImageObjectDetail.sharedInstance().pictures = pictures
+            print("pictures: \(pictures)")
             completionHandlerForImages(true, nil)
           }
         }
