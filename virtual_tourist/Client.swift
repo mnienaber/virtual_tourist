@@ -173,12 +173,8 @@ class Client : NSObject {
         completionHandlerForImages(false, error! as NSError)
         print("Couldn't find photos.")
       }
-
     }
-    // start the task!
     task.resume()
-
-
   }
 }
 

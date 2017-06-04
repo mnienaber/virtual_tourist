@@ -58,12 +58,14 @@ extension CoreDataCollectionViewController {
     if photo?.image == nil {
 
       let url = photo?.url
-      _ = Client.sharedInstance().getImageData(url: url!) { data, response, error in
+      _ = Client.sharedInstance().getImageData(url!) { data, error in
         if let image = UIImage(data: data!) {
           print("image: \(image)")
           performUIUpdatesOnMain {
-            cell.imageView!.image = image
             cell.activityIndicator.stopAnimating()
+            cell.imageView!.image = image
+
+
           }
         } else {
           print(error)
@@ -103,6 +105,7 @@ extension CoreDataCollectionViewController {
   //How many items per section?
   func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
     if let fc = fetchedResultsController {
+      print("fc: \(fc)")
       return fc.sections![section].numberOfObjects
     } else {
       return 0

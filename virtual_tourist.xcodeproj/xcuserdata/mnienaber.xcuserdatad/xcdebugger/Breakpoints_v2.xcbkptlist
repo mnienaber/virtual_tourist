@@ -9,45 +9,13 @@
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "virtual_tourist/CoreDataCollectionViewController.swift"
-            timestampString = "517748857.299842"
+            filePath = "Photos+CoreDataClass.swift"
+            timestampString = "518256628.517439"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "47"
-            endingLineNumber = "47"
-            landmarkName = "CoreDataCollectionViewController"
-            landmarkType = "4">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "virtual_tourist/CollectionViewController.swift"
-            timestampString = "517794553.938439"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "76"
-            endingLineNumber = "76"
-            landmarkName = "saveImagesToContext(images:pin:)"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "virtual_tourist/CollectionViewController.swift"
-            timestampString = "517794560.833049"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "83"
-            endingLineNumber = "83"
-            landmarkName = "viewWillAppear(_:)"
+            startingLineNumber = "46"
+            endingLineNumber = "46"
+            landmarkName = "corePhotoWithNetworkInfo(pictureInfo:pinUsed:inManagedObjectContext:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>

@@ -85,44 +85,87 @@ extension Client {
     return (!urlVars.isEmpty ? "?" : "") + urlVars.joined(separator: "&")
   }
 
-  func getImageData(url: String, completion: @escaping CompletionHandler) {
+//  func getImageData(url: String, completion: @escaping CompletionHandler) {
+//
+//    downloadImage(url: url) { data, response, error in
+//
+//      if error != nil {
+//        print(error!)
+//        completion(nil, response, error)
+//      } else {
+//        completion(data, response, nil)
+//      }
+//    }
+//  }
+//
+//  func downloadImage(url: String, completion: @escaping CompletionHandler) {
+//
+//    let fileUrl = URL(string: url)
+//    var imageData = Data()
+//    print("Download Started")
+//    getDataFromUrl(url: fileUrl!) { (data, response, error)  in
+//
+//      if let error = error {
+//        print(error)
+//      } else {
+//        if let data = data {
+//          imageData = data
+//        }
+//      }
+//      print("Download completed: \(imageData)")
+//      completion(data, response, error)
+//    }
+//  }
+//
+//  func getDataFromUrl(url: URL, completion: @escaping CompletionHandler) {
+//
+//    URLSession.shared.dataTask(with: url) {
+//      (data, response, error) in
+//      completion(data, response, error)
+//      }.resume()
+//  }
 
-    downloadImage(url: url) { data, response, error in
+  func getImageData(_ url: String, completionHandlerForImage: @escaping (_ data: Data?, _ error: NSError?) -> Void) -> URLSessionTask {
 
-      if error != nil {
-        print(error!)
-        completion(nil, response, error)
-      } else {
-        completion(data, response, nil)
-      }
-    }
-  }
+    //Use the urlString stored in the Photo NSManagedObject
+    let url = URL(string: url)!
+    let request = URLRequest(url: url)
 
-  func downloadImage(url: String, completion: @escaping CompletionHandler) {
+    let task = self.session.dataTask(with: request) { (data, response, error) in
 
-    let fileUrl = URL(string: url)
-    var imageData = Data()
-    print("Download Started")
-    getDataFromUrl(url: fileUrl!) { (data, response, error)  in
-
-      if let error = error {
+      func sendError(_ error: String) {
         print(error)
-      } else {
-        if let data = data {
-          imageData = data
-        }
+        let userInfo = [NSLocalizedDescriptionKey : error]
+        completionHandlerForImage(nil, NSError(domain: "taskForGETMethod", code: 1, userInfo: userInfo))
       }
-      print("Download completed: \(imageData)")
-      completion(data, response, error)
+
+      /* GUARD: Was there an error? */
+      guard (error == nil) else {
+        sendError("There was an error with your request: \(error)")
+        return
+      }
+
+      /* GUARD: Did we get a successful 2XX response? */
+      guard let statusCode = (response as? HTTPURLResponse)?.statusCode, statusCode >= 200 && statusCode <= 299 else {
+        sendError("Your request returned a status code other than 2xx!")
+        return
+      }
+
+      /* GUARD: Was there any data returned? */
+      guard let data = data else {
+        sendError("No data was returned by the request!")
+        return
+      }
+
+      //If data is found, the return the data through the completion handler.
+      print("Download completed: \(completionHandlerForImage)")
+      completionHandlerForImage(data, nil)
     }
-  }
 
-  func getDataFromUrl(url: URL, completion: @escaping CompletionHandler) {
+    //Start the request
+    task.resume()
 
-    URLSession.shared.dataTask(with: url) {
-      (data, response, error) in
-      completion(data, response, error)
-      }.resume()
+    return task
   }
 
 
