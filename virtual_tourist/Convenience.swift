@@ -17,6 +17,8 @@ extension Client {
 
   func getImages(pin: Pin, completionHanderForGetImages: @escaping (_ results: Bool, _ error: Error?) -> Void) {
 
+    print("2")
+
     let lat:String = String(format:"%f", pin.latitude)
     let lon:String = String(format:"%f", pin.longitude)
 

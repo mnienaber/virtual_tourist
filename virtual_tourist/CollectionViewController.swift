@@ -54,9 +54,11 @@ class CollectionViewController:  CoreDataCollectionViewController {
         FailAlerts.sharedInstance().failGenOK(title: "No Connection", message: "You don't seem to be connected to the internet", alerttitle: "I'll fix it!")
       }
     } else {
+      print("1")
       Client.sharedInstance().getImages(pin: pinSelected!) { results, error in
 
         if results {
+          print("ImageObjectDetail.sharedInstance().pictures: \(ImageObjectDetail.sharedInstance().pictures)")
           self.saveImagesToContext(images: ImageObjectDetail.sharedInstance().pictures, pin: self.pinSelected!)
         }
       }
@@ -68,7 +70,7 @@ class CollectionViewController:  CoreDataCollectionViewController {
     self.delegate.stack.context.perform(){
 
       for image in images {
-        print(image)
+        print("image: \(image)")
         //Create a Photo ManagedObject with the info we get from the network
         _ = Photos.corePhotoWithNetworkInfo(pictureInfo: image, pinUsed: pin,inManagedObjectContext: self.delegate.stack.context)
       }

@@ -25,8 +25,6 @@ class CoreDataCollectionViewController: UIViewController, UICollectionViewDelega
 
   var fetchedResultsController : NSFetchedResultsController<NSFetchRequestResult>? {
     didSet {
-
-      print("hellllllo")
       // Whenever the frc changes, we execute the search and
       // reload the table
       fetchedResultsController?.delegate = self
@@ -46,7 +44,6 @@ class CoreDataCollectionViewController: UIViewController, UICollectionViewDelega
 extension CoreDataCollectionViewController {
 
   func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-    print("cellForItemAt, cellForItemAt, cellForItemAt, cellForItemAt, cellForItemAt")
     let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "Cell", for: indexPath) as! CollectionViewCell
 
     cell.imageView.image = UIImage(named: "placeholder")

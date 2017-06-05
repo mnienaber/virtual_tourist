@@ -39,7 +39,7 @@ struct ImageObject {
   }
 
   static func SLOFromResults(_ results: [[String:AnyObject]], completionHandlerForResults: @escaping (_ finishedConverting: Bool, _ pictures: [ImageObject]) -> Void) {
-
+    print("5")
     var pictures = [ImageObject]()
 
     for result in results {

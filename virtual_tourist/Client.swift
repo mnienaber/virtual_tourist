@@ -24,8 +24,8 @@ class Client : NSObject {
     super.init()
   }
 
-  func taskForGETMethod(request: NSURLRequest, methodArguments: [String: AnyObject], completionHandlerForGET: @escaping (_ result: Bool, _ error: NSError?) -> Void) -> URLSessionDataTask {
-
+  func taskForGETMethod(request: NSURLRequest, methodArguments: [String: AnyObject], completionHandlerForGET: @escaping (_ result: Bool, _ error: NSError?) -> Void) {
+    print("3")
     let task = session.dataTask(with: request as URLRequest) { data, response, error in
 
       func sendError(_ error: String) {
@@ -48,33 +48,33 @@ class Client : NSObject {
         sendError("No data was returned by the request!")
         return
       }
-      self.convertDataWithCompletionHandler(data, methodArguments: methodArguments, completionHandlerForConvertData: completionHandlerForGET)
-    }
-    task.resume()
-    return task
-  }
 
-  func convertDataWithCompletionHandler(_ data: Data, methodArguments: [String: AnyObject], completionHandlerForConvertData: @escaping (_ result: Bool, _ error: NSError?) -> Void) {
-
-    var parsedResult: [String:AnyObject]!
-    do {
-      parsedResult = try JSONSerialization.jsonObject(with: data, options: .allowFragments) as! [String:AnyObject]
-    } catch {
-      let userInfo = [NSLocalizedDescriptionKey : "Could not parse the data as JSON: '\(data)'"]
-      completionHandlerForConvertData(false, NSError(domain: "convertDataWithCompletionHandler", code: 1, userInfo: userInfo))
+        self.convertDataWithCompletionHandler(data, methodArguments: methodArguments, completionHandlerForConvertData: completionHandlerForGET)
+      }
+      task.resume()
     }
 
-    if let photosDictionary = parsedResult[Client.Constants.FlickrResponseKeys.Photos] as? [String:AnyObject] {
+    func convertDataWithCompletionHandler(_ data: Data, methodArguments: [String: AnyObject], completionHandlerForConvertData: @escaping (_ result: Bool, _ error: NSError?) -> Void) {
 
-      self.pickARandomPage(photosDictionary: photosDictionary, methodArguments: methodArguments) { (success, error) in
-        if success{
-          completionHandlerForConvertData(true, nil)
-        } else {
-          completionHandlerForConvertData(false, error)
+      var parsedResult: [String:AnyObject]!
+      do {
+        parsedResult = try JSONSerialization.jsonObject(with: data, options: .allowFragments) as! [String:AnyObject]
+      } catch {
+        let userInfo = [NSLocalizedDescriptionKey : "Could not parse the data as JSON: '\(data)'"]
+        completionHandlerForConvertData(false, NSError(domain: "convertDataWithCompletionHandler", code: 1, userInfo: userInfo))
+      }
+
+      if let photosDictionary = parsedResult[Client.Constants.FlickrResponseKeys.Photos] as? [String:AnyObject] {
+
+        self.pickARandomPage(photosDictionary: photosDictionary, methodArguments: methodArguments) { (success, error) in
+          if success{
+            completionHandlerForConvertData(true, nil)
+          } else {
+            completionHandlerForConvertData(false, error)
+          }
         }
       }
     }
-  }
 
   func pickARandomPage(photosDictionary: [String: AnyObject], methodArguments: [String: AnyObject], completionHandlerForImages: @escaping (_ success: Bool, _ error: NSError?) -> Void) {
     guard let totalPages = photosDictionary[Client.Constants.FlickrResponseKeys.Pages] as? Int else {
@@ -161,10 +161,11 @@ class Client : NSObject {
         }
 
         //Store the pictures from the results in a shared instance.
+        print("4")
         ImageObject.SLOFromResults(photosArray){(finishedConverting, pictures) in
           if finishedConverting {
+            print("6")
             ImageObjectDetail.sharedInstance().pictures = pictures
-            print("pictures: \(pictures)")
             completionHandlerForImages(true, nil)
           }
         }
