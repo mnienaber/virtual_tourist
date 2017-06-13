@@ -148,20 +148,15 @@
                                             <rect key="frame" x="0.0" y="0.0" width="135" height="114"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
+                                                <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" fixedFrame="YES" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="m64-pg-Otl">
+                                                    <rect key="frame" x="57" y="47" width="20" height="20"/>
+                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                </activityIndicatorView>
                                                 <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="5Vx-oz-WOb">
                                                     <rect key="frame" x="0.0" y="0.0" width="135" height="114"/>
                                                 </imageView>
                                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="5fy-pL-ECx">
                                                     <rect key="frame" x="0.0" y="0.0" width="135" height="114"/>
-                                                    <subviews>
-                                                        <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="m64-pg-Otl">
-                                                            <rect key="frame" x="57" y="47" width="20" height="20"/>
-                                                        </activityIndicatorView>
-                                                    </subviews>
-                                                    <constraints>
-                                                        <constraint firstItem="m64-pg-Otl" firstAttribute="centerY" secondItem="5fy-pL-ECx" secondAttribute="centerY" id="Wvm-xy-RGr"/>
-                                                        <constraint firstItem="m64-pg-Otl" firstAttribute="centerX" secondItem="5fy-pL-ECx" secondAttribute="centerX" id="qt0-OC-ude"/>
-                                                    </constraints>
                                                 </view>
                                             </subviews>
                                         </view>
@@ -178,7 +173,6 @@
                                         </constraints>
                                         <connections>
                                             <outlet property="activityIndicator" destination="m64-pg-Otl" id="ZgF-0I-IxO"/>
-                                            <outlet property="colorPanel" destination="5fy-pL-ECx" id="XKM-Z0-UbX"/>
                                             <outlet property="imageView" destination="5Vx-oz-WOb" id="V3o-0i-cl1"/>
                                         </connections>
                                     </collectionViewCell>

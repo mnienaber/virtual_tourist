@@ -46,7 +46,6 @@ extension Client {
 
         completionHanderForGetImages(false, error)
       } else {
-
         print("success: \(results)")
         completionHanderForGetImages(true, nil)
           }

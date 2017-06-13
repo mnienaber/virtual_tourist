@@ -56,7 +56,6 @@ class CollectionViewController:  CoreDataCollectionViewController {
     } else {
       print("1")
       Client.sharedInstance().getImages(pin: pinSelected!) { results, error in
-        print(results)
         if results {
           print("8 - ImageObjectDetail.sharedInstance().pictures: \(ImageObjectDetail.sharedInstance().pictures)")
           self.saveImagesToContext(images: ImageObjectDetail.sharedInstance().pictures, pin: self.pinSelected!)
@@ -110,11 +109,11 @@ class CollectionViewController:  CoreDataCollectionViewController {
     let cell = collectionView.cellForItem(at: indexPath) as! CollectionViewCell
     if let index = selectedIndexes.index(of: indexPath) {
       selectedIndexes.remove(at: index)
-      cell.colorPanel.isHidden = true
+//      cell.colorPanel.isHidden = true
       //updateBottomButton()
       print("deselected")
     } else {
-      cell.colorPanel.isHidden = false
+//      cell.colorPanel.isHidden = false
       selectedIndexes.append(indexPath)
       //updateBottomButton()
       print("selected")
