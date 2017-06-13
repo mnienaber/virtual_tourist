@@ -148,9 +148,8 @@
                                             <rect key="frame" x="0.0" y="0.0" width="135" height="114"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" fixedFrame="YES" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="m64-pg-Otl">
+                                                <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="m64-pg-Otl">
                                                     <rect key="frame" x="57" y="47" width="20" height="20"/>
-                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                 </activityIndicatorView>
                                                 <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="5Vx-oz-WOb">
                                                     <rect key="frame" x="0.0" y="0.0" width="135" height="114"/>
@@ -160,15 +159,16 @@
                                                 </view>
                                             </subviews>
                                         </view>
-                                        <color key="backgroundColor" red="0.11635767487046633" green="0.11635767487046633" blue="0.11635767487046633" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <constraints>
                                             <constraint firstItem="5fy-pL-ECx" firstAttribute="top" secondItem="5Vx-oz-WOb" secondAttribute="top" id="7Xf-Wm-SXv"/>
                                             <constraint firstItem="5Vx-oz-WOb" firstAttribute="leading" secondItem="YzX-Cc-vex" secondAttribute="leading" id="8mS-sh-CMe"/>
                                             <constraint firstItem="5fy-pL-ECx" firstAttribute="bottom" secondItem="5Vx-oz-WOb" secondAttribute="bottom" id="9od-rF-ghs"/>
                                             <constraint firstItem="5fy-pL-ECx" firstAttribute="trailing" secondItem="5Vx-oz-WOb" secondAttribute="trailing" id="Nwc-ms-uhq"/>
                                             <constraint firstItem="5fy-pL-ECx" firstAttribute="leading" secondItem="5Vx-oz-WOb" secondAttribute="leading" id="R49-DV-ySs"/>
+                                            <constraint firstItem="m64-pg-Otl" firstAttribute="centerX" secondItem="YzX-Cc-vex" secondAttribute="centerX" id="TQO-Wr-36x"/>
                                             <constraint firstAttribute="trailing" secondItem="5Vx-oz-WOb" secondAttribute="trailing" id="XF8-2r-Shw"/>
                                             <constraint firstItem="5Vx-oz-WOb" firstAttribute="top" secondItem="YzX-Cc-vex" secondAttribute="top" id="ix7-D9-zAu"/>
+                                            <constraint firstItem="m64-pg-Otl" firstAttribute="centerY" secondItem="YzX-Cc-vex" secondAttribute="centerY" id="wTR-ko-dZk"/>
                                             <constraint firstAttribute="bottom" secondItem="5Vx-oz-WOb" secondAttribute="bottom" id="yVI-Ij-FyL"/>
                                         </constraints>
                                         <connections>
@@ -222,6 +222,7 @@
                         <outlet property="backButton" destination="FWh-ZO-Kuq" id="DXg-j0-a6x"/>
                         <outlet property="bottomActionOutlet" destination="PLq-Sa-7uz" id="IUR-oz-jL4"/>
                         <outlet property="collectionView" destination="gfm-uJ-GVl" id="uk9-ne-jfU"/>
+                        <outlet property="flowLayout" destination="fBm-At-2rB" id="LUC-Et-qZn"/>
                         <outlet property="mapView" destination="NMh-nC-DXO" id="HdS-YH-CnV"/>
                     </connections>
                 </viewController>

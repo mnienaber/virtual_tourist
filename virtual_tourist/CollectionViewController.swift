@@ -17,6 +17,7 @@ class CollectionViewController:  CoreDataCollectionViewController {
   @IBOutlet weak var imageView: UIImageView!
   @IBOutlet weak var backButton: UIBarButtonItem!
   @IBOutlet weak var bottomActionOutlet: UIBarButtonItem!
+  @IBOutlet weak var flowLayout: UICollectionViewFlowLayout!
 
   var pinSelected: Pin?
   var detailLocation = CLLocationCoordinate2D()
@@ -37,6 +38,8 @@ class CollectionViewController:  CoreDataCollectionViewController {
     annotation.coordinate.longitude = CLLocationDegrees((pinSelected?.longitude)!)
     self.mapView.addAnnotation(annotation)
     bottomActionOutlet.title = "New Photo Album"
+
+    setupFlowLayout()
 
     showPin()
 
@@ -75,7 +78,7 @@ class CollectionViewController:  CoreDataCollectionViewController {
         _ = Photos.corePhotoWithNetworkInfo(pictureInfo: image, pinUsed: pin,inManagedObjectContext: self.delegate.stack.context)
       }
 //      self.collectionView.reloadData()
-//      self.delegate.stack.save()
+      self.delegate.stack.save()
     }
   }
 
@@ -119,129 +122,6 @@ class CollectionViewController:  CoreDataCollectionViewController {
       print("selected")
     }
   }
-
-  // MARK: - Fetched Results Controller Delegate
-
-  // Whenever changes are made to Core Data the following three methods are invoked. This first method is used to create
-  // three fresh arrays to record the index paths that will be changed.
-//  func controllerWillChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
-//
-//    // We are about to handle some new changes. Start out with empty arrays for each change type
-//    insertedIndexPaths = [IndexPath]()
-//    deletedIndexPaths = [IndexPath]()
-//    updatedIndexPaths = [IndexPath]()
-//
-//    print("in controllerWillChangeContent")
-//  }
-
-  // The second method may be called multiple times, once for each Color object that is added, deleted, or changed.
-  // We store the index paths into the three arrays.
-//
-//
-//  func controller(_ controller: NSFetchedResultsController<NSFetchRequestResult>, didChange anObject: Any, at indexPath: IndexPath?, for type: NSFetchedResultsChangeType, newIndexPath: IndexPath?) {
-//    switch type {
-//
-//    case .insert:
-//      print("Insert an item")
-//      // Here we are noting that a new Color instance has been added to Core Data. We remember its index path
-//      // so that we can add a cell in "controllerDidChangeContent". Note that the "newIndexPath" parameter has
-//      // the index path that we want in this case
-//      insertedIndexPaths.append(newIndexPath!)
-//      break
-//    case .delete:
-//      print("Delete an item")
-//      // Here we are noting that a Color instance has been deleted from Core Data. We remember its index path
-//      // so that we can remove the corresponding cell in "controllerDidChangeContent". The "indexPath" parameter has
-//      // value that we want in this case.
-//      deletedIndexPaths.append(indexPath!)
-//      break
-//    case .update:
-//      print("Update an item.")
-//      // We don't expect Color instances to change after they are created. But Core Data would
-//      // notify us of changes if any occured. This can be useful if you want to respond to changes
-//      // that come about after data is downloaded. For example, when an image is downloaded from
-//      // Flickr in the Virtual Tourist app
-//      updatedIndexPaths.append(indexPath!)
-//      break
-//    case .move:
-//      print("Move an item. We don't expect to see this in this app.")
-//      break
-//      //default:
-//      //break
-//    }
-//  }
-
-  // This method is invoked after all of the changed objects in the current batch have been collected
-  // into the three index path arrays (insert, delete, and upate). We now need to loop through the
-  // arrays and perform the changes.
-  //
-  // The most interesting thing about the method is the collection view's "performBatchUpdates" method.
-  // Notice that all of the changes are performed inside a closure that is handed to the collection view.
-//  func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
-//
-//    print("in controllerDidChangeContent. changes.count: \(insertedIndexPaths.count + deletedIndexPaths.count)")
-//
-//    collectionView.performBatchUpdates({() -> Void in
-//
-//      for indexPath in self.insertedIndexPaths {
-//        self.collectionView.insertItems(at: [indexPath])
-//      }
-//
-//      for indexPath in self.deletedIndexPaths {
-//        self.collectionView.deleteItems(at: [indexPath])
-//      }
-//
-//      for indexPath in self.updatedIndexPaths {
-//        self.collectionView.reloadItems(at: [indexPath])
-//      }
-//
-//    }, completion: nil)
-//  }
-
-//  func deleteAllPhotos() {
-//
-//    for photos in (fetchedResultsController?.fetchedObjects!)! {
-//      self.delegate.stack.context.delete(photos as! NSManagedObject)
-//    }
-//  }
-//
-//  func deleteSeletedPhotos() {
-//
-//    var photosToDelete = [Photos]()
-//
-//    for indexPath in selectedIndexes {
-//
-//      photosToDelete.append(fetchedResultsController!.object(at: indexPath) as! Photos)
-//    }
-//
-//    for deadPhoto in photosToDelete {
-//
-//      print("dead photo")
-//      self.delegate.stack.context.delete(deadPhoto)
-//      bottomActionOutlet.title = "New Photo Album"
-//    }
-//
-//    selectedIndexes = [IndexPath]()
-//
-//    do {
-//      try self.delegate.stack.context.save()
-//    } catch {
-//      print("coundn't save context for some reason")
-//    }
-//    bottomActionOutlet.title = "New Photo Album"
-//  }
-//
-//  func updateBottomButton() {
-//
-//    if selectedIndexes.count > 0 {
-//
-//      bottomActionOutlet.title = "Remove Images"
-//    } else {
-//      selectedIndexes.removeAll()
-//      bottomActionOutlet.title = "New Photo Album"
-//    }
-//  }
-
 
 
   func getFlickrPhotos(lat: Float, long: Float, completion: @escaping (_ success: Bool, _ error: String?) -> Void) {
@@ -309,6 +189,15 @@ class CollectionViewController:  CoreDataCollectionViewController {
         }
       }
     }
+  }
+
+  func setupFlowLayout() {
+    let space: CGFloat = 3
+    let dimension = (view.frame.width - 2 * space) / 3
+
+    flowLayout.minimumLineSpacing = space
+    flowLayout.minimumInteritemSpacing = space
+    flowLayout.itemSize = CGSize(width: dimension, height: dimension)
   }
 
   @IBAction func backButton(_ sender: Any) {
