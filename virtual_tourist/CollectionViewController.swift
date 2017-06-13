@@ -56,9 +56,9 @@ class CollectionViewController:  CoreDataCollectionViewController {
     } else {
       print("1")
       Client.sharedInstance().getImages(pin: pinSelected!) { results, error in
-
+        print(results)
         if results {
-          print("ImageObjectDetail.sharedInstance().pictures: \(ImageObjectDetail.sharedInstance().pictures)")
+          print("8 - ImageObjectDetail.sharedInstance().pictures: \(ImageObjectDetail.sharedInstance().pictures)")
           self.saveImagesToContext(images: ImageObjectDetail.sharedInstance().pictures, pin: self.pinSelected!)
         }
       }
@@ -68,14 +68,15 @@ class CollectionViewController:  CoreDataCollectionViewController {
   func saveImagesToContext(images:[ImageObject], pin: Pin) {
 
     self.delegate.stack.context.perform(){
+      print("9")
 
       for image in images {
-        print("image: \(image)")
+        
         //Create a Photo ManagedObject with the info we get from the network
         _ = Photos.corePhotoWithNetworkInfo(pictureInfo: image, pinUsed: pin,inManagedObjectContext: self.delegate.stack.context)
       }
-      self.collectionView.reloadData()
-      self.delegate.stack.save()
+//      self.collectionView.reloadData()
+//      self.delegate.stack.save()
     }
   }
 

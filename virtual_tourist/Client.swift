@@ -26,26 +26,29 @@ class Client : NSObject {
 
   func taskForGETMethod(request: NSURLRequest, methodArguments: [String: AnyObject], completionHandlerForGET: @escaping (_ result: Bool, _ error: NSError?) -> Void) {
     print("3")
+
+    print(request)
+    
     let task = session.dataTask(with: request as URLRequest) { data, response, error in
 
-      func sendError(_ error: String) {
-        print(error)
-        let userInfo = [NSLocalizedDescriptionKey : error]
-        completionHandlerForGET(false, NSError(domain: "taskForGETMethod", code: 1, userInfo: userInfo))
-      }
+//      func sendError(_ error: String) {
+//        print(error)
+//        let userInfo = [NSLocalizedDescriptionKey : error]
+//        completionHandlerForGET(false, NSError(domain: "taskForGETMethod", code: 1, userInfo: userInfo))
+//      }
 
       guard (error == nil) else {
-        sendError("There was an error with your request: \(String(describing: error))")
+        completionHandlerForGET(false, error! as NSError)
         return
       }
 
       guard let statusCode = (response as? HTTPURLResponse)?.statusCode , statusCode >= 200 && statusCode <= 299 else {
-        sendError("Your request returned a status code other than 2xx!")
+        completionHandlerForGET(false, error! as NSError)
         return
       }
 
       guard let data = data else {
-        sendError("No data was returned by the request!")
+        completionHandlerForGET(false, error! as NSError)
         return
       }
 
@@ -55,6 +58,8 @@ class Client : NSObject {
     }
 
     func convertDataWithCompletionHandler(_ data: Data, methodArguments: [String: AnyObject], completionHandlerForConvertData: @escaping (_ result: Bool, _ error: NSError?) -> Void) {
+
+      print("3.1")
 
       var parsedResult: [String:AnyObject]!
       do {
@@ -166,6 +171,7 @@ class Client : NSObject {
           if finishedConverting {
             print("6")
             ImageObjectDetail.sharedInstance().pictures = pictures
+            print("7 - pictures: \(pictures)")
             completionHandlerForImages(true, nil)
           }
         }

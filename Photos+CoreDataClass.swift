@@ -42,7 +42,7 @@ class Photos: NSManagedObject {
       photo.pin = pinUsed
       photo.image = pictureInfo.data as Data?
 
-      print(photo)
+      print("10 - photo: \(photo)")
 
       return photo
     }

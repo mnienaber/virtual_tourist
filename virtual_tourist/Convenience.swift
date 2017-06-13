@@ -40,7 +40,7 @@ extension Client {
     let url = NSURL(string: urlString)!
     let request = NSURLRequest(url: url as URL)
 
-    taskForGETMethod(request: request, methodArguments: methodArguments as [String : AnyObject] ) { results, error in
+    taskForGETMethod(request: request, methodArguments: methodArguments as [String : AnyObject]) { results, error in
 
       if let error = error {
 
@@ -48,9 +48,9 @@ extension Client {
       } else {
 
         print("success: \(results)")
+        completionHanderForGetImages(true, nil)
           }
         }
-        completionHanderForGetImages(true, nil)
   }
 
 

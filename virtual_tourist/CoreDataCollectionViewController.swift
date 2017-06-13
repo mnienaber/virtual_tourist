@@ -57,12 +57,9 @@ extension CoreDataCollectionViewController {
       let url = photo?.url
       _ = Client.sharedInstance().getImageData(url!) { data, error in
         if let image = UIImage(data: data!) {
-          print("image: \(image)")
           performUIUpdatesOnMain {
             cell.activityIndicator.stopAnimating()
-            cell.imageView!.image = image
-
-
+            cell.imageView.image = image
           }
         } else {
           print(error)
