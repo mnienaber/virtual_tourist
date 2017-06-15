@@ -23,12 +23,6 @@ class CollectionViewController:  CoreDataCollectionViewController {
   var detailLocation = CLLocationCoordinate2D()
   let delegate = UIApplication.shared.delegate as! AppDelegate
 
-
-  //var selectedIndexes = [IndexPath]()
-//  var insertedIndexPaths: [IndexPath]!
-//  var deletedIndexPaths: [IndexPath]!
-//  var updatedIndexPaths: [IndexPath]!
-
   // MARK: - View Lifecycle Methods
   override func viewDidLoad() {
     super.viewDidLoad()
@@ -83,9 +77,7 @@ class CollectionViewController:  CoreDataCollectionViewController {
   }
 
   override func viewWillAppear(_ animated: Bool) {
-    self.delegate.stack.autoSave(60)
-    self.collectionView.reloadData()
-
+    self.delegate.stack.autoSave(1000)
   }
 
 
@@ -98,7 +90,7 @@ class CollectionViewController:  CoreDataCollectionViewController {
 //
 //      cell.activityIndicator.isHidden = true
 //      cell.colorPanel.isHidden = true
-//      //cell.imageView.image = image
+//      cell.imageView.image = image
 //    }
     if let _ = selectedIndexes.index(of: indexPath) {
       cell.alpha = 0.05
@@ -112,44 +104,44 @@ class CollectionViewController:  CoreDataCollectionViewController {
     let cell = collectionView.cellForItem(at: indexPath) as! CollectionViewCell
     if let index = selectedIndexes.index(of: indexPath) {
       selectedIndexes.remove(at: index)
-//      cell.colorPanel.isHidden = true
-      //updateBottomButton()
+      cell.colorPanel.isHidden = true
+      updateBottomButton()
       print("deselected")
     } else {
-//      cell.colorPanel.isHidden = false
+      cell.colorPanel.isHidden = false
       selectedIndexes.append(indexPath)
-      //updateBottomButton()
+      updateBottomButton()
       print("selected")
     }
   }
 
 
-  func getFlickrPhotos(lat: Float, long: Float, completion: @escaping (_ success: Bool, _ error: String?) -> Void) {
-
-    performBackgroundUpdatesOnGlobal {
-      Client.sharedInstance().getImages(pin: self.pinSelected!) { results, error in
-
-        if error != nil {
-
-          performUIUpdatesOnMain {
-            print(error)
-            FailAlerts.sharedInstance().failGenOK(title: "No Images", message: "Your search returned no images", alerttitle: "Try Again")
-            completion(false, "Something went wrong")
-          }
-        } else {
-
-          print("results: \(results)")
-          completion(true, "nothing to see here")
-        }
-      }
-    }
-  }
+//  func getFlickrPhotos(lat: Float, long: Float, completion: @escaping (_ success: Bool, _ error: String?) -> Void) {
+//
+//    performBackgroundUpdatesOnGlobal {
+//      Client.sharedInstance().getImages(pin: self.pinSelected!) { results, error in
+//
+//        if error != nil {
+//
+//          performUIUpdatesOnMain {
+//            print(error)
+//            FailAlerts.sharedInstance().failGenOK(title: "No Images", message: "Your search returned no images", alerttitle: "Try Again")
+//            completion(false, "Something went wrong")
+//          }
+//        } else {
+//
+//          print("results: \(results)")
+//          completion(true, "nothing to see here")
+//        }
+//      }
+//    }
+//  }
 
   func getPhotos() -> [Photos]? {
 
     var photos: [Photos]?
     do {
-      photos = try self.delegate.stack.context.fetch((fetchedResultsController?.fetchRequest)!) as! [Photos]
+      photos = try self.delegate.stack.context.fetch((fetchedResultsController?.fetchRequest)!) as? [Photos]
     } catch {
       FailAlerts.sharedInstance().failGenOK(title: "Sorry", message: "Couldn't load photos", alerttitle: "Please try again")
     }
@@ -174,18 +166,21 @@ class CollectionViewController:  CoreDataCollectionViewController {
 
     if bottomActionOutlet.title == "Remove Images" {
 
-      //deleteSeletedPhotos()
+      deleteSeletedPhotos()
       print("deleteselectedphotos")
+      updateBottomButton()
     } else {
 
       performBackgroundUpdatesOnGlobal {
 
-        self.getFlickrPhotos(lat: Float(self.detailLocation.latitude), long: Float(self.detailLocation.longitude)) { (success, error) in
-          if success {
-            self.delegate.stack.save()
+        Client.sharedInstance().getImages(pin: self.pinSelected!) { results, error in
+          if results {
+            print("new request - ImageObjectDetail.sharedInstance().pictures: \(ImageObjectDetail.sharedInstance().pictures)")
+            self.saveImagesToContext(images: ImageObjectDetail.sharedInstance().pictures, pin: self.pinSelected!)
           } else {
             print("something went wrong")
           }
+          self.updateBottomButton()
         }
       }
     }
@@ -200,11 +195,36 @@ class CollectionViewController:  CoreDataCollectionViewController {
     flowLayout.itemSize = CGSize(width: dimension, height: dimension)
   }
 
+  func deleteSeletedPhotos() {
+
+    var photosToDelete = [Photos]()
+
+    for indexPath in selectedIndexes {
+
+      photosToDelete.append(fetchedResultsController!.object(at: indexPath) as! Photos)
+    }
+
+    for deadPhoto in photosToDelete {
+
+      self.delegate.stack.context.delete(deadPhoto)
+      print("dead photo")
+    }
+  }
+
   @IBAction func backButton(_ sender: Any) {
     
     print("baaaack")
 
     let _ = self.navigationController?.popToRootViewController(animated: true)
+  }
+
+  func updateBottomButton() {
+
+    if selectedIndexes.count > 0 {
+      bottomActionOutlet.title = "Remove Images"
+    } else {
+      bottomActionOutlet.title = "New Photo Album"
+    }
   }
 }
 

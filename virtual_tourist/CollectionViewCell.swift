@@ -11,6 +11,7 @@ import UIKit
 
 class CollectionViewCell: UICollectionViewCell {
 
+
   @IBOutlet weak var imageView: UIImageView!
   @IBOutlet weak var colorPanel: UIView!
   @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
@@ -24,5 +25,4 @@ class CollectionViewCell: UICollectionViewCell {
 //      return self.colorPanel.backgroundColor ?? UIColor.black
 //    }
 //  }
-
 }

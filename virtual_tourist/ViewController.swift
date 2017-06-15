@@ -18,9 +18,9 @@ class ViewController: UIViewController, MKMapViewDelegate, UIApplicationDelegate
   var coordinatesForPin = CLLocationCoordinate2D()
   var currentPin: Pin?
   var pin: Pin?
-  var cameraAltitude = CLLocationDistance()
-  var cameraCenterLon = CLLocationDegrees()
-  var cameraCenterLat = CLLocationDegrees()
+  var zoomAlt = CLLocationDistance()
+  var zoomLon = CLLocationDegrees()
+  var zoomLat = CLLocationDegrees()
   var savedRegionLoaded = false
   let delegate = UIApplication.shared.delegate as! AppDelegate
 
@@ -52,9 +52,13 @@ class ViewController: UIViewController, MKMapViewDelegate, UIApplicationDelegate
     printDatabaseStatistics()
   }
 
+  override func viewWillDisappear(_ animated: Bool) {
+    zoomViewSettings()
+  }
+
   override func viewDidAppear(_ animated: Bool) {
     if !savedRegionLoaded{
-      checkAndSetMapCamera()
+      checkMapZoom()
     }
     savedRegionLoaded = true
   }
@@ -66,6 +70,14 @@ class ViewController: UIViewController, MKMapViewDelegate, UIApplicationDelegate
 
   override func didReceiveMemoryWarning() {
     super.didReceiveMemoryWarning()
+  }
+
+  func mapView(_ mapView: MKMapView, regionDidChangeAnimated animated: Bool) {
+
+    if userChangedMapViewZoom() {
+
+      zoomViewSettings()
+    }
   }
 
   private func locationManager(manager: CLLocationManager, didChangeAuthorizationStatus status: CLAuthorizationStatus) {
@@ -122,7 +134,7 @@ class ViewController: UIViewController, MKMapViewDelegate, UIApplicationDelegate
     if pinView == nil {
       pinView = MKPinAnnotationView(annotation: annotation, reuseIdentifier: reuseId)
       pinView!.canShowCallout = true
-      pinView!.pinTintColor = .red
+      pinView!.pinTintColor = .green
       pinView!.rightCalloutAccessoryView = UIButton(type: .detailDisclosure)
     }
     else {
@@ -211,39 +223,55 @@ class ViewController: UIViewController, MKMapViewDelegate, UIApplicationDelegate
     print("\(photoCount) Photos Found")
   }
 
-  func checkAndSetMapCamera(){
-    if let altitude = UserDefaults.standard.value(forKey: Client.Constants.CameraKeys.altitude){
+  func checkMapZoom(){
+    if let altitude = UserDefaults.standard.value(forKey: Client.Constants.ZoomKeys.Alt){
       mapView.camera.altitude = altitude as! CLLocationDistance
     } else{
-      UserDefaults.standard.set(mapView.camera.altitude, forKey: Client.Constants.CameraKeys.altitude)
+      UserDefaults.standard.set(mapView.camera.altitude, forKey: Client.Constants.ZoomKeys.Alt)
     }
 
-    if let cameraCenterLatitude = UserDefaults.standard.value(forKey: Client.Constants.CameraKeys.CenterLat){
+    if let cameraCenterLatitude = UserDefaults.standard.value(forKey: Client.Constants.ZoomKeys.Lat){
       mapView.camera.centerCoordinate.latitude = cameraCenterLatitude as! CLLocationDegrees
     } else {
-      UserDefaults.standard.set(mapView.camera.centerCoordinate.latitude, forKey: Client.Constants.CameraKeys.CenterLat)
+      UserDefaults.standard.set(mapView.camera.centerCoordinate.latitude, forKey: Client.Constants.ZoomKeys.Lat)
     }
 
-    if let cameraCenterLongitude = UserDefaults.standard.value(forKey: Client.Constants.CameraKeys.CenterLon){
+    if let cameraCenterLongitude = UserDefaults.standard.value(forKey: Client.Constants.ZoomKeys.Lon){
       mapView.camera.centerCoordinate.longitude = cameraCenterLongitude as! CLLocationDegrees
     } else {
-      UserDefaults.standard.set(mapView.camera.centerCoordinate.longitude, forKey: Client.Constants.CameraKeys.CenterLon)
+      UserDefaults.standard.set(mapView.camera.centerCoordinate.longitude, forKey: Client.Constants.ZoomKeys.Lon)
     }
 
     print(mapView.camera.centerCoordinate as Any)
 
   }
 
-  func saveCameraSettings() {
-    cameraAltitude = mapView.camera.altitude
-    cameraCenterLat = mapView.camera.centerCoordinate.latitude
-    cameraCenterLon = mapView.camera.centerCoordinate.longitude
+  func zoomViewSettings() {
+    zoomAlt = mapView.camera.altitude
+    zoomLat = mapView.camera.centerCoordinate.latitude
+    zoomLon = mapView.camera.centerCoordinate.longitude
 
-    UserDefaults.standard.set(cameraAltitude, forKey: Client.Constants.CameraKeys.altitude)
-    UserDefaults.standard.set(cameraCenterLat, forKey: Client.Constants.CameraKeys.CenterLat)
-    UserDefaults.standard.set(cameraCenterLon, forKey: Client.Constants.CameraKeys.CenterLon)
+    UserDefaults.standard.set(zoomAlt, forKey: Client.Constants.ZoomKeys.Alt)
+    UserDefaults.standard.set(zoomLat, forKey: Client.Constants.ZoomKeys.Lat)
+    UserDefaults.standard.set(zoomLon, forKey: Client.Constants.ZoomKeys.Lon)
     UserDefaults.standard.synchronize()
   }
 
+  func userChangedMapViewZoom() -> Bool {
+
+    let view = self.mapView.subviews[0]
+
+    if let gestureRecognizers = view.gestureRecognizers {
+
+      for recog in gestureRecognizers {
+
+        if (recog.state == UIGestureRecognizerState.began || recog.state == UIGestureRecognizerState.ended) {
+
+          return true
+        }
+      }
+    }
+    return false
+  }
 }
 

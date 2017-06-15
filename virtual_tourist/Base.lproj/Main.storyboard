@@ -154,26 +154,29 @@
                                                 <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="5Vx-oz-WOb">
                                                     <rect key="frame" x="0.0" y="0.0" width="135" height="114"/>
                                                 </imageView>
-                                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="5fy-pL-ECx">
+                                                <view alpha="0.40000000000000002" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="MXK-1z-orn">
                                                     <rect key="frame" x="0.0" y="0.0" width="135" height="114"/>
+                                                    <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                                                    <color key="tintColor" red="0.1163576749" green="0.1163576749" blue="0.1163576749" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                 </view>
                                             </subviews>
                                         </view>
                                         <constraints>
-                                            <constraint firstItem="5fy-pL-ECx" firstAttribute="top" secondItem="5Vx-oz-WOb" secondAttribute="top" id="7Xf-Wm-SXv"/>
                                             <constraint firstItem="5Vx-oz-WOb" firstAttribute="leading" secondItem="YzX-Cc-vex" secondAttribute="leading" id="8mS-sh-CMe"/>
-                                            <constraint firstItem="5fy-pL-ECx" firstAttribute="bottom" secondItem="5Vx-oz-WOb" secondAttribute="bottom" id="9od-rF-ghs"/>
-                                            <constraint firstItem="5fy-pL-ECx" firstAttribute="trailing" secondItem="5Vx-oz-WOb" secondAttribute="trailing" id="Nwc-ms-uhq"/>
-                                            <constraint firstItem="5fy-pL-ECx" firstAttribute="leading" secondItem="5Vx-oz-WOb" secondAttribute="leading" id="R49-DV-ySs"/>
+                                            <constraint firstItem="MXK-1z-orn" firstAttribute="leading" secondItem="5Vx-oz-WOb" secondAttribute="leading" id="NV6-yG-HEd"/>
                                             <constraint firstItem="m64-pg-Otl" firstAttribute="centerX" secondItem="YzX-Cc-vex" secondAttribute="centerX" id="TQO-Wr-36x"/>
                                             <constraint firstAttribute="trailing" secondItem="5Vx-oz-WOb" secondAttribute="trailing" id="XF8-2r-Shw"/>
                                             <constraint firstItem="5Vx-oz-WOb" firstAttribute="top" secondItem="YzX-Cc-vex" secondAttribute="top" id="ix7-D9-zAu"/>
+                                            <constraint firstItem="MXK-1z-orn" firstAttribute="top" secondItem="5Vx-oz-WOb" secondAttribute="top" id="mmP-Td-a7a"/>
+                                            <constraint firstItem="MXK-1z-orn" firstAttribute="trailing" secondItem="5Vx-oz-WOb" secondAttribute="trailing" id="uNJ-5Y-QJj"/>
                                             <constraint firstItem="m64-pg-Otl" firstAttribute="centerY" secondItem="YzX-Cc-vex" secondAttribute="centerY" id="wTR-ko-dZk"/>
                                             <constraint firstAttribute="bottom" secondItem="5Vx-oz-WOb" secondAttribute="bottom" id="yVI-Ij-FyL"/>
+                                            <constraint firstItem="MXK-1z-orn" firstAttribute="bottom" secondItem="5Vx-oz-WOb" secondAttribute="bottom" id="yyx-Zd-LYU"/>
                                         </constraints>
                                         <connections>
                                             <outlet property="activityIndicator" destination="m64-pg-Otl" id="ZgF-0I-IxO"/>
-                                            <outlet property="imageView" destination="5Vx-oz-WOb" id="V3o-0i-cl1"/>
+                                            <outlet property="colorPanel" destination="MXK-1z-orn" id="kXj-Kd-AlA"/>
+                                            <outlet property="imageView" destination="5Vx-oz-WOb" id="eg6-6W-Fg7"/>
                                         </connections>
                                     </collectionViewCell>
                                 </cells>
@@ -228,7 +231,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="c7G-3P-fCH" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="3170" y="-355"/>
+            <point key="canvasLocation" x="3168.8000000000002" y="-355.7721139430285"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="fSs-dJ-GFk">

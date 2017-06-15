@@ -49,6 +49,7 @@ extension CoreDataCollectionViewController {
     cell.imageView.image = UIImage(named: "placeholder")
     cell.activityIndicator.startAnimating()
     cell.imageView.contentMode = .scaleAspectFit
+    cell.colorPanel.isHidden = true
 
     let photo = self.fetchedResultsController?.object(at: indexPath) as? Photos
 
@@ -91,7 +92,7 @@ extension CoreDataCollectionViewController {
   //How many sections?
   func numberOfSections(in collectionView: UICollectionView) -> Int {
     if let fc = fetchedResultsController {
-      print("(fc.sections?.count):\(fc.sections?.count)")
+      print("(fc.sections?.count):\(String(describing: fc.sections?.count))")
       return (fc.sections?.count)!
     } else {
       return 0
@@ -101,7 +102,7 @@ extension CoreDataCollectionViewController {
   //How many items per section?
   func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
     if let fc = fetchedResultsController {
-      print("fc: \(fc)")
+      print("fc: \(fc.sections![section].numberOfObjects)")
       return fc.sections![section].numberOfObjects
     } else {
       return 0

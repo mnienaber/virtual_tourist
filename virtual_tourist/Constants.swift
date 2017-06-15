@@ -81,11 +81,11 @@ extension Client {
       static let FlickrResults = "photos"
     }
 
-    struct CameraKeys {
-      static let CenterLat = "CenterLat"
-      static let CenterLon = "CenterLon"
-      static let altitude = "altitude"
-      static let pitch = "pitch"
+    struct ZoomKeys {
+      static let Lat = "CenterLat"
+      static let Lon = "CenterLon"
+      static let Alt = "altitude"
+      static let Pitch = "pitch"
     }
 
     struct bottomToolBarStatus {
