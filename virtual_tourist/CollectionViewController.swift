@@ -67,11 +67,9 @@ class CollectionViewController:  CoreDataCollectionViewController {
       print("9")
 
       for image in images {
-        
-        //Create a Photo ManagedObject with the info we get from the network
+
         _ = Photos.corePhotoWithNetworkInfo(pictureInfo: image, pinUsed: pin,inManagedObjectContext: self.delegate.stack.context)
       }
-//      self.collectionView.reloadData()
       self.delegate.stack.save()
     }
   }
@@ -79,26 +77,6 @@ class CollectionViewController:  CoreDataCollectionViewController {
   override func viewWillAppear(_ animated: Bool) {
     self.delegate.stack.autoSave(1000)
   }
-
-
-
-  // MARK: - UICollectionView
-  func configureCell(_ cell: CollectionViewCell, atIndexPath indexPath: IndexPath) {
-//    let photo = self.fetchedResultsController?.object(at: indexPath)
-//
-//    if let image = UIImage(data: photo.image!,scale:1.0) {
-//
-//      cell.activityIndicator.isHidden = true
-//      cell.colorPanel.isHidden = true
-//      cell.imageView.image = image
-//    }
-    if let _ = selectedIndexes.index(of: indexPath) {
-      cell.alpha = 0.05
-    } else {
-      cell.alpha = 1.0
-    }
-  }
-
 
   func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
     let cell = collectionView.cellForItem(at: indexPath) as! CollectionViewCell
@@ -114,28 +92,6 @@ class CollectionViewController:  CoreDataCollectionViewController {
       print("selected")
     }
   }
-
-
-//  func getFlickrPhotos(lat: Float, long: Float, completion: @escaping (_ success: Bool, _ error: String?) -> Void) {
-//
-//    performBackgroundUpdatesOnGlobal {
-//      Client.sharedInstance().getImages(pin: self.pinSelected!) { results, error in
-//
-//        if error != nil {
-//
-//          performUIUpdatesOnMain {
-//            print(error)
-//            FailAlerts.sharedInstance().failGenOK(title: "No Images", message: "Your search returned no images", alerttitle: "Try Again")
-//            completion(false, "Something went wrong")
-//          }
-//        } else {
-//
-//          print("results: \(results)")
-//          completion(true, "nothing to see here")
-//        }
-//      }
-//    }
-//  }
 
   func getPhotos() -> [Photos]? {
 
@@ -187,6 +143,7 @@ class CollectionViewController:  CoreDataCollectionViewController {
   }
 
   func setupFlowLayout() {
+    
     let space: CGFloat = 3
     let dimension = (view.frame.width - 2 * space) / 3
 

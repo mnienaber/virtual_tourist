@@ -219,8 +219,8 @@ class ViewController: UIViewController, MKMapViewDelegate, UIApplicationDelegate
   func printDatabaseStatistics() {
     let pinCount = try? self.delegate.stack.context.count(for: NSFetchRequest(entityName: "Pin"))
     let photoCount = try? self.delegate.stack.context.count(for: NSFetchRequest(entityName: "Photos"))
-    print("\(pinCount) Pins Found")
-    print("\(photoCount) Photos Found")
+    print("\(String(describing: pinCount)) Pins Found")
+    print("\(String(describing: photoCount)) Photos Found")
   }
 
   func checkMapZoom(){

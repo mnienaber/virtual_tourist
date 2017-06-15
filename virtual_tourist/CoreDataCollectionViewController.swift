@@ -52,6 +52,7 @@ extension CoreDataCollectionViewController {
     cell.colorPanel.isHidden = true
 
     let photo = self.fetchedResultsController?.object(at: indexPath) as? Photos
+    print("photonumner: \(photo)")
 
     if photo?.image == nil {
 
@@ -73,14 +74,6 @@ extension CoreDataCollectionViewController {
       cell.activityIndicator.stopAnimating()
       cell.imageView.image = UIImage(data: (photo?.image)! as Data)
     }
-
-    //Used for correct highlight of selected images while scrolling.
-    if let _ = self.selectedIndexes.index(of: indexPath) {
-      cell.alpha = 0.05
-    } else {
-      cell.alpha = 1.0
-    }
-
     return cell
   }
 }

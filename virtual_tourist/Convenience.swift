@@ -159,26 +159,12 @@ extension Client {
       }
 
       //If data is found, the return the data through the completion handler.
-      print("Download completed: \(completionHandlerForImage)")
+      print("Download completed1: \(completionHandlerForImage)")
       completionHandlerForImage(data, nil)
     }
-
-    //Start the request
     task.resume()
-
     return task
   }
-
-
-//  func saveImagesToContext(images: [Photos], pin: Pin) {
-//    appDelegate.stack.context.perform {
-//      for image in images {
-//        _ = Photos.corePhotoWithNetworkInfo(pictureInfo: image, pinUsed: pin, imageData: <#Data#>, inManagedObjectContext: self.appDelegate.stack.context)
-//      }
-//    }
-//
-//      self.appDelegate.stack.save()
-//    }
 }
 
 

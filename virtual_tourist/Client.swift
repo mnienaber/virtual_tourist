@@ -87,7 +87,7 @@ class Client : NSObject {
       print("Found no pages in photos dictionary")
       return
     }
-    // pick a random page!
+
     let pageLimit = min(totalPages, 40)
     let randomPage = Int(arc4random_uniform(UInt32(pageLimit))) + 1
     print("randomPage: \(randomPage)")
@@ -106,38 +106,30 @@ class Client : NSObject {
     
     methodArguments[Client.Constants.FlickrParameterKeys.Page] = pageNumber as AnyObject
     print("pageNumber: \(pageNumber)")
-    //methodArguments[Client.Constants.FlickrParameterKeys.perPage] = 20 as AnyObject
 
     let urlString = Client.Constants.Scheme.BASE_URL + escapedParameters(parameters: methodArguments as [String : AnyObject])
     let url = NSURL(string: urlString)!
 
-    // create session and request
     let session = URLSession.shared
     let request = URLRequest(url: url as URL)
 
-    // create network request
     let task = session.dataTask(with: request) { (data, response, error) in
 
-
-      /* GUARD: Was there an error? */
       guard (error == nil) else {
         completionHandlerForImages(false, error! as NSError)
         return
       }
 
-      /* GUARD: Did we get a successful 2XX response? */
       guard let statusCode = (response as? HTTPURLResponse)?.statusCode, statusCode >= 200 && statusCode <= 299 else {
         completionHandlerForImages(false, error! as NSError)
         return
       }
 
-      /* GUARD: Was there any data returned? */
       guard let data = data else {
         completionHandlerForImages(false, error! as NSError)
         return
       }
 
-      // parse the data
       let parsedResult: [String:AnyObject]!
       do {
         parsedResult = try JSONSerialization.jsonObject(with: data, options: .allowFragments) as! [String:AnyObject]
@@ -146,14 +138,11 @@ class Client : NSObject {
         return
       }
 
-      /* GUARD: Did Flickr return an error (stat != ok)? */
       guard let stat = parsedResult[Client.Constants.FlickrResponseKeys.Status] as? String, stat == Client.Constants.FlickrResponseValues.OKStatus else {
         completionHandlerForImages(false, error! as NSError)
         return
       }
-      //print("This is the parsedResult: \(parsedResult)")
 
-      // GUARD: Is "photos" key in our result? We now have a photos dictionary
       if let photosDictionary = parsedResult[Client.Constants.FlickrResponseKeys.Photos] as? [String:AnyObject] {
 
         guard let photosArray = photosDictionary[Client.Constants.FlickrResponseKeys.Photo] as? [[String: AnyObject]] else {
@@ -161,7 +150,6 @@ class Client : NSObject {
           return
         }
 
-        //Store the pictures from the results in a shared instance.
         print("4")
         ImageObject.SLOFromResults(photosArray){(finishedConverting, pictures) in
           if finishedConverting {

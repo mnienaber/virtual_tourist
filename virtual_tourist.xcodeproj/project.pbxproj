@@ -52,6 +52,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		2E21E2701EF282080090DD8E /* Model 2.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "Model 2.xcdatamodel"; sourceTree = "<group>"; };
 		2E4215E21E458FAF00DD8DC3 /* MapDetailViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MapDetailViewController.swift; sourceTree = "<group>"; };
 		2E4215E41E54349900DD8DC3 /* CollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CollectionViewCell.swift; sourceTree = "<group>"; };
 		2E4A96A81DEC194B000CC944 /* Photos+CoreDataClass.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "Photos+CoreDataClass.swift"; path = "../Photos+CoreDataClass.swift"; sourceTree = "<group>"; };
@@ -649,6 +650,7 @@
 		2E4C64181DC1E8ED002B59E0 /* Model.xcdatamodeld */ = {
 			isa = XCVersionGroup;
 			children = (
+				2E21E2701EF282080090DD8E /* Model 2.xcdatamodel */,
 				2E4C64191DC1E8ED002B59E0 /* Model.xcdatamodel */,
 			);
 			currentVersion = 2E4C64191DC1E8ED002B59E0 /* Model.xcdatamodel */;
