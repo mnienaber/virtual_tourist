@@ -21,7 +21,7 @@ extension Client {
       static let EXTRAS = "url_m"
       static let DATA_FORMAT = "json"
       static let NO_JSON_CALLBACK = "1"
-      static let PER_PAGE = "10"
+      static let PER_PAGE = "20"
     }
 
     struct ParseResponseKeys {
@@ -66,7 +66,7 @@ extension Client {
       static let perPage = "per page"
     }
 
-    struct mapCoordinates {
+    struct MapCoordinates {
 
       static let latitude = "latitude"
       static let longitude = "longitude"
@@ -88,7 +88,7 @@ extension Client {
       static let Pitch = "pitch"
     }
 
-    struct bottomToolBarStatus {
+    struct BottomToolBarStatus {
       static var status = true
     }
   }

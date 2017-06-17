@@ -134,7 +134,7 @@ class ViewController: UIViewController, MKMapViewDelegate, UIApplicationDelegate
     if pinView == nil {
       pinView = MKPinAnnotationView(annotation: annotation, reuseIdentifier: reuseId)
       pinView!.canShowCallout = true
-      pinView!.pinTintColor = .green
+      pinView!.pinTintColor = .red
       pinView!.rightCalloutAccessoryView = UIButton(type: .detailDisclosure)
     }
     else {

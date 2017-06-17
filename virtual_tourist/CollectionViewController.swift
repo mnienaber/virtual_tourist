@@ -40,7 +40,7 @@ class CollectionViewController:  CoreDataCollectionViewController {
     // Create a fetchrequest
     let fr = NSFetchRequest<NSFetchRequestResult>(entityName: "Photos")
     fr.predicate = NSPredicate(format: "pin = %@", pinSelected!)
-    fr.sortDescriptors = [NSSortDescriptor(key: "title", ascending: true)]
+    fr.sortDescriptors = [NSSortDescriptor(key: "pin", ascending: true)]
 
     // Create the FetchedResultsController
     fetchedResultsController = NSFetchedResultsController(fetchRequest: fr, managedObjectContext: self.delegate.stack.context, sectionNameKeyPath: nil, cacheName: nil)
@@ -124,21 +124,36 @@ class CollectionViewController:  CoreDataCollectionViewController {
 
       deleteSeletedPhotos()
       print("deleteselectedphotos")
-      updateBottomButton()
+      bottomActionOutlet.title = "New Photo Album"
     } else {
 
-      performBackgroundUpdatesOnGlobal {
+      if Reachability.isConnectedToNetwork() == false {
 
-        Client.sharedInstance().getImages(pin: self.pinSelected!) { results, error in
+        performUIUpdatesOnMain {
+          FailAlerts.sharedInstance().failGenOK(title: "No Connection", message: "You don't seem to be connected to the internet", alerttitle: "I'll fix it!")
+        }
+      } else {
+        print("1")
+        Client.sharedInstance().getImages(pin: pinSelected!) { results, error in
           if results {
-            print("new request - ImageObjectDetail.sharedInstance().pictures: \(ImageObjectDetail.sharedInstance().pictures)")
+            print("8 - ImageObjectDetail.sharedInstance().pictures: \(ImageObjectDetail.sharedInstance().pictures)")
             self.saveImagesToContext(images: ImageObjectDetail.sharedInstance().pictures, pin: self.pinSelected!)
-          } else {
-            print("something went wrong")
           }
-          self.updateBottomButton()
         }
       }
+
+//      performBackgroundUpdatesOnGlobal {
+//
+//        Client.sharedInstance().getImages(pin: self.pinSelected!) { results, error in
+//          if results {
+//            print("new request - ImageObjectDetail.sharedInstance().pictures: \(ImageObjectDetail.sharedInstance().pictures)")
+//            self.saveImagesToContext(images: ImageObjectDetail.sharedInstance().pictures, pin: self.pinSelected!)
+//          } else {
+//            print("something went wrong")
+//          }
+//          self.updateBottomButton()
+//        }
+//      }
     }
   }
 
@@ -166,6 +181,7 @@ class CollectionViewController:  CoreDataCollectionViewController {
       self.delegate.stack.context.delete(deadPhoto)
       print("dead photo")
     }
+    collectionView.reloadData()
   }
 
   @IBAction func backButton(_ sender: Any) {

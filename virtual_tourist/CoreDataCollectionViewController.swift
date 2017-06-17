@@ -1,45 +1,35 @@
-////  Constants.swift
-////  virtual_tourist
-////
-////  Created by Michael Nienaber on 12/17/16.
-////  Copyright © 2016 Michael Nienaber. All rights reserved.
-////
+//  Constants.swift
+//  virtual_tourist
 //
+//  Created by Michael Nienaber on 12/17/16.
+//  Copyright © 2016 Michael Nienaber. All rights reserved.
+//
+
 import UIKit
 import CoreData
-//
-////Used as an example for our UICollectionViewController.
-//
-//// MARK: - CoreDataCollectionViewController: UITableViewController
 
-class CoreDataCollectionViewController: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource {
+class CoreDataCollectionViewController: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
 
   @IBOutlet weak var collectionView: UICollectionView!
-  // MARK: Properties
 
   var selectedIndexes = [IndexPath]()
 
-  //Use blockOperations array to stre operations.
   typealias collectionViewOperation = () -> Void
   var blockOperations = [collectionViewOperation]()
 
   var fetchedResultsController : NSFetchedResultsController<NSFetchRequestResult>? {
     didSet {
-      // Whenever the frc changes, we execute the search and
-      // reload the table
+
       fetchedResultsController?.delegate = self
       executeSearch()
       self.collectionView?.reloadData()
     }
   }
 
-  // MARK: Initializers
   required init?(coder aDecoder: NSCoder) {
     super.init(coder: aDecoder)
   }
 }
-
-// MARK: - CoreDataCollectionViewController - Images to be shown for each collectionView Cell.
 
 extension CoreDataCollectionViewController {
 
@@ -78,11 +68,8 @@ extension CoreDataCollectionViewController {
   }
 }
 
-// MARK: - CoreDataCollectionViewController (CollectionView Data Source)
-
 extension CoreDataCollectionViewController {
 
-  //How many sections?
   func numberOfSections(in collectionView: UICollectionView) -> Int {
     if let fc = fetchedResultsController {
       print("(fc.sections?.count):\(String(describing: fc.sections?.count))")
@@ -92,7 +79,6 @@ extension CoreDataCollectionViewController {
     }
   }
 
-  //How many items per section?
   func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
     if let fc = fetchedResultsController {
       print("fc: \(fc.sections![section].numberOfObjects)")
@@ -102,9 +88,26 @@ extension CoreDataCollectionViewController {
     }
   }
 
-}
+  func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+    let yourWidth = collectionView.bounds.width/3.0
+    let yourHeight = yourWidth
 
-// MARK: - CoreDataTableViewController (Fetches)
+    return CGSize(width: yourWidth, height: yourHeight)
+  }
+
+  func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
+    return UIEdgeInsetsMake(0,0,0,0)
+  }
+
+  func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
+    return 0
+  }
+
+  func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
+    return 0
+  }
+
+}
 
 extension CoreDataCollectionViewController {
 
@@ -119,16 +122,12 @@ extension CoreDataCollectionViewController {
   }
 }
 
-// MARK: - CoreDataTableViewController: NSFetchedResultsControllerDelegate
-
 extension CoreDataCollectionViewController: NSFetchedResultsControllerDelegate {
 
-  //Remove operations when controller is about to change
   func controllerWillChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
     blockOperations.removeAll()
   }
 
-  // Let collectionview know that content changes and should perform operations
   func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
     collectionView.performBatchUpdates({
       for operation in self.blockOperations {
@@ -137,7 +136,6 @@ extension CoreDataCollectionViewController: NSFetchedResultsControllerDelegate {
     }, completion: nil)
   }
 
-  // Notify collectionView that there is a change for a section.
   func controller(_ controller: NSFetchedResultsController<NSFetchRequestResult>, didChange sectionInfo: NSFetchedResultsSectionInfo, atSectionIndex sectionIndex: Int, for type: NSFetchedResultsChangeType) {
 
     let set = IndexSet(integer: sectionIndex)
@@ -156,7 +154,6 @@ extension CoreDataCollectionViewController: NSFetchedResultsControllerDelegate {
     }
   }
 
-  // Notify collectionView that an object has been changed.
   func controller(_ controller: NSFetchedResultsController<NSFetchRequestResult>, didChange anObject: Any, at indexPath: IndexPath?, for type: NSFetchedResultsChangeType, newIndexPath: IndexPath?) {
 
     switch type {

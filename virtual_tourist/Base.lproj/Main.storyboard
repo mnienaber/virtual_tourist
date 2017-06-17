@@ -155,7 +155,7 @@
                                                     <rect key="frame" x="0.0" y="0.0" width="97" height="97"/>
                                                 </imageView>
                                                 <view alpha="0.40000000000000002" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="MXK-1z-orn">
-                                                    <rect key="frame" x="0.0" y="0.0" width="97" height="97"/>
+                                                    <rect key="frame" x="0.0" y="0.0" width="98" height="97"/>
                                                     <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                                                     <color key="tintColor" red="0.1163576749" green="0.1163576749" blue="0.1163576749" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                 </view>
@@ -166,13 +166,14 @@
                                             <constraint firstItem="5Vx-oz-WOb" firstAttribute="leading" secondItem="YzX-Cc-vex" secondAttribute="leading" id="3e9-mU-kUE"/>
                                             <constraint firstItem="MXK-1z-orn" firstAttribute="bottom" secondItem="5Vx-oz-WOb" secondAttribute="bottom" id="9By-FV-UfK"/>
                                             <constraint firstItem="m64-pg-Otl" firstAttribute="centerX" secondItem="YzX-Cc-vex" secondAttribute="centerX" id="TiZ-8m-C20"/>
-                                            <constraint firstItem="m64-pg-Otl" firstAttribute="centerX" secondItem="5Vx-oz-WOb" secondAttribute="centerX" id="TvE-iw-AwN"/>
+                                            <constraint firstItem="m64-pg-Otl" firstAttribute="centerX" secondItem="5Vx-oz-WOb" secondAttribute="centerX" constant="0.5" id="TvE-iw-AwN"/>
                                             <constraint firstItem="MXK-1z-orn" firstAttribute="centerY" secondItem="m64-pg-Otl" secondAttribute="centerY" id="bae-cW-ELX"/>
                                             <constraint firstItem="5Vx-oz-WOb" firstAttribute="top" secondItem="YzX-Cc-vex" secondAttribute="top" id="cPw-0n-MOc"/>
                                             <constraint firstItem="MXK-1z-orn" firstAttribute="top" secondItem="5Vx-oz-WOb" secondAttribute="top" id="ddo-kU-beG"/>
-                                            <constraint firstItem="MXK-1z-orn" firstAttribute="trailing" secondItem="5Vx-oz-WOb" secondAttribute="trailing" id="h3u-6a-LER"/>
+                                            <constraint firstItem="MXK-1z-orn" firstAttribute="trailing" secondItem="5Vx-oz-WOb" secondAttribute="trailing" constant="1" id="h3u-6a-LER"/>
                                             <constraint firstItem="m64-pg-Otl" firstAttribute="centerY" secondItem="YzX-Cc-vex" secondAttribute="centerY" id="lna-gM-iy7"/>
                                         </constraints>
+                                        <size key="customSize" width="97" height="97"/>
                                         <connections>
                                             <outlet property="activityIndicator" destination="m64-pg-Otl" id="ZgF-0I-IxO"/>
                                             <outlet property="colorPanel" destination="MXK-1z-orn" id="kXj-Kd-AlA"/>

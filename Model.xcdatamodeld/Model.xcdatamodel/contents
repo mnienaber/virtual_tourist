@@ -9,7 +9,7 @@
     <entity name="Pin" representedClassName="Pin" syncable="YES">
         <attribute name="latitude" attributeType="Float" defaultValueString="0.0" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="longitude" attributeType="Float" defaultValueString="0.0" usesScalarValueType="YES" syncable="YES"/>
-        <relationship name="photos" optional="YES" maxCount="1" deletionRule="Cascade" destinationEntity="Photos" inverseName="pin" inverseEntity="Photos" syncable="YES"/>
+        <relationship name="photos" optional="YES" toMany="YES" deletionRule="Cascade" ordered="YES" destinationEntity="Photos" inverseName="pin" inverseEntity="Photos" syncable="YES"/>
     </entity>
     <elements>
         <element name="Photos" positionX="324" positionY="132" width="128" height="105"/>
