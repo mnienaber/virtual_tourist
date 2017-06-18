@@ -124,55 +124,64 @@ class ViewController: UIViewController, MKMapViewDelegate, UIApplicationDelegate
     }
   }
 
-  func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView? {
-//
-//    let identifier = "pin"
-//    var view: MKPinAnnotationView
-//    if let dequeuedView = self.mapView.dequeueReusableAnnotationView(withIdentifier: identifier) as? MKPinAnnotationView {
-//      dequeuedView.annotation = annotation
-//      view = dequeuedView
-//    } else {
-//      view = MKPinAnnotationView(annotation: annotation, reuseIdentifier: identifier)
-//      view.canShowCallout = false
-//      view.isEnabled = true
-//    }
-//    return view
-//  }
-
-    let reuseId = "pin"
-
-    var pinView = mapView.dequeueReusableAnnotationView(withIdentifier: reuseId) as? MKPinAnnotationView
-
-    if pinView == nil {
-      pinView = MKPinAnnotationView(annotation: annotation, reuseIdentifier: reuseId)
-      pinView!.canShowCallout = false
-      pinView!.pinTintColor = .red
-      pinView!.isEnabled = true
-    }
-    else {
-      pinView!.annotation = annotation
-    }
-
-    return pinView
-  }
-
-  func mapView(_ mapView: MKMapView, didSelect view: MKAnnotationView) {
-    print("tapped")
-    if view.isSelected {
-      coordinatesForPin = (view.annotation?.coordinate)!
-      performSegue(withIdentifier: "tappedPin", sender: self)
-    }
-
-  }
-
   override func prepare(for segue: UIStoryboardSegue, sender: Any?){
     if segue.identifier == "tappedPin" {
       print("you've been tapped")
       let collectionVC = segue.destination as! CollectionViewController
-      var pin = self.getPin(latitude: coordinatesForPin.latitude, longitude: coordinatesForPin.longitude)
-      currentPin = pin!.removeFirst()
+
       collectionVC.pinSelected = currentPin!
       collectionVC.detailLocation = coordinatesForPin
+    }
+  }
+
+  func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView? {
+
+    let identifier = "pin"
+    var view: MKPinAnnotationView
+    if let dequeuedView = self.mapView.dequeueReusableAnnotationView(withIdentifier: identifier) as? MKPinAnnotationView {
+      dequeuedView.annotation = annotation
+      view = dequeuedView
+    } else {
+      view = MKPinAnnotationView(annotation: annotation, reuseIdentifier: identifier)
+      view.canShowCallout = false
+      view.isEnabled = true
+    }
+    return view
+  }
+//
+//    let reuseId = "pin"
+//
+//    var pinView = mapView.dequeueReusableAnnotationView(withIdentifier: reuseId) as? MKPinAnnotationView
+//
+//    if pinView == nil {
+//      pinView = MKPinAnnotationView(annotation: annotation, reuseIdentifier: reuseId)
+//      pinView!.canShowCallout = false
+//      pinView!.pinTintColor = .red
+//      pinView!.isEnabled = true
+//    }
+//    else {
+//      pinView!.annotation = annotation
+//    }
+//
+//    return pinView
+//  }
+
+  func mapView(_ mapView: MKMapView, didSelect view: MKAnnotationView) {
+    print("tapped")
+//    coordinatesForPin = (view.annotation?.coordinate)!
+//    let pin = self.getPin(latitude: coordinatesForPin.latitude, longitude: coordinatesForPin.longitude)
+//    if view.isSelected {
+//
+//      performSegue(withIdentifier: "tappedPin", sender: self)
+//    }
+//
+//  }
+    coordinatesForPin = (view.annotation?.coordinate)!
+
+    let pin = self.getPin(latitude: coordinatesForPin.latitude, longitude: coordinatesForPin.longitude)
+
+    if pin != nil, pin!.count > 0{
+      currentPin = pin!.first!
     }
   }
 
