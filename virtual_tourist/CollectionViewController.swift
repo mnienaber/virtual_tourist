@@ -130,6 +130,17 @@ class CollectionViewController:  CoreDataCollectionViewController {
         }
       } else {
         print("1")
+
+        let currentPhotos = getPhotos()
+
+        if currentPhotos != nil {
+
+          for photos in currentPhotos! {
+
+            self.delegate.stack.context.delete(photos)
+          }
+        }
+        
         Client.sharedInstance().getImages(pin: pinSelected!) { results, error in
           if results {
             print("8")

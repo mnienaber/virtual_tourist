@@ -118,44 +118,43 @@ class ViewController: UIViewController, MKMapViewDelegate, UIApplicationDelegate
       annotation.coordinate = newCoordinates
       annotation.title = "See Photos"
       mapView.addAnnotation(newAnnotation)
-      let pin = Pin(latitude: Float(newCoord.latitude), longitude: Float(newCoord.longitude), context: self.delegate.stack.context)
+      let pin = Pin(latitude: Float(newCoordinates.latitude), longitude: Float(newCoordinates.longitude), context: self.delegate.stack.context)
       print("pin: \(pin)")
       self.delegate.stack.save()
-//      self.showPins()
     }
   }
 
   func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView? {
-
-    let identifier = "pin"
-    var view: MKPinAnnotationView
-    if let dequeuedView = self.mapView.dequeueReusableAnnotationView(withIdentifier: identifier) as? MKPinAnnotationView {
-      dequeuedView.annotation = annotation
-      view = dequeuedView
-    } else {
-      view = MKPinAnnotationView(annotation: annotation, reuseIdentifier: identifier)
-      view.canShowCallout = false
-      view.isEnabled = true
-    }
-    return view
-  }
 //
-//    let reuseId = "pin"
-//
-//    var pinView = mapView.dequeueReusableAnnotationView(withIdentifier: reuseId) as? MKPinAnnotationView
-//
-//    if pinView == nil {
-//      pinView = MKPinAnnotationView(annotation: annotation, reuseIdentifier: reuseId)
-//      pinView!.canShowCallout = true
-//      pinView!.pinTintColor = .red
-//      pinView!.rightCalloutAccessoryView = UIButton(type: .detailDisclosure)
+//    let identifier = "pin"
+//    var view: MKPinAnnotationView
+//    if let dequeuedView = self.mapView.dequeueReusableAnnotationView(withIdentifier: identifier) as? MKPinAnnotationView {
+//      dequeuedView.annotation = annotation
+//      view = dequeuedView
+//    } else {
+//      view = MKPinAnnotationView(annotation: annotation, reuseIdentifier: identifier)
+//      view.canShowCallout = false
+//      view.isEnabled = true
 //    }
-//    else {
-//      pinView!.annotation = annotation
-//    }
-//
-//    return pinView
+//    return view
 //  }
+
+    let reuseId = "pin"
+
+    var pinView = mapView.dequeueReusableAnnotationView(withIdentifier: reuseId) as? MKPinAnnotationView
+
+    if pinView == nil {
+      pinView = MKPinAnnotationView(annotation: annotation, reuseIdentifier: reuseId)
+      pinView!.canShowCallout = false
+      pinView!.pinTintColor = .red
+      pinView!.isEnabled = true
+    }
+    else {
+      pinView!.annotation = annotation
+    }
+
+    return pinView
+  }
 
   func mapView(_ mapView: MKMapView, didSelect view: MKAnnotationView) {
     print("tapped")
@@ -174,14 +173,6 @@ class ViewController: UIViewController, MKMapViewDelegate, UIApplicationDelegate
       currentPin = pin!.removeFirst()
       collectionVC.pinSelected = currentPin!
       collectionVC.detailLocation = coordinatesForPin
-    }
-  }
-
-  //If callout is clicked then segue.
-  func mapView(_ mapView: MKMapView, annotationView view: MKAnnotationView, calloutAccessoryControlTapped control: UIControl) {
-    if control == view.rightCalloutAccessoryView {
-      performSegue(withIdentifier: "tappedPin", sender: self)
-
     }
   }
 
@@ -219,7 +210,6 @@ class ViewController: UIViewController, MKMapViewDelegate, UIApplicationDelegate
     let fetchRequest = getFetchRequest(entityName: "Pin", format: "latitude = %@ && longitude = %@", argArray: [latitude, longitude])
 
     let pins: [Pin]? = fetchPin(fetchRequest: fetchRequest)
-
     return pins
   }
 
