@@ -127,34 +127,51 @@ class ViewController: UIViewController, MKMapViewDelegate, UIApplicationDelegate
 
   func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView? {
 
-    let reuseId = "pin"
-
-    var pinView = mapView.dequeueReusableAnnotationView(withIdentifier: reuseId) as? MKPinAnnotationView
-
-    if pinView == nil {
-      pinView = MKPinAnnotationView(annotation: annotation, reuseIdentifier: reuseId)
-      pinView!.canShowCallout = true
-      pinView!.pinTintColor = .red
-      pinView!.rightCalloutAccessoryView = UIButton(type: .detailDisclosure)
+    let identifier = "pin"
+    print(identifier)
+    var view: MKPinAnnotationView
+    if let dequeuedView = self.mapView.dequeueReusableAnnotationView(withIdentifier: identifier) as? MKPinAnnotationView {
+      dequeuedView.annotation = annotation
+      view = dequeuedView
+    } else {
+      view = MKPinAnnotationView(annotation: annotation, reuseIdentifier: identifier)
+      view.canShowCallout = false
+      view.isEnabled = true
     }
-    else {
-      pinView!.annotation = annotation
-    }
-
-    return pinView
+    return view
   }
+//
+//    let reuseId = "pin"
+//
+//    var pinView = mapView.dequeueReusableAnnotationView(withIdentifier: reuseId) as? MKPinAnnotationView
+//
+//    if pinView == nil {
+//      pinView = MKPinAnnotationView(annotation: annotation, reuseIdentifier: reuseId)
+//      pinView!.canShowCallout = true
+//      pinView!.pinTintColor = .red
+//      pinView!.rightCalloutAccessoryView = UIButton(type: .detailDisclosure)
+//    }
+//    else {
+//      pinView!.annotation = annotation
+//    }
+//
+//    return pinView
+//  }
 
   func mapView(_ mapView: MKMapView, didSelect view: MKAnnotationView) {
     print("tapped")
-    coordinatesForPin = (view.annotation?.coordinate)!
-    var pin = self.getPin(latitude: coordinatesForPin.latitude, longitude: coordinatesForPin.longitude)
-    currentPin = pin!.removeFirst()
+    if view.isSelected {
+      coordinatesForPin = (view.annotation?.coordinate)!
+      var pin = self.getPin(latitude: coordinatesForPin.latitude, longitude: coordinatesForPin.longitude)
+      currentPin = pin!.removeFirst()
+      performSegue(withIdentifier: "tappedPin", sender: self)
+    }
+
   }
 
   override func prepare(for segue: UIStoryboardSegue, sender: Any?){
     if segue.identifier == "tappedPin" {
       print("you've been tapped")
-      //let nav = segue.destination as! UINavigationController
       let collectionVC = segue.destination as! CollectionViewController
       collectionVC.pinSelected = currentPin!
       collectionVC.detailLocation = coordinatesForPin

@@ -181,7 +181,8 @@ class CollectionViewController:  CoreDataCollectionViewController {
       self.delegate.stack.context.delete(deadPhoto)
       print("dead photo")
     }
-    collectionView.reloadData()
+    selectedIndexes = [IndexPath]()
+    print("selectedindexes: \(selectedIndexes.count)")
   }
 
   @IBAction func backButton(_ sender: Any) {

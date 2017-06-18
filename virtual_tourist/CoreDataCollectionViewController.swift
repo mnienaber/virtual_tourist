@@ -72,7 +72,6 @@ extension CoreDataCollectionViewController {
 
   func numberOfSections(in collectionView: UICollectionView) -> Int {
     if let fc = fetchedResultsController {
-      print("(fc.sections?.count):\(String(describing: fc.sections?.count))")
       return (fc.sections?.count)!
     } else {
       return 0

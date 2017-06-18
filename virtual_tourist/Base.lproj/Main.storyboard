@@ -141,7 +141,7 @@
                                     <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
                                 </collectionViewFlowLayout>
                                 <cells>
-                                    <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="Cell" id="YzX-Cc-vex" customClass="CollectionViewCell" customModule="virtual_tourist" customModuleProvider="target">
+                                    <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleAspectFill" reuseIdentifier="Cell" id="YzX-Cc-vex" customClass="CollectionViewCell" customModule="virtual_tourist" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="0.0" width="97" height="97"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
@@ -154,7 +154,7 @@
                                                 <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="5Vx-oz-WOb">
                                                     <rect key="frame" x="0.0" y="0.0" width="97" height="97"/>
                                                 </imageView>
-                                                <view alpha="0.40000000000000002" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="MXK-1z-orn">
+                                                <view alpha="0.40000000000000002" contentMode="scaleAspectFill" translatesAutoresizingMaskIntoConstraints="NO" id="MXK-1z-orn">
                                                     <rect key="frame" x="0.0" y="0.0" width="98" height="97"/>
                                                     <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                                                     <color key="tintColor" red="0.1163576749" green="0.1163576749" blue="0.1163576749" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -173,7 +173,6 @@
                                             <constraint firstItem="MXK-1z-orn" firstAttribute="trailing" secondItem="5Vx-oz-WOb" secondAttribute="trailing" constant="1" id="h3u-6a-LER"/>
                                             <constraint firstItem="m64-pg-Otl" firstAttribute="centerY" secondItem="YzX-Cc-vex" secondAttribute="centerY" id="lna-gM-iy7"/>
                                         </constraints>
-                                        <size key="customSize" width="97" height="97"/>
                                         <connections>
                                             <outlet property="activityIndicator" destination="m64-pg-Otl" id="ZgF-0I-IxO"/>
                                             <outlet property="colorPanel" destination="MXK-1z-orn" id="kXj-Kd-AlA"/>
