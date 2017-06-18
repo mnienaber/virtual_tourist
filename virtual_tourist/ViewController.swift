@@ -179,10 +179,11 @@ class ViewController: UIViewController, MKMapViewDelegate, UIApplicationDelegate
     coordinatesForPin = (view.annotation?.coordinate)!
 
     let pin = self.getPin(latitude: coordinatesForPin.latitude, longitude: coordinatesForPin.longitude)
-
+    print(pin)
     if pin != nil, pin!.count > 0{
       currentPin = pin!.first!
     }
+    performSegue(withIdentifier: "tappedPin", sender: self)
   }
 
   func showPins() {
