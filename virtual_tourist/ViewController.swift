@@ -65,7 +65,7 @@ class ViewController: UIViewController, MKMapViewDelegate, UIApplicationDelegate
 
   override func viewWillAppear(_ animated: Bool) {
     print("viewwillappear")
-    showPins()
+//    showPins()
   }
 
   override func didReceiveMemoryWarning() {
@@ -121,14 +121,13 @@ class ViewController: UIViewController, MKMapViewDelegate, UIApplicationDelegate
       let pin = Pin(latitude: Float(newCoord.latitude), longitude: Float(newCoord.longitude), context: self.delegate.stack.context)
       print("pin: \(pin)")
       self.delegate.stack.save()
-      self.showPins()
+//      self.showPins()
     }
   }
 
   func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView? {
 
     let identifier = "pin"
-    print(identifier)
     var view: MKPinAnnotationView
     if let dequeuedView = self.mapView.dequeueReusableAnnotationView(withIdentifier: identifier) as? MKPinAnnotationView {
       dequeuedView.annotation = annotation
@@ -162,8 +161,6 @@ class ViewController: UIViewController, MKMapViewDelegate, UIApplicationDelegate
     print("tapped")
     if view.isSelected {
       coordinatesForPin = (view.annotation?.coordinate)!
-      var pin = self.getPin(latitude: coordinatesForPin.latitude, longitude: coordinatesForPin.longitude)
-      currentPin = pin!.removeFirst()
       performSegue(withIdentifier: "tappedPin", sender: self)
     }
 
@@ -173,6 +170,8 @@ class ViewController: UIViewController, MKMapViewDelegate, UIApplicationDelegate
     if segue.identifier == "tappedPin" {
       print("you've been tapped")
       let collectionVC = segue.destination as! CollectionViewController
+      var pin = self.getPin(latitude: coordinatesForPin.latitude, longitude: coordinatesForPin.longitude)
+      currentPin = pin!.removeFirst()
       collectionVC.pinSelected = currentPin!
       collectionVC.detailLocation = coordinatesForPin
     }

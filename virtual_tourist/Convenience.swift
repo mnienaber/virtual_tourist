@@ -46,7 +46,6 @@ extension Client {
 
         completionHanderForGetImages(false, error)
       } else {
-        print("success: \(results)")
         completionHanderForGetImages(true, nil)
           }
         }
@@ -67,7 +66,6 @@ extension Client {
 
     do {
       try managedContext.save()
-      print("pin managedContext \(managedContext)")
     } catch let error as NSError {
       print("Could not save pin \(error), \(error.userInfo)")
     }

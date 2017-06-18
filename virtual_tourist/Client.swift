@@ -155,7 +155,7 @@ class Client : NSObject {
           if finishedConverting {
             print("6")
             ImageObjectDetail.sharedInstance().pictures = pictures
-            print("7 - pictures: \(pictures)")
+            print("7")
             completionHandlerForImages(true, nil)
           }
         }

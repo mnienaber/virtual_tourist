@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		2E4215E31E458FAF00DD8DC3 /* MapDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E4215E21E458FAF00DD8DC3 /* MapDetailViewController.swift */; };
 		2E4215E51E54349900DD8DC3 /* CollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E4215E41E54349900DD8DC3 /* CollectionViewCell.swift */; };
 		2E4A96AC1DEC194B000CC944 /* Photos+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E4A96A81DEC194B000CC944 /* Photos+CoreDataClass.swift */; };
 		2E4A96AD1DEC194B000CC944 /* Photos+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E4A96A91DEC194B000CC944 /* Photos+CoreDataProperties.swift */; };
@@ -53,7 +52,6 @@
 
 /* Begin PBXFileReference section */
 		2E21E2701EF282080090DD8E /* Model 2.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "Model 2.xcdatamodel"; sourceTree = "<group>"; };
-		2E4215E21E458FAF00DD8DC3 /* MapDetailViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MapDetailViewController.swift; sourceTree = "<group>"; };
 		2E4215E41E54349900DD8DC3 /* CollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CollectionViewCell.swift; sourceTree = "<group>"; };
 		2E4A96A81DEC194B000CC944 /* Photos+CoreDataClass.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "Photos+CoreDataClass.swift"; path = "../Photos+CoreDataClass.swift"; sourceTree = "<group>"; };
 		2E4A96A91DEC194B000CC944 /* Photos+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "Photos+CoreDataProperties.swift"; path = "../Photos+CoreDataProperties.swift"; sourceTree = "<group>"; };
@@ -188,7 +186,6 @@
 				2E4215E41E54349900DD8DC3 /* CollectionViewCell.swift */,
 				2E5E9CA51E3B69BB002DD730 /* CoreDataCollectionViewController.swift */,
 				2E4C63EE1DC1E8D3002B59E0 /* Main.storyboard */,
-				2E4215E21E458FAF00DD8DC3 /* MapDetailViewController.swift */,
 			);
 			name = View;
 			sourceTree = "<group>";
@@ -365,7 +362,6 @@
 				2E4C641A1DC1E8ED002B59E0 /* Model.xcdatamodeld in Sources */,
 				2E4215E51E54349900DD8DC3 /* CollectionViewCell.swift in Sources */,
 				2E8809DF1E05061400898A34 /* BlackBox.swift in Sources */,
-				2E4215E31E458FAF00DD8DC3 /* MapDetailViewController.swift in Sources */,
 				2E8809D41E04D1B300898A34 /* Constants.swift in Sources */,
 				2E4A96AE1DEC194B000CC944 /* Pin+CoreDataClass.swift in Sources */,
 				2E4A96AC1DEC194B000CC944 /* Photos+CoreDataClass.swift in Sources */,

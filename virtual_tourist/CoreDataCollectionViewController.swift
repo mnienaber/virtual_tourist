@@ -34,6 +34,7 @@ class CoreDataCollectionViewController: UIViewController, UICollectionViewDelega
 extension CoreDataCollectionViewController {
 
   func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+
     let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "Cell", for: indexPath) as! CollectionViewCell
 
     cell.imageView.image = UIImage(named: "placeholder")
@@ -42,7 +43,6 @@ extension CoreDataCollectionViewController {
     cell.colorPanel.isHidden = true
 
     let photo = self.fetchedResultsController?.object(at: indexPath) as? Photos
-    print("photonumner: \(photo)")
 
     if photo?.image == nil {
 
@@ -71,6 +71,7 @@ extension CoreDataCollectionViewController {
 extension CoreDataCollectionViewController {
 
   func numberOfSections(in collectionView: UICollectionView) -> Int {
+
     if let fc = fetchedResultsController {
       return (fc.sections?.count)!
     } else {
@@ -79,8 +80,8 @@ extension CoreDataCollectionViewController {
   }
 
   func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+
     if let fc = fetchedResultsController {
-      print("fc: \(fc.sections![section].numberOfObjects)")
       return fc.sections![section].numberOfObjects
     } else {
       return 0
@@ -114,8 +115,8 @@ extension CoreDataCollectionViewController {
     if let fc = fetchedResultsController {
       do {
         try fc.performFetch()
-      } catch let e as NSError {
-        print("Error while trying to perform a search: \n\(e)\n\(fetchedResultsController)")
+      } catch let error as NSError {
+        print("Error while trying to perform a search: \n\(error)\n\(String(describing: fetchedResultsController))")
       }
     }
   }

@@ -1,10 +1,10 @@
-////
-////  CollectionViewController.swift
-////  virtual_tourist
-////
-////  Created by Michael Nienaber on 11/2/16.
-////  Copyright © 2016 Michael Nienaber. All rights reserved.
-////
+//
+//  CollectionViewController.swift
+//  virtual_tourist
+//
+//  Created by Michael Nienaber on 11/2/16.
+//  Copyright © 2016 Michael Nienaber. All rights reserved.
+//
 
 import Foundation
 import UIKit
@@ -23,7 +23,6 @@ class CollectionViewController:  CoreDataCollectionViewController {
   var detailLocation = CLLocationCoordinate2D()
   let delegate = UIApplication.shared.delegate as! AppDelegate
 
-  // MARK: - View Lifecycle Methods
   override func viewDidLoad() {
     super.viewDidLoad()
 
@@ -34,15 +33,12 @@ class CollectionViewController:  CoreDataCollectionViewController {
     bottomActionOutlet.title = "New Photo Album"
 
     setupFlowLayout()
-
     showPin()
 
-    // Create a fetchrequest
     let fr = NSFetchRequest<NSFetchRequestResult>(entityName: "Photos")
     fr.predicate = NSPredicate(format: "pin = %@", pinSelected!)
     fr.sortDescriptors = [NSSortDescriptor(key: "pin", ascending: true)]
 
-    // Create the FetchedResultsController
     fetchedResultsController = NSFetchedResultsController(fetchRequest: fr, managedObjectContext: self.delegate.stack.context, sectionNameKeyPath: nil, cacheName: nil)
 
     if Reachability.isConnectedToNetwork() == false {
@@ -54,7 +50,7 @@ class CollectionViewController:  CoreDataCollectionViewController {
       print("1")
       Client.sharedInstance().getImages(pin: pinSelected!) { results, error in
         if results {
-          print("8 - ImageObjectDetail.sharedInstance().pictures: \(ImageObjectDetail.sharedInstance().pictures)")
+          print("8")
           self.saveImagesToContext(images: ImageObjectDetail.sharedInstance().pictures, pin: self.pinSelected!)
         }
       }
@@ -75,7 +71,7 @@ class CollectionViewController:  CoreDataCollectionViewController {
   }
 
   override func viewWillAppear(_ animated: Bool) {
-    self.delegate.stack.autoSave(1000)
+    self.delegate.stack.autoSave(100)
   }
 
   func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
@@ -136,24 +132,11 @@ class CollectionViewController:  CoreDataCollectionViewController {
         print("1")
         Client.sharedInstance().getImages(pin: pinSelected!) { results, error in
           if results {
-            print("8 - ImageObjectDetail.sharedInstance().pictures: \(ImageObjectDetail.sharedInstance().pictures)")
+            print("8")
             self.saveImagesToContext(images: ImageObjectDetail.sharedInstance().pictures, pin: self.pinSelected!)
           }
         }
       }
-
-//      performBackgroundUpdatesOnGlobal {
-//
-//        Client.sharedInstance().getImages(pin: self.pinSelected!) { results, error in
-//          if results {
-//            print("new request - ImageObjectDetail.sharedInstance().pictures: \(ImageObjectDetail.sharedInstance().pictures)")
-//            self.saveImagesToContext(images: ImageObjectDetail.sharedInstance().pictures, pin: self.pinSelected!)
-//          } else {
-//            print("something went wrong")
-//          }
-//          self.updateBottomButton()
-//        }
-//      }
     }
   }
 
@@ -182,13 +165,11 @@ class CollectionViewController:  CoreDataCollectionViewController {
       print("dead photo")
     }
     selectedIndexes = [IndexPath]()
-    print("selectedindexes: \(selectedIndexes.count)")
   }
 
   @IBAction func backButton(_ sender: Any) {
     
-    print("baaaack")
-
+    print("back")
     let _ = self.navigationController?.popToRootViewController(animated: true)
   }
 
