@@ -184,7 +184,6 @@ class ViewController: UIViewController, MKMapViewDelegate, UIApplicationDelegate
 
     do {
       pins = try self.delegate.stack.context.fetch(fetchRequest) as? [Pin]
-      print("pins from function: \(try self.delegate.stack.context.count(for: fetchRequest))") //returns a valid number of pins
     } catch {
       print("whoops")
     }
