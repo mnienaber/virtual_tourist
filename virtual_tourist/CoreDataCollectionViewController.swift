@@ -37,7 +37,7 @@ extension CoreDataCollectionViewController {
 
     let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "Cell", for: indexPath) as! CollectionViewCell
 
-    cell.imageView.image = UIImage(named: "placeholder")
+    cell.imageView.image = UIImage(named: "defaultImage")
     cell.activityIndicator.startAnimating()
     cell.imageView.contentMode = .scaleAspectFit
     cell.colorPanel.isHidden = true

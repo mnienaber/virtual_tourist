@@ -37,7 +37,7 @@ class CollectionViewController:  CoreDataCollectionViewController {
 
     let fr = NSFetchRequest<NSFetchRequestResult>(entityName: "Photos")
     fr.predicate = NSPredicate(format: "pin = %@", pinSelected!)
-    fr.sortDescriptors = [NSSortDescriptor(key: "pin", ascending: true)]
+    fr.sortDescriptors = [NSSortDescriptor(key: "title", ascending: true)]
 
     fetchedResultsController = NSFetchedResultsController(fetchRequest: fr, managedObjectContext: self.delegate.stack.context, sectionNameKeyPath: nil, cacheName: nil)
 
@@ -77,11 +77,13 @@ class CollectionViewController:  CoreDataCollectionViewController {
   func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
     let cell = collectionView.cellForItem(at: indexPath) as! CollectionViewCell
     if let index = selectedIndexes.index(of: indexPath) {
+
       selectedIndexes.remove(at: index)
       cell.colorPanel.isHidden = true
       updateBottomButton()
       print("deselected")
     } else {
+
       cell.colorPanel.isHidden = false
       selectedIndexes.append(indexPath)
       updateBottomButton()
@@ -93,8 +95,10 @@ class CollectionViewController:  CoreDataCollectionViewController {
 
     var photos: [Photos]?
     do {
+
       photos = try self.delegate.stack.context.fetch((fetchedResultsController?.fetchRequest)!) as? [Photos]
     } catch {
+
       FailAlerts.sharedInstance().failGenOK(title: "Sorry", message: "Couldn't load photos", alerttitle: "Please try again")
     }
     return photos
@@ -132,7 +136,6 @@ class CollectionViewController:  CoreDataCollectionViewController {
         print("1")
 
         let currentPhotos = getPhotos()
-
         if currentPhotos != nil {
 
           for photos in currentPhotos! {
@@ -189,8 +192,10 @@ class CollectionViewController:  CoreDataCollectionViewController {
   func updateBottomButton() {
 
     if selectedIndexes.count > 0 {
+
       bottomActionOutlet.title = "Remove Images"
     } else {
+      
       bottomActionOutlet.title = "New Photo Album"
     }
   }
