@@ -17,8 +17,6 @@ class Client : NSObject {
   var photoManagedObject = [NSManagedObject]()
   var latitude = Float()
   var longitude = Float()
-//  var photosArray: [ImageObject]
-
 
   override init() {
     super.init()
@@ -67,7 +65,7 @@ class Client : NSObject {
 
       if let photosDictionary = parsedResult[Client.Constants.FlickrResponseKeys.Photos] as? [String:AnyObject] {
 
-        self.pickARandomPage(photosDictionary: photosDictionary, methodArguments: methodArguments) { (success, error) in
+        self.chooseRandomPage(photosDictionary: photosDictionary, methodArguments: methodArguments) { (success, error) in
           if success{
             completionHandlerForConvertData(true, nil)
           } else {
@@ -77,7 +75,7 @@ class Client : NSObject {
       }
     }
 
-  func pickARandomPage(photosDictionary: [String: AnyObject], methodArguments: [String: AnyObject], completionHandlerForImages: @escaping (_ success: Bool, _ error: NSError?) -> Void) {
+  func chooseRandomPage(photosDictionary: [String: AnyObject], methodArguments: [String: AnyObject], completionHandlerForImages: @escaping (_ success: Bool, _ error: NSError?) -> Void) {
     guard let totalPages = photosDictionary[Client.Constants.FlickrResponseKeys.Pages] as? Int else {
       print("Found no pages in photos dictionary")
       return
@@ -93,6 +91,7 @@ class Client : NSObject {
     print("randomPage: \(randomPage)")
     downloadRandomFlickrAlbum(methodArguments: methodArguments, withPageNumber: randomPage){ (success, error) in
       if success{
+
         completionHandlerForImages(true, nil)
       } else{
         completionHandlerForImages(false, error)
@@ -105,7 +104,6 @@ class Client : NSObject {
     var methodArguments = methodArguments
     
     methodArguments[Client.Constants.FlickrParameterKeys.Page] = pageNumber as AnyObject
-    print("pageNumber: \(pageNumber)")
 
     let urlString = Client.Constants.Scheme.BASE_URL + escapedParameters(parameters: methodArguments as [String : AnyObject])
     let url = NSURL(string: urlString)!
@@ -153,6 +151,7 @@ class Client : NSObject {
         print("4")
         ImageObject.SLOFromResults(photosArray){(finishedConverting, pictures) in
           if finishedConverting {
+            
             print("6")
             ImageObjectDetail.sharedInstance().pictures = pictures
             print("7")
