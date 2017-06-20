@@ -65,7 +65,6 @@ class ViewController: UIViewController, MKMapViewDelegate, UIApplicationDelegate
 
   override func viewWillAppear(_ animated: Bool) {
     print("viewwillappear")
-//    showPins()
   }
 
   override func didReceiveMemoryWarning() {
@@ -148,34 +147,10 @@ class ViewController: UIViewController, MKMapViewDelegate, UIApplicationDelegate
     }
     return view
   }
-//
-//    let reuseId = "pin"
-//
-//    var pinView = mapView.dequeueReusableAnnotationView(withIdentifier: reuseId) as? MKPinAnnotationView
-//
-//    if pinView == nil {
-//      pinView = MKPinAnnotationView(annotation: annotation, reuseIdentifier: reuseId)
-//      pinView!.canShowCallout = false
-//      pinView!.pinTintColor = .red
-//      pinView!.isEnabled = true
-//    }
-//    else {
-//      pinView!.annotation = annotation
-//    }
-//
-//    return pinView
-//  }
 
   func mapView(_ mapView: MKMapView, didSelect view: MKAnnotationView) {
     print("tapped")
-//    coordinatesForPin = (view.annotation?.coordinate)!
-//    let pin = self.getPin(latitude: coordinatesForPin.latitude, longitude: coordinatesForPin.longitude)
-//    if view.isSelected {
-//
-//      performSegue(withIdentifier: "tappedPin", sender: self)
-//    }
-//
-//  }
+
     coordinatesForPin = (view.annotation?.coordinate)!
 
     let pin = self.getPin(latitude: coordinatesForPin.latitude, longitude: coordinatesForPin.longitude)

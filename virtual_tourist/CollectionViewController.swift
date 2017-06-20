@@ -142,7 +142,9 @@ class CollectionViewController:  CoreDataCollectionViewController {
         }
         
         Client.sharedInstance().getImages(pin: pinSelected!) { results, error in
+
           if results {
+
             print("8")
             self.saveImagesToContext(images: ImageObjectDetail.sharedInstance().pictures, pin: self.pinSelected!)
           }
