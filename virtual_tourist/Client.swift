@@ -17,8 +17,6 @@ class Client : NSObject {
   var photoManagedObject = [NSManagedObject]()
   var latitude = Float()
   var longitude = Float()
-//  var photosArray: [ImageObject]
-
 
   override init() {
     super.init()
@@ -93,6 +91,7 @@ class Client : NSObject {
     print("randomPage: \(randomPage)")
     downloadRandomFlickrAlbum(methodArguments: methodArguments, withPageNumber: randomPage){ (success, error) in
       if success{
+
         completionHandlerForImages(true, nil)
       } else{
         completionHandlerForImages(false, error)
@@ -153,6 +152,7 @@ class Client : NSObject {
         print("4")
         ImageObject.SLOFromResults(photosArray){(finishedConverting, pictures) in
           if finishedConverting {
+            
             print("6")
             ImageObjectDetail.sharedInstance().pictures = pictures
             print("7")

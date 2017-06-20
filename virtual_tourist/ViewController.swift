@@ -63,10 +63,6 @@ class ViewController: UIViewController, MKMapViewDelegate, UIApplicationDelegate
     savedRegionLoaded = true
   }
 
-  override func viewWillAppear(_ animated: Bool) {
-    print("viewwillappear")
-  }
-
   override func didReceiveMemoryWarning() {
     super.didReceiveMemoryWarning()
   }
@@ -154,7 +150,6 @@ class ViewController: UIViewController, MKMapViewDelegate, UIApplicationDelegate
     coordinatesForPin = (view.annotation?.coordinate)!
 
     let pin = self.getPin(latitude: coordinatesForPin.latitude, longitude: coordinatesForPin.longitude)
-    print(pin)
     if pin != nil, pin!.count > 0{
       currentPin = pin!.first!
     }
@@ -184,7 +179,7 @@ class ViewController: UIViewController, MKMapViewDelegate, UIApplicationDelegate
 
     do {
       pins = try self.delegate.stack.context.fetch(fetchRequest) as? [Pin]
-      print("pins from function: \(try self.delegate.stack.context.count(for: fetchRequest))") //returns a valid number of pins
+      print("pins: \(try self.delegate.stack.context.count(for: fetchRequest))")
     } catch {
       print("whoops")
     }
