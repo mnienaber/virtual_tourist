@@ -8,26 +8,45 @@
 
 import Foundation
 import UIKit
+import CoreData
 
 struct ImageObject {
 
-  let imageUrl: String
+  var title: String
+  var URL: String
+  var id: String
+  var data: Data?
 
-  init?(dictionary: [String:AnyObject]) {
 
-    guard let object = dictionary[Client.Constants.ParseResponseKeys.ImageUrl] as? String else { return nil }
-    imageUrl = object
+  init?(dictionary: [String: AnyObject]){
+    if let titleFound = dictionary[Client.Constants.FlickrResponseKeys.Title] as? String {
+      title = titleFound
+    } else {
+      title = ""
+    }
+
+    if let URLFound = dictionary[Client.Constants.FlickrResponseKeys.MediumURL] as? String {
+      URL = URLFound
+    } else {
+      URL = ""
+    }
+
+    if let idFound = dictionary[Client.Constants.FlickrResponseKeys.id] as? String {
+      id = idFound
+    } else {
+      id = ""
+    }
   }
 
-  static func SLOFromResults(results: [[String:AnyObject]]) -> [ImageObject] {
+  static func SLOFromResults(_ results: [[String:AnyObject]], completionHandlerForResults: @escaping (_ finishedConverting: Bool, _ pictures: [ImageObject]) -> Void) {
+    print("5")
+    var pictures = [ImageObject]()
 
     for result in results {
 
-      if let imageObject = ImageObject(dictionary: result) {
-
-        ImageSingleton.sharedInstance().image.append(imageObject)
-      }
+      pictures.append((ImageObject(dictionary: result))!)
     }
-    return ImageSingleton.sharedInstance().image
+    completionHandlerForResults(true, pictures)
   }
 }
+

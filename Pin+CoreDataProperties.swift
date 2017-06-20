@@ -17,8 +17,7 @@ extension Pin {
     }
 
     @NSManaged public var latitude: Float
-    @NSManaged public var locationName: String?
     @NSManaged public var longitude: Float
-    @NSManaged public var photos: Photos?
+    @NSManaged public var photos: NSSet?
 
 }

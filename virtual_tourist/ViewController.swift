@@ -8,25 +8,36 @@
 
 import UIKit
 import MapKit
+import CoreData
 
 class ViewController: UIViewController, MKMapViewDelegate, UIApplicationDelegate, CLLocationManagerDelegate, UIGestureRecognizerDelegate {
 
   var appDelegate: AppDelegate!
   let locationManager = CLLocationManager()
-  let regionRadius: CLLocationDistance = 2000
+  let regionRadius: CLLocationDistance = 100
+  var coordinatesForPin = CLLocationCoordinate2D()
+  var currentPin: Pin?
+  var pin: Pin?
+  var zoomAlt = CLLocationDistance()
+  var zoomLon = CLLocationDegrees()
+  var zoomLat = CLLocationDegrees()
+  var savedRegionLoaded = false
+  let delegate = UIApplication.shared.delegate as! AppDelegate
 
   @IBOutlet weak var mapView: MKMapView!
-  
+
   override func viewDidLoad() {
     super.viewDidLoad()
+
+    self.mapView.delegate = self
+    mapView.showsUserLocation = true
+
+    showPins()
 
     locationManager.delegate = self
     locationManager.desiredAccuracy = kCLLocationAccuracyBest
     locationManager.requestWhenInUseAuthorization()
     locationManager.startUpdatingLocation()
-
-    mapView.delegate = self
-    mapView.showsUserLocation = true
 
     appDelegate = UIApplication.shared.delegate as! AppDelegate
 
@@ -37,10 +48,35 @@ class ViewController: UIViewController, MKMapViewDelegate, UIApplicationDelegate
     longTap.minimumPressDuration = 0.5
     longTap.allowableMovement = 10
     mapView.addGestureRecognizer(longTap)
+
+    printDatabaseStatistics()
+  }
+
+  override func viewWillDisappear(_ animated: Bool) {
+    zoomViewSettings()
+  }
+
+  override func viewDidAppear(_ animated: Bool) {
+    if !savedRegionLoaded{
+      checkMapZoom()
+    }
+    savedRegionLoaded = true
+  }
+
+  override func viewWillAppear(_ animated: Bool) {
+    print("viewwillappear")
   }
 
   override func didReceiveMemoryWarning() {
     super.didReceiveMemoryWarning()
+  }
+
+  func mapView(_ mapView: MKMapView, regionDidChangeAnimated animated: Bool) {
+
+    if userChangedMapViewZoom() {
+
+      zoomViewSettings()
+    }
   }
 
   private func locationManager(manager: CLLocationManager, didChangeAuthorizationStatus status: CLAuthorizationStatus) {
@@ -64,77 +100,169 @@ class ViewController: UIViewController, MKMapViewDelegate, UIApplicationDelegate
     print("error:: \(error)")
   }
 
-//  func didLongTapMap(gestureRecognizer: UIGestureRecognizer) {
-//    print("long tap detected")
-//    // Get the spot that was tapped.
-//    let tapPoint: CGPoint = gestureRecognizer.location(in: mapView)
-//    let touchMapCoordinate: CLLocationCoordinate2D = mapView.convert(tapPoint, toCoordinateFrom: mapView)
-//
-//    let viewAtBottomOfHierarchy: UIView = mapView.hitTest(tapPoint, with: nil)!
-//    if viewAtBottomOfHierarchy is MKPinAnnotationView {
-//      return
-//    } else {
-//      if .began == gestureRecognizer.state {
-//        // Delete any existing annotations.
-//        if mapView.annotations.count != 0 {
-//          mapView.removeAnnotations(mapView.annotations)
-//        }
-//
-//        let annotation = MKPointAnnotation()
-//        annotation.coordinate = touchMapCoordinate
-//        print(annotation.coordinate.latitude)
-//        print(annotation.coordinate.longitude)
-//
-//
-//        mapView.addAnnotation(annotation)
-//        print("wheres the pin")
-//        //_isPinOnMap = true
-//
-//        //findAddressFromCoordinate(annotation.coordinate)
-//        //updateLabels()
-//      }
-//    }
-//  }
-
   func action(gestureRecognizer:UIGestureRecognizer) {
+
     let touchPoint = gestureRecognizer.location(in: self.mapView)
     var newCoord:CLLocationCoordinate2D = mapView.convert(touchPoint, toCoordinateFrom: self.mapView)
 
-    var pm = [CLPlacemark]()
-
     let newAnnotation = MKPointAnnotation()
     newAnnotation.coordinate = newCoord
-    newAnnotation.title = "New Location"
-    newAnnotation.subtitle = "New Subtitle"
     newCoord.latitude = newAnnotation.coordinate.latitude
     newCoord.longitude = newAnnotation.coordinate.longitude
-    //pm.append(["name":"\(newAnnotation.title)","latitude":"\(newCoord.latitude)","longitude":"\(newCoord.longitude)"])
-    if gestureRecognizer.state == .began {
+    if gestureRecognizer.state == .ended {
+      let touchPoint = gestureRecognizer.location(in: mapView)
+      let newCoordinates = mapView.convert(touchPoint, toCoordinateFrom: mapView)
+      coordinatesForPin = newCoordinates
+      let annotation = MKPointAnnotation()
+      annotation.coordinate = newCoordinates
+      annotation.title = "See Photos"
       mapView.addAnnotation(newAnnotation)
-      print(newCoord.latitude)
-      print(newCoord.longitude)
-      Client.sharedInstance().getImages(latitude: newCoord.latitude, longitude: newCoord.longitude) { results, error in
+      let pin = Pin(latitude: Float(newCoordinates.latitude), longitude: Float(newCoordinates.longitude), context: self.delegate.stack.context)
+      print("pin: \(pin)")
+      self.delegate.stack.save()
+    }
+  }
 
-        if error != nil {
+  override func prepare(for segue: UIStoryboardSegue, sender: Any?){
+    if segue.identifier == "tappedPin" {
+      print("you've been tapped")
+      let collectionVC = segue.destination as! CollectionViewController
 
-          performUIUpdatesOnMain {
-            print(error)
-          }
-        } else {
+      collectionVC.pinSelected = currentPin!
+      collectionVC.detailLocation = coordinatesForPin
+    }
+  }
 
-          if let results = results {
+  func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView? {
 
-            performUIUpdatesOnMain {
-              for result in results {
+    let identifier = "pin"
+    var view: MKPinAnnotationView
+    if let dequeuedView = self.mapView.dequeueReusableAnnotationView(withIdentifier: identifier) as? MKPinAnnotationView {
+      dequeuedView.annotation = annotation
+      view = dequeuedView
+    } else {
+      view = MKPinAnnotationView(annotation: annotation, reuseIdentifier: identifier)
+      view.canShowCallout = false
+      view.isEnabled = true
+    }
+    return view
+  }
 
-                let newImageUrl = result.imageUrl
+  func mapView(_ mapView: MKMapView, didSelect view: MKAnnotationView) {
+    print("tapped")
 
-              }
-            }
-          }
+    coordinatesForPin = (view.annotation?.coordinate)!
+
+    let pin = self.getPin(latitude: coordinatesForPin.latitude, longitude: coordinatesForPin.longitude)
+    print(pin)
+    if pin != nil, pin!.count > 0{
+      currentPin = pin!.first!
+    }
+    performSegue(withIdentifier: "tappedPin", sender: self)
+  }
+
+  func showPins() {
+    let fetchRequest = NSFetchRequest<Pin>(entityName: "Pin")
+
+    let pins: [Pin]? = fetchPin(fetchRequest: fetchRequest as! NSFetchRequest<NSFetchRequestResult>)
+
+    guard pins != nil else {
+      return
+    }
+
+    mapView.addAnnotations(pins!.map { pin in
+      let annotation = MKPointAnnotation()
+      annotation.coordinate.latitude = CLLocationDegrees(pin.latitude)
+      annotation.coordinate.longitude = CLLocationDegrees(pin.longitude)
+      annotation.title = "See Photos"
+      return annotation
+    })
+  }
+
+  func fetchPin(fetchRequest: NSFetchRequest<NSFetchRequestResult>) -> [Pin]? {
+    var pins: [Pin]?
+
+    do {
+      pins = try self.delegate.stack.context.fetch(fetchRequest) as? [Pin]
+      print("pins from function: \(try self.delegate.stack.context.count(for: fetchRequest))") //returns a valid number of pins
+    } catch {
+      print("whoops")
+    }
+    return pins
+  }
+
+  func getPin(latitude: CLLocationDegrees, longitude: CLLocationDegrees) -> [Pin]? {
+    let fetchRequest = getFetchRequest(entityName: "Pin", format: "latitude = %@ && longitude = %@", argArray: [latitude, longitude])
+
+    let pins: [Pin]? = fetchPin(fetchRequest: fetchRequest)
+    return pins
+  }
+
+  func getFetchRequest(entityName: String, format: String, argArray: [Any]?) -> NSFetchRequest<NSFetchRequestResult> {
+    let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: entityName)
+
+    let predicate = NSPredicate(format: format, argumentArray: argArray)
+    fetchRequest.predicate = predicate
+
+    return fetchRequest
+  }
+
+  func printDatabaseStatistics() {
+    let pinCount = try? self.delegate.stack.context.count(for: NSFetchRequest(entityName: "Pin"))
+    let photoCount = try? self.delegate.stack.context.count(for: NSFetchRequest(entityName: "Photos"))
+    print("\(String(describing: pinCount)) Pins Found")
+    print("\(String(describing: photoCount)) Photos Found")
+  }
+
+  func checkMapZoom(){
+    if let altitude = UserDefaults.standard.value(forKey: Client.Constants.ZoomKeys.Alt){
+      mapView.camera.altitude = altitude as! CLLocationDistance
+    } else{
+      UserDefaults.standard.set(mapView.camera.altitude, forKey: Client.Constants.ZoomKeys.Alt)
+    }
+
+    if let cameraCenterLatitude = UserDefaults.standard.value(forKey: Client.Constants.ZoomKeys.Lat){
+      mapView.camera.centerCoordinate.latitude = cameraCenterLatitude as! CLLocationDegrees
+    } else {
+      UserDefaults.standard.set(mapView.camera.centerCoordinate.latitude, forKey: Client.Constants.ZoomKeys.Lat)
+    }
+
+    if let cameraCenterLongitude = UserDefaults.standard.value(forKey: Client.Constants.ZoomKeys.Lon){
+      mapView.camera.centerCoordinate.longitude = cameraCenterLongitude as! CLLocationDegrees
+    } else {
+      UserDefaults.standard.set(mapView.camera.centerCoordinate.longitude, forKey: Client.Constants.ZoomKeys.Lon)
+    }
+
+    print(mapView.camera.centerCoordinate as Any)
+
+  }
+
+  func zoomViewSettings() {
+    zoomAlt = mapView.camera.altitude
+    zoomLat = mapView.camera.centerCoordinate.latitude
+    zoomLon = mapView.camera.centerCoordinate.longitude
+
+    UserDefaults.standard.set(zoomAlt, forKey: Client.Constants.ZoomKeys.Alt)
+    UserDefaults.standard.set(zoomLat, forKey: Client.Constants.ZoomKeys.Lat)
+    UserDefaults.standard.set(zoomLon, forKey: Client.Constants.ZoomKeys.Lon)
+    UserDefaults.standard.synchronize()
+  }
+
+  func userChangedMapViewZoom() -> Bool {
+
+    let view = self.mapView.subviews[0]
+
+    if let gestureRecognizers = view.gestureRecognizers {
+
+      for recog in gestureRecognizers {
+
+        if (recog.state == UIGestureRecognizerState.began || recog.state == UIGestureRecognizerState.ended) {
+
+          return true
         }
       }
     }
+    return false
   }
 }
 

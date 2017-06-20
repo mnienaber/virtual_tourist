@@ -8,29 +8,35 @@
 
 import Foundation
 import UIKit
+import CoreData
 
 class Client : NSObject {
 
   let session = URLSession.shared
   var appDelegate: AppDelegate!
+  var photoManagedObject = [NSManagedObject]()
+  var latitude = Float()
+  var longitude = Float()
+//  var photosArray: [ImageObject]
 
 
   override init() {
     super.init()
   }
 
-  func taskForGETMethod(request: NSURLRequest, completionHandlerForGET: @escaping (_ result: AnyObject?, _ error: NSError?) -> Void) -> URLSessionDataTask {
-
+  func taskForGETMethod(request: NSURLRequest, methodArguments: [String: AnyObject], completionHandlerForGET: @escaping (_ result: Bool, _ error: NSError?) -> Void) {
+    print("3")
+    
     let task = session.dataTask(with: request as URLRequest) { data, response, error in
 
       func sendError(_ error: String) {
         print(error)
         let userInfo = [NSLocalizedDescriptionKey : error]
-        completionHandlerForGET(nil, NSError(domain: "taskForGETMethod", code: 1, userInfo: userInfo))
+        completionHandlerForGET(false, NSError(domain: "taskForGETMethod", code: 1, userInfo: userInfo))
       }
 
       guard (error == nil) else {
-        sendError("There was an error with your request: \(error)")
+        sendError("There was an error with your request: \(String(describing: error))")
         return
       }
 
@@ -43,28 +49,123 @@ class Client : NSObject {
         sendError("No data was returned by the request!")
         return
       }
-      print("data")
 
-      self.convertDataWithCompletionHandler(data, completionHandlerForConvertData: completionHandlerForGET)
+        self.convertDataWithCompletionHandler(data, methodArguments: methodArguments, completionHandlerForConvertData: completionHandlerForGET)
+      }
+      task.resume()
     }
-    task.resume()
-    return task
 
+    func convertDataWithCompletionHandler(_ data: Data, methodArguments: [String: AnyObject], completionHandlerForConvertData: @escaping (_ result: Bool, _ error: NSError?) -> Void) {
+
+      var parsedResult: [String:AnyObject]!
+      do {
+        parsedResult = try JSONSerialization.jsonObject(with: data, options: .allowFragments) as! [String:AnyObject]
+      } catch {
+        let userInfo = [NSLocalizedDescriptionKey : "Could not parse the data as JSON: '\(data)'"]
+        completionHandlerForConvertData(false, NSError(domain: "convertDataWithCompletionHandler", code: 1, userInfo: userInfo))
+      }
+
+      if let photosDictionary = parsedResult[Client.Constants.FlickrResponseKeys.Photos] as? [String:AnyObject] {
+
+        self.pickARandomPage(photosDictionary: photosDictionary, methodArguments: methodArguments) { (success, error) in
+          if success{
+            completionHandlerForConvertData(true, nil)
+          } else {
+            completionHandlerForConvertData(false, error)
+          }
+        }
+      }
+    }
+
+  func pickARandomPage(photosDictionary: [String: AnyObject], methodArguments: [String: AnyObject], completionHandlerForImages: @escaping (_ success: Bool, _ error: NSError?) -> Void) {
+    guard let totalPages = photosDictionary[Client.Constants.FlickrResponseKeys.Pages] as? Int else {
+      print("Found no pages in photos dictionary")
+      return
+    }
+
+    guard totalPages >= 0 else {
+      print("Found no pages in photos dictionary")
+      return
+    }
+
+    let pageLimit = min(totalPages, 40)
+    let randomPage = Int(arc4random_uniform(UInt32(pageLimit))) + 1
+    print("randomPage: \(randomPage)")
+    downloadRandomFlickrAlbum(methodArguments: methodArguments, withPageNumber: randomPage){ (success, error) in
+      if success{
+        completionHandlerForImages(true, nil)
+      } else{
+        completionHandlerForImages(false, error)
+      }
+    }
   }
 
-  fileprivate func convertDataWithCompletionHandler(_ data: Data, completionHandlerForConvertData: (_ result: AnyObject?, _ error: NSError?) -> Void) {
+  func downloadRandomFlickrAlbum(methodArguments: [String: AnyObject], withPageNumber pageNumber: Int? = nil, completionHandlerForImages: @escaping (_ success: Bool, _ error: NSError?) -> Void){
 
-    var parsedResult: Any!
-    do {
-      parsedResult = try JSONSerialization.jsonObject(with: data, options: .allowFragments)
-      print("this is the parsed result: \(parsedResult)")
-    } catch {
-      let userInfo = [NSLocalizedDescriptionKey : "Could not parse the data as JSON: '\(data)'"]
-      completionHandlerForConvertData(nil, NSError(domain: "convertDataWithCompletionHandler", code: 1, userInfo: userInfo))
-    }
-
-    completionHandlerForConvertData(parsedResult as AnyObject?, nil)
+    var methodArguments = methodArguments
     
+    methodArguments[Client.Constants.FlickrParameterKeys.Page] = pageNumber as AnyObject
+    print("pageNumber: \(pageNumber)")
+
+    let urlString = Client.Constants.Scheme.BASE_URL + escapedParameters(parameters: methodArguments as [String : AnyObject])
+    let url = NSURL(string: urlString)!
+
+    let session = URLSession.shared
+    let request = URLRequest(url: url as URL)
+
+    let task = session.dataTask(with: request) { (data, response, error) in
+
+      guard (error == nil) else {
+        completionHandlerForImages(false, error! as NSError)
+        return
+      }
+
+      guard let statusCode = (response as? HTTPURLResponse)?.statusCode, statusCode >= 200 && statusCode <= 299 else {
+        completionHandlerForImages(false, error! as NSError)
+        return
+      }
+
+      guard let data = data else {
+        completionHandlerForImages(false, error! as NSError)
+        return
+      }
+
+      let parsedResult: [String:AnyObject]!
+      do {
+        parsedResult = try JSONSerialization.jsonObject(with: data, options: .allowFragments) as! [String:AnyObject]
+      } catch {
+        completionHandlerForImages(false, error as NSError)
+        return
+      }
+
+      guard let stat = parsedResult[Client.Constants.FlickrResponseKeys.Status] as? String, stat == Client.Constants.FlickrResponseValues.OKStatus else {
+        completionHandlerForImages(false, error! as NSError)
+        return
+      }
+
+      if let photosDictionary = parsedResult[Client.Constants.FlickrResponseKeys.Photos] as? [String:AnyObject] {
+
+        guard let photosArray = photosDictionary[Client.Constants.FlickrResponseKeys.Photo] as? [[String: AnyObject]] else {
+          completionHandlerForImages(false, error! as NSError)
+          return
+        }
+
+        print("4")
+        ImageObject.SLOFromResults(photosArray){(finishedConverting, pictures) in
+          if finishedConverting {
+            print("6")
+            ImageObjectDetail.sharedInstance().pictures = pictures
+            print("7")
+            completionHandlerForImages(true, nil)
+          }
+        }
+
+      } else {
+        completionHandlerForImages(false, error! as NSError)
+        print("Couldn't find photos.")
+      }
+    }
+    task.resume()
   }
 }
 
@@ -76,19 +177,5 @@ extension Client {
     }
     return Singleton.sharedInstance
   }
-
-
 }
-//
-//extension UIImageView {
-//
-//    func downloadImageFrom(link:String, contentMode: UIViewContentMode) {
-//        URLSession.shared.dataTask( with: URL(string:link)!, completionHandler: {
-//            (data, response, error) -> Void in
-//            DispatchQueue.main.async {
-//                self.contentMode =  contentMode
-//                if let data = data { self.image = UIImage(data: data) }
-//            }
-//        }).resume()
-//    }
-//}
+
