@@ -179,10 +179,7 @@ class ViewController: UIViewController, MKMapViewDelegate, UIApplicationDelegate
 
     do {
       pins = try self.delegate.stack.context.fetch(fetchRequest) as? [Pin]
-<<<<<<< HEAD
-=======
-      print("pins: \(try self.delegate.stack.context.count(for: fetchRequest))")
->>>>>>> infra_new
+
     } catch {
       print("whoops")
     }
