@@ -12,9 +12,9 @@ import CoreData
 
 struct ImageObject {
 
-  var title: String
-  var URL: String
-  var id: String
+  let title: String
+  let URL: String
+  let id: String
   var data: Data?
 
 

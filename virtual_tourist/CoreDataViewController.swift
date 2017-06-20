@@ -8,7 +8,7 @@
 import UIKit
 import CoreData
 
-class CoreDataCollectionViewController: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
+class CoreDataViewController: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
 
   @IBOutlet weak var collectionView: UICollectionView!
 
@@ -31,7 +31,7 @@ class CoreDataCollectionViewController: UIViewController, UICollectionViewDelega
   }
 }
 
-extension CoreDataCollectionViewController {
+extension CoreDataViewController {
 
   func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
 
@@ -68,7 +68,7 @@ extension CoreDataCollectionViewController {
   }
 }
 
-extension CoreDataCollectionViewController {
+extension CoreDataViewController {
 
   func numberOfSections(in collectionView: UICollectionView) -> Int {
 
@@ -109,7 +109,7 @@ extension CoreDataCollectionViewController {
 
 }
 
-extension CoreDataCollectionViewController {
+extension CoreDataViewController {
 
   func executeSearch() {
     if let fc = fetchedResultsController {
@@ -122,7 +122,7 @@ extension CoreDataCollectionViewController {
   }
 }
 
-extension CoreDataCollectionViewController: NSFetchedResultsControllerDelegate {
+extension CoreDataViewController: NSFetchedResultsControllerDelegate {
 
   func controllerWillChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
     blockOperations.removeAll()

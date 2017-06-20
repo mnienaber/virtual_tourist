@@ -13,7 +13,7 @@
         <!--Virtual Tourist-->
         <scene sceneID="tne-QT-ifu">
             <objects>
-                <viewController id="BYZ-38-t0r" customClass="ViewController" customModule="virtual_tourist" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="BYZ-38-t0r" customClass="MapVC" customModule="virtual_tourist" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="y3c-jy-aDJ"/>
                         <viewControllerLayoutGuide type="bottom" id="wfy-db-euE"/>
@@ -116,7 +116,7 @@
         <!--Photo Album-->
         <scene sceneID="nds-xk-Y60">
             <objects>
-                <viewController id="wVH-Rg-jEt" customClass="CollectionViewController" customModule="virtual_tourist" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="wVH-Rg-jEt" customClass="PhotosVC" customModule="virtual_tourist" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="vHe-x2-qHa"/>
                         <viewControllerLayoutGuide type="bottom" id="UCj-kh-yPS"/>

@@ -11,7 +11,7 @@ import UIKit
 import MapKit
 import CoreData
 
-class CollectionViewController:  CoreDataCollectionViewController {
+class PhotosVC:  CoreDataViewController {
 
   @IBOutlet weak var mapView: MKMapView!
   @IBOutlet weak var imageView: UIImageView!
@@ -22,6 +22,7 @@ class CollectionViewController:  CoreDataCollectionViewController {
   var pinSelected: Pin?
   var detailLocation = CLLocationCoordinate2D()
   let delegate = UIApplication.shared.delegate as! AppDelegate
+  let delayValue = 100
 
   override func viewDidLoad() {
     super.viewDidLoad()
@@ -71,7 +72,8 @@ class CollectionViewController:  CoreDataCollectionViewController {
   }
 
   override func viewWillAppear(_ animated: Bool) {
-    self.delegate.stack.autoSave(100)
+    super.viewWillAppear(animated)
+    self.delegate.stack.autoSave(delayValue)
   }
 
   func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {

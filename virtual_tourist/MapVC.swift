@@ -10,7 +10,7 @@ import UIKit
 import MapKit
 import CoreData
 
-class ViewController: UIViewController, MKMapViewDelegate, UIApplicationDelegate, CLLocationManagerDelegate, UIGestureRecognizerDelegate {
+class MapVC: UIViewController, MKMapViewDelegate, UIApplicationDelegate, CLLocationManagerDelegate, UIGestureRecognizerDelegate {
 
   var appDelegate: AppDelegate!
   let locationManager = CLLocationManager()
@@ -29,7 +29,6 @@ class ViewController: UIViewController, MKMapViewDelegate, UIApplicationDelegate
   override func viewDidLoad() {
     super.viewDidLoad()
 
-    self.mapView.delegate = self
     mapView.showsUserLocation = true
 
     showPins()
@@ -41,7 +40,7 @@ class ViewController: UIViewController, MKMapViewDelegate, UIApplicationDelegate
 
     appDelegate = UIApplication.shared.delegate as! AppDelegate
 
-    let longTap: UILongPressGestureRecognizer = UILongPressGestureRecognizer(target: self, action: #selector(ViewController.action(gestureRecognizer:)))
+    let longTap: UILongPressGestureRecognizer = UILongPressGestureRecognizer(target: self, action: #selector(MapVC.action(gestureRecognizer:)))
 
     longTap.delegate = self
     longTap.numberOfTapsRequired = 0
@@ -53,10 +52,12 @@ class ViewController: UIViewController, MKMapViewDelegate, UIApplicationDelegate
   }
 
   override func viewWillDisappear(_ animated: Bool) {
+    super.viewWillDisappear(animated)
     zoomViewSettings()
   }
 
   override func viewDidAppear(_ animated: Bool) {
+    super.viewDidAppear(animated)
     if !savedRegionLoaded{
       checkMapZoom()
     }
@@ -93,7 +94,7 @@ class ViewController: UIViewController, MKMapViewDelegate, UIApplicationDelegate
 
   private func locationManager(manager: CLLocationManager, didFailWithError error: NSError) {
 
-    print("error:: \(error)")
+    FailAlerts.sharedInstance().failGenOK(title: "Location not found", message: "Your device's location was not found, you can still continue to use the app", alerttitle: "OK")
   }
 
   func action(gestureRecognizer:UIGestureRecognizer) {
@@ -121,8 +122,7 @@ class ViewController: UIViewController, MKMapViewDelegate, UIApplicationDelegate
 
   override func prepare(for segue: UIStoryboardSegue, sender: Any?){
     if segue.identifier == "tappedPin" {
-      print("you've been tapped")
-      let collectionVC = segue.destination as! CollectionViewController
+      let collectionVC = segue.destination as! PhotosVC
 
       collectionVC.pinSelected = currentPin!
       collectionVC.detailLocation = coordinatesForPin
@@ -145,7 +145,6 @@ class ViewController: UIViewController, MKMapViewDelegate, UIApplicationDelegate
   }
 
   func mapView(_ mapView: MKMapView, didSelect view: MKAnnotationView) {
-    print("tapped")
 
     coordinatesForPin = (view.annotation?.coordinate)!
 
@@ -181,7 +180,7 @@ class ViewController: UIViewController, MKMapViewDelegate, UIApplicationDelegate
       pins = try self.delegate.stack.context.fetch(fetchRequest) as? [Pin]
 
     } catch {
-      print("whoops")
+      FailAlerts.sharedInstance().failGenOK(title: "Pins not located", message: "No pins were found", alerttitle: "OK")
     }
     return pins
   }
