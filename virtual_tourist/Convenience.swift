@@ -112,7 +112,7 @@ extension Client {
         return
       }
 
-      print("Download completed: \(completionHandlerForImage)")
+      print("Download completed")
       completionHandlerForImage(data, nil)
     }
     task.resume()
