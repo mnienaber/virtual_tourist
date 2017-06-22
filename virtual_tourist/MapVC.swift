@@ -64,6 +64,12 @@ class MapVC: UIViewController, MKMapViewDelegate, UIApplicationDelegate, CLLocat
     savedRegionLoaded = true
   }
 
+  override func viewWillAppear(_ animated: Bool) {
+    super.viewWillAppear(animated)
+    print("viewWillAppear - showPins()")
+    showPins()
+  }
+
   override func didReceiveMemoryWarning() {
     super.didReceiveMemoryWarning()
   }
@@ -100,15 +106,16 @@ class MapVC: UIViewController, MKMapViewDelegate, UIApplicationDelegate, CLLocat
   func action(gestureRecognizer:UIGestureRecognizer) {
 
     let touchPoint = gestureRecognizer.location(in: self.mapView)
-    var newCoord:CLLocationCoordinate2D = mapView.convert(touchPoint, toCoordinateFrom: self.mapView)
+//    var newCoord:CLLocationCoordinate2D = mapView.convert(touchPoint, toCoordinateFrom: self.mapView)
 
     let newAnnotation = MKPointAnnotation()
-    newAnnotation.coordinate = newCoord
-    newCoord.latitude = newAnnotation.coordinate.latitude
-    newCoord.longitude = newAnnotation.coordinate.longitude
+//    newAnnotation.coordinate = newCoord
+//    newCoord.latitude = newAnnotation.coordinate.latitude
+//    newCoord.longitude = newAnnotation.coordinate.longitude
     if gestureRecognizer.state == .ended {
       let touchPoint = gestureRecognizer.location(in: mapView)
       let newCoordinates = mapView.convert(touchPoint, toCoordinateFrom: mapView)
+      newAnnotation.coordinate = newCoordinates
       coordinatesForPin = newCoordinates
       let annotation = MKPointAnnotation()
       annotation.coordinate = newCoordinates
@@ -117,6 +124,8 @@ class MapVC: UIViewController, MKMapViewDelegate, UIApplicationDelegate, CLLocat
       let pin = Pin(latitude: Float(newCoordinates.latitude), longitude: Float(newCoordinates.longitude), context: self.delegate.stack.context)
       print("pin: \(pin)")
       self.delegate.stack.save()
+      showPins()
+      print("action - showpins")
     }
   }
 
@@ -164,11 +173,12 @@ class MapVC: UIViewController, MKMapViewDelegate, UIApplicationDelegate, CLLocat
       return
     }
 
+    mapView.removeAnnotations(mapView.annotations)
+
     mapView.addAnnotations(pins!.map { pin in
       let annotation = MKPointAnnotation()
       annotation.coordinate.latitude = CLLocationDegrees(pin.latitude)
       annotation.coordinate.longitude = CLLocationDegrees(pin.longitude)
-      annotation.title = "See Photos"
       return annotation
     })
   }
