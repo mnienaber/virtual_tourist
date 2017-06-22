@@ -44,6 +44,8 @@ extension CoreDataViewController {
 
     let photo = self.fetchedResultsController?.object(at: indexPath) as? Photos
 
+    print("photo?.pin: \(photo?.pin)")
+
     if photo?.image == nil {
 
       let url = photo?.url

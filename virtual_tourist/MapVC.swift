@@ -106,12 +106,7 @@ class MapVC: UIViewController, MKMapViewDelegate, UIApplicationDelegate, CLLocat
   func action(gestureRecognizer:UIGestureRecognizer) {
 
     let touchPoint = gestureRecognizer.location(in: self.mapView)
-//    var newCoord:CLLocationCoordinate2D = mapView.convert(touchPoint, toCoordinateFrom: self.mapView)
-
     let newAnnotation = MKPointAnnotation()
-//    newAnnotation.coordinate = newCoord
-//    newCoord.latitude = newAnnotation.coordinate.latitude
-//    newCoord.longitude = newAnnotation.coordinate.longitude
     if gestureRecognizer.state == .ended {
       let touchPoint = gestureRecognizer.location(in: mapView)
       let newCoordinates = mapView.convert(touchPoint, toCoordinateFrom: mapView)

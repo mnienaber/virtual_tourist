@@ -43,33 +43,6 @@ class PhotosVC:  CoreDataViewController {
     fr.sortDescriptors = [NSSortDescriptor(key: "title", ascending: true)]
     fetchedResultsController = NSFetchedResultsController(fetchRequest: fr, managedObjectContext: self.delegate.stack.context, sectionNameKeyPath: nil, cacheName: nil)
 
-//    do {
-//      try fetchedResultsController?.performFetch()
-//    } catch {
-//      print("nothing return")
-//    }
-
-//    if pinSelected?.photos?.count != nil, (pinSelected?.photos?.count)! > 0 {
-//
-//      print("we have photos")
-//    } else {
-//      print("get new photos")
-//      if Reachability.isConnectedToNetwork() == false {
-//
-//        performUIUpdatesOnMain {
-//          FailAlerts.sharedInstance().failGenOK(title: "No Connection", message: "You don't seem to be connected to the internet", alerttitle: "I'll fix it!")
-//        }
-//      } else {
-//
-//        print("1")
-//        Client.sharedInstance().getImages(pin: pinSelected!) { results, error in
-//          if results {
-//            print("8")
-//            self.saveImagesToContext(images: ImageObjectDetail.sharedInstance().pictures, pin: self.pinSelected!)
-//          }
-//        }
-//      }
-//    }
     switch pinSelected {
     case _ where (pinSelected?.photos?.count)! > 0:
       print("we have photos")
