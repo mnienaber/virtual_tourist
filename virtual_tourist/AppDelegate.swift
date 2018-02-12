@@ -8,16 +8,21 @@
 
 import UIKit
 import CoreData
+import Firebase
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
   var window: UIWindow?
   let stack = CoreDataStack(modelName: "Model")!
+  
 
 
   func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
     // Override point for customization after application launch.
+    // Use Firebase library to configure APIs
+    FirebaseApp.configure()
+
     return true
   }
 

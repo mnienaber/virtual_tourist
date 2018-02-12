@@ -10,6 +10,7 @@ import Foundation
 import UIKit
 import MapKit
 import CoreData
+import FirebaseFirestore
 
 class PhotosVC:  CoreDataViewController {
 
@@ -23,6 +24,7 @@ class PhotosVC:  CoreDataViewController {
   var detailLocation = CLLocationCoordinate2D()
   let delegate = UIApplication.shared.delegate as! AppDelegate
   let delayValue = 100
+  let db = Firestore.firestore()
 
   override func viewDidLoad() {
     super.viewDidLoad()
@@ -109,6 +111,29 @@ class PhotosVC:  CoreDataViewController {
     do {
 
       photos = try self.delegate.stack.context.fetch((fetchedResultsController?.fetchRequest)!) as? [Photos]
+
+      // Add a new document with a generated ID
+      var ref: DocumentReference? = nil
+      ref = db.collection("users").addDocument(data: [
+        "latitude": pinSelected?.latitude as Any,
+        "longitude": pinSelected?.longitude as Any,
+//        "photo": photos,
+      ]) { err in
+        if let err = err {
+          print("Error adding document: \(err)")
+        } else {
+          print("Document added with ID: \(ref!.documentID)")
+        }
+      }
+      db.collection("users").getDocuments() { (querySnapshot, err) in
+        if let err = err {
+          print("Error getting documents: \(err)")
+        } else {
+          for document in querySnapshot!.documents {
+            print("this is the document \(document.documentID) => \(document.data())")
+          }
+        }
+      }
     } catch {
 
       FailAlerts.sharedInstance().failGenOK(title: "Sorry", message: "Couldn't load photos", alerttitle: "Please try again")

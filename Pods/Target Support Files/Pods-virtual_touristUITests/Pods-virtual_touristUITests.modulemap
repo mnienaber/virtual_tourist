@@ -1,0 +1,6 @@
+framework module Pods_virtual_touristUITests {
+  umbrella header "Pods-virtual_touristUITests-umbrella.h"
+
+  export *
+  module * { export * }
+}
